@@ -1,0 +1,11 @@
+/               HomeR               GET
+/busca          BuscaR                  POST
+/static         StaticR     Static  getStatic
+/detalhe        DetalheR            GET
+/sobre          SobreR              GET POST
+/boott          BoottR              GET
+/teste          TesteR              GET
+/tes            TesR                GET
+/viii           ViiiR               GET
+/add/#Int/#Int  AddR                GET
+/outro          OutroR              GET

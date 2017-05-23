@@ -1,0 +1,50 @@
+name:               projeto
+version:            0.0.0
+cabal-version:      >= 1.8
+build-type:         Simple
+extra-source-files: routes
+
+executable          projeto
+  main-is:          Main.hs
+  other-modules:    Application
+                    Foundation
+
+                    Add
+                    Home
+                    Handlers.Busca
+                    Handlers.Detalhe
+                    Handlers.Sobre
+                    Utils.WidgetResultadoBusca
+                    Utils.SettingsForm
+                    Scraper.Ztestes.Viii
+                    Scraper.Ztestes.Boott
+                    Scraper.Ztestes.Scraper
+                    Scraper.Ztestes.Teste
+                    Scraper.Ztestes.Secondtest
+                    Scraper.Busca.Receita
+                    
+
+  ghc-options:      -Wall -fwarn-tabs -O2
+
+  build-depends:  base
+                , yesod
+                , yesod-core
+                , yesod-static
+                , wreq
+                , aeson
+                , lens-aeson
+                , taggy-lens
+                , lens >=4.0.1 && <4.16
+                , taggy
+                , text
+                , bytestring
+                , shakespeare
+                , blaze-markup
+                , blaze-html
+                , utf8-string
+                , http-types
+                , blaze-builder
+                , yesod-form
+                , transformers
+
+  ghc-options:    -threaded -O2 -rtsopts -with-rtsopts=-N
