@@ -26,9 +26,8 @@ import Control.Arrow (second)
 import Network.HTTP.Types (renderQueryText)
 import Data.Text.Encoding as TE
 
-
 urlDireto = unpack "http://www.tudogostoso.com.br/receita/62547-a-melhor-receita-de-bolo-de-chocolate.html"
-  
+
 header' func = do
             let opts = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
                            & header "Accept" .~ ["text/html, */*"]
@@ -106,11 +105,11 @@ getBoottR = defaultLayout $ do
     nmcat       <- liftIO $ funfun      $ page nomecategoria  -- nome da categoria da receita
     fotos       <- liftIO $ funfunfun   $ page caminhofotos   -- primeira foto da receita
     fotos'      <- liftIO $ funfun      $ page caminhofotos   -- segunda foto da receita
-    ingsp       <- liftIO $ page ingrspan                     -- lista dos ingredientes
+    ingsp       <- liftIO $ fmap (Prelude.takeWhile (\x -> x /= (pack "\nEnviada por\n"))) $ page ingrspan                 -- lista dos ingredientes
     mdp         <- liftIO $ lista ":"   $ page mdpreparo      -- modo de preparo
     infor       <- liftIO $ page infadd
     ct          <- liftIO $ lista ":" $ comLet
-    
+
     setTitle "FastChef"
    
     toWidgetHead[hamlet|
@@ -148,6 +147,7 @@ getBoottR = defaultLayout $ do
                         <dd> #{autoria} </dd>
                     <dt> <span class="margin-right"> <i class="fa fa-external-link" aria-hidden="true"></i> </span> Link da receita original: </dt>
                         <dd> <a href=#{linko} title="-link-receita-original"> #{linko} </a></dd>
+                    
                     <h3> #{Prelude.head ingsp} </h3>
                     <p>
                         $forall ings <- (Prelude.tail ingsp)
@@ -156,7 +156,7 @@ getBoottR = defaultLayout $ do
                     <h3> #{Prelude.head infor}</h3>
                     <p>
                         $forall infs <- (Prelude.tail infor)
-                            #{infs}<br>
+                            #{(infs)}<br>
                     
                     <p> --------------------------------------------------------------------------------------------------- 
                     <p>RESULTADO COM LET
