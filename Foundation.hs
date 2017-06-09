@@ -16,7 +16,6 @@ staticFiles "static"
 -- importanto o getStatic
 data App = App {getStatic :: Static}
 
--- sei la pra que eh
 mkYesodData "App" $(parseRoutesFile "routes")
 
 -- sei la pra que eh

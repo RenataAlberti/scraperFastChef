@@ -19,6 +19,8 @@ widgetResultNothing y = do
 widgetResultJust :: [Text] -> Widget
 widgetResultJust x = do
     toWidget [hamlet|
+    
          $forall receita <- x
             #{receita}<br>
+        
     |]
