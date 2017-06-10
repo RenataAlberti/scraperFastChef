@@ -9,7 +9,6 @@ executable          projeto
   other-modules:    Application
                     Foundation
 
-                    Add
                     Home
                     Handlers.Busca
                     Handlers.Detalhe
@@ -22,7 +21,7 @@ executable          projeto
                     Scraper.Ztestes.Teste
                     Scraper.Ztestes.Secondtest
                     Scraper.Busca.Receita
-                    
+                    Scraper.Busca.TudoGostoso
 
   ghc-options:      -Wall -fwarn-tabs -O2
 

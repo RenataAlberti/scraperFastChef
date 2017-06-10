@@ -8,7 +8,6 @@ module Application where
 import Foundation
 import Yesod.Core
 
-import Add
 import Home
 import Handlers.Busca
 import Handlers.Detalhe
@@ -21,6 +20,7 @@ import Scraper.Ztestes.Scraper()
 import Scraper.Ztestes.Teste
 import Scraper.Ztestes.Secondtest
 import Scraper.Busca.Receita()
+import Scraper.Busca.TudoGostoso()
 
 mkYesodDispatch "App" resourcesApp
 
