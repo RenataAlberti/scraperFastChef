@@ -42,3 +42,5 @@ form = renderDivs $ Busca
     campoSelect x y = bfs (pack x) (pack y)
     sabores :: [(Text, Sabor)]
     sabores = [("Todos", Todos), ("Amargo", Amargo), ("Agridoce", Agridoce), ("Azedo", Azedo), ("Doce", Doce), ("Salgado", Salgado), ("Umami", Umami)]
+    
+    
