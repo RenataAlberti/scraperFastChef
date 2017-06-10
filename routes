@@ -7,5 +7,4 @@
 /teste          TesteR              GET
 /tes            TesR                GET
 /viii           ViiiR               GET
-/add/#Int/#Int  AddR                GET
 /outro          OutroR              GET
