@@ -23,17 +23,17 @@ postBuscaR = do
     case res' of
         FormSuccess res -> do
             case (buscaCampo3 res) of
-                Nothing -> liftIO (R.header' "teste") >>= \y -> defaultLayout [whamlet|
-                    ^{widgetResultNothing y}
+                Nothing -> liftIO (TG.busca "") >>= \y -> defaultLayout [whamlet|
+                    #{Prelude.map (toMarkup False) y}
                 |]
-                Just x -> liftIO (R.header' $ unpack x) >>= \y -> defaultLayout [whamlet|
-                    ^{widgetResultJust y}
+                Just x -> liftIO (TG.busca $ unpack x) >>= \y -> defaultLayout [whamlet|
+                   #{Prelude.map (toMarkup False) y}
                 |]
         _ -> redirect  HomeR
         
 getOutroR :: Handler Html
 getOutroR = do
-    h2 <- liftIO $ TG.header2 "teste"
+    h2 <- liftIO $ TG.busca "umami"
     defaultLayout [whamlet|
          #{Prelude.map (toMarkup False) h2}
     |]
