@@ -29,7 +29,7 @@ render SomePage params = "http://www.tudogostoso.com.br/busca.php" `append`
     
 constructUrl x = unpack $ render SomePage [(pack "q", pack x)]
 
-constructDirectUrl x = "http://www.tudogostoso.com.br" ++ x
+constructDirectUrl x = "http://www.tudogostoso.com.br/receita" ++ x
 
 busca x = do
             let opts = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
