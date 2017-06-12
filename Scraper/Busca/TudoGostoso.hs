@@ -50,3 +50,20 @@ busca x = do
             let filterLikes = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "recipe-info like-and-tags") . name /= Just "div"))) filterRating
             let filterPagination = fmap (transform (children %~ filter (\n -> n ^? element . attributed(ix "class" . only "pagination") . name /= Just "div"))) filterLikes
             return $ filterPagination
+            
+directLink x = do
+            let opts = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
+                           & header "Accept" .~ ["text/html, */*"]
+                           & header "X-Requested-With" .~ ["XMLHttpRequest"]
+                           & header "Accept-Language" .~ ["pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4"]
+                           & header "Accept-Encoding" .~ ["gzip, deflate"]
+                           & header "Referer" .~ ["http://www.tudogostoso.com.br/busca.php?q=bolo+cenoura"]
+                           & header "Origin" .~ ["http://www.tudogostoso.com.br"]
+                           & header "Connection" .~ ["keep-alive"]
+            r <- S.withSession $ \sess -> do
+                S.getWith opts sess $ constructDirectUrl x
+            let fullBody = r ^. responseBody . to LE.decodeLatin1
+            let link = (fullBody ^.. html . allNamed(only "h1") . contents) -- NOME, PORCAO E RENDIMENTO DAS RECEITAS
+            let lente = (fullBody ^.. html . allAttributed(ix "class" . only "listing box") . allNamed(only "a") . attr "href" . _Just) -- LINKS DAS RECEITAS
+            let imgm = (fullBody ^.. html . allNamed(only "time") . contents)
+            return $ DL.concat [(DL.take 80 link), [(pack "---------------LINKS-------")], (DL.take 10 lente), [(pack "---------------IMGS-------")], imgm]

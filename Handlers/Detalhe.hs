@@ -6,20 +6,61 @@ module Handlers.Detalhe where
 import Foundation
 import Yesod.Core
 import Yesod.Static()
-import Data.Text
-import Text.Taggy 
-import Text.Taggy.Lens 
+import Data.Text(Text, pack, unpack)
+import Yesod.Form
+import Data.Text.Encoding as TE
+import Data.Text.Lazy.Encoding as LE
+import Utils.WidgetResultadoBusca
+import Utils.SettingsForm
+import Handlers.Busca
 import Scraper.Busca.Receita
-
 
 -- "http://www.tudogostoso.com.br/receita/62547-a-melhor-receita-de-bolo-de-chocolate.html"
 
-getDetalheR :: Handler Html
-getDetalheR = defaultLayout $ do 
+{-
+getDetalheR :: Text -> Text -> Handler Html
+getDetalheR x y= defaultLayout $ do 
         detalhe <- liftIO $ comLet
         setTitle "FastChef"
         
         [whamlet|
            #{Prelude.map (toMarkup False) detalhe}
         |]
-    
+        --detalhe <- liftIO $ directLink 
+         -- #{Prelude.map (toMarkup False) detalhe}
+-}
+
+getDetalheR :: Handler Html
+getDetalheR = do
+        (widget, enctype) <- generateFormPost form
+        defaultLayout $ do 
+                setTitle "FastChef"
+                toWidgetHead[hamlet|
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                |]
+                
+                -- Adicionando o FontAwesome
+                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+                
+                -- Adicionando a folha de estilos
+                addStylesheet $ StaticR css_estilo_css
+                
+                -- Adicionando o jquery via CDN
+                addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"
+                
+                [whamlet|
+                    <header> 
+                        <nav id="menu">
+                            <ul>
+                                <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
+                                <li>
+                                    <form method=post action=@{BuscaR} enctype=#{enctype}>
+                                        ^{widget}
+                                        <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
+                        
+                    <div  id="container">
+                        <h1> Detalhe da Receita </h1>
+          
+                
+                |]
