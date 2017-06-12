@@ -41,75 +41,8 @@ header' func = do
                 S.getWith opts sess urlDireto
             return $ r ^.. responseBody . to LE.decodeUtf8 . html . func
             
---rendimento = allNamed (only "data") . children . traverse . content
-
---tempopreparo = allNamed (only "time") . contents
-
---nomereceita = allNamed (only "h1") . children . traverse . content
-
---nomecategoria = allNamed (only "a") . attributed (ix "property" . only "v:title") . element . children . traverse . content
-
---caminhofotos = allNamed(only "img") . attributed (ix "class" . only "pic") . attr "src" . _Just
-
---linkoriginal = allNamed (only "meta") . attributed (ix "name" . only "twitter:url") . attr "content" .  _Just
-
---nomeautoria = allNamed(only "meta") . attributed (ix "name" . only "twitter:app:name:ipad" ) . attr "content" . _Just
-
-ingrspan = allNamed(only "div") . attributed (ix "id" . only "info-user") . to universe . traverse . contents
-
---mdpreparo = allNamed(only "h3") . attributed (ix "class" . only "directions-title box-title") . children . traverse . content
-
---infadd = allNamed(only "div") . attributed (ix "class" . only "instructions e-instructions") . to universe . traverse . contents
-{-
-comLet = do
-            let opts = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
-                           & header "Accept" .~ ["text/html, */*"]
-                           & header "X-Requested-With" .~ ["XMLHttpRequest"]
-                           & header "Accept-Language" .~ ["pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4"]
-                           & header "Accept-Encoding" .~ ["gzip, deflate"]
-                           & header "Referer" .~ ["http://www.tudogostoso.com.br/busca.php?q=bolo+cenoura"]
-                           & header "Origin" .~ ["http://www.tudogostoso.com.br"]
-                           & header "Connection" .~ ["keep-alive"]
-            r <- S.withSession $ \sess -> do
-                S.getWith opts sess urlDireto
-            let fullBody = (r ^. responseBody . to LE.decodeUtf8)
-            let rend = (fullBody ^.. html . allNamed (only "data") . children . traverse . content)
-           -- let temp = (fullBody ^.. html . allNamed (only "time") . contents)
-            --let nmre = (fullBody ^.. html . allNamed (only "h1") . children . traverse . content)
-            --let nmca = (fullBody ^.. html . allNamed (only "a") . attributed (ix "property" . only "v:title") . element . children . traverse . content)
-            --let cafo = (fullBody ^.. html . allNamed(only "img") . attributed (ix "class" . only "pic") . attr "src" . _Just)
-           --let lior = (fullBody ^.. html . allNamed (only "meta") . attributed (ix "name" . only "twitter:url") . attr "content" .  _Just)
-            --let nmau = (fullBody ^.. html . allNamed(only "meta") . attributed (ix "name" . only "twitter:app:name:ipad" ) . attr "content" . _Just)
-            --let insp = (fullBody ^.. html . allNamed(only "div") . attributed (ix "id" . only "info-user") . to universe . traverse . contents)
-            --let mdpr = (fullBody ^.. html . allNamed(only "h3") . attributed (ix "class" . only "directions-title box-title") . children . traverse . content)
-            --let inad = (fullBody ^.. html . allNamed(only "div") . attributed (ix "class" . only "instructions e-instructions") . to universe . traverse . contents)
-            return rend -- $  DL.concat [rend, temp, nmre, nmca, cafo, lior, nmau, insp, mdpr, inad]
--}
--- Text -> String e exibe somente o primeiro elemento da lista
---funfunfun = fmap (unpack . Prelude.head)
-
--- Text -> String e exibe somente o ultimo elemento da lista
---funfun = fmap (unpack . Prelude.last)
-
--- [Text] -> Text e inclue o elemento passado por parametro intercalando entre os elementos da lista
---lista x = fmap (intercalate (pack x))
-
 getBoottR :: Handler Html
 getBoottR = defaultLayout $ do
-    page <-  return $ header' 
-    --rend        <- liftIO $ funfunfun   $ page rendimento     -- rendimento
-    --tempo       <- liftIO $ funfunfun   $ page tempopreparo   -- tempo de preparo
-    --autoria     <- liftIO $ funfunfun   $ page nomeautoria    -- copyright
-   -- linko       <- liftIO $ funfunfun   $ page linkoriginal   -- link da receita original
-    --nmreceita   <- liftIO $ funfunfun   $ page nomereceita    -- nome da receita
-    --nmcat       <- liftIO $ funfun      $ page nomecategoria  -- nome da categoria da receita
-    --fotos       <- liftIO $ funfunfun   $ page caminhofotos   -- primeira foto da receita
-    --fotos'      <- liftIO $ funfun      $ page caminhofotos   -- segunda foto da receita
-    ingsp       <- liftIO $ fmap (Prelude.takeWhile (\x -> x /= (pack "\nEnviada por\n"))) $ page ingrspan                 -- lista dos ingredientes
-    --mdp         <- liftIO $ lista ":"   $ page mdpreparo      -- modo de preparo
-    --infor       <- liftIO $ page infadd
-    -- ct          <- liftIO $ lista ":" $ comLet
-
     setTitle "FastChef"
    
     toWidgetHead[hamlet|
@@ -128,23 +61,7 @@ getBoottR = defaultLayout $ do
     addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"
 
     [whamlet|
-        <header>
-            <nav id="menu">
-                <ul>
-                    <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
-                    <li> ----------------------------------------------
-        <div id="containerview">
-            
-                            
-                            <h3> #{Prelude.head ingsp} </h3>
-                            <p>
-                                $forall ings <- (Prelude.tail ingsp)
-                                    #{ings} <br>
-                            
-                           
-                    <p> --------------------------------------------------------------------------------------------------- 
-                    <p>RESULTADO COM LET
-                    <p> 
+        <h1> Boott </h1>
     |]
 
 
