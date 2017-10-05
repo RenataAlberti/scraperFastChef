@@ -21,7 +21,9 @@ executable          projeto
                     Scraper.Ztestes.Teste
                     Scraper.Ztestes.Secondtest
                     Scraper.Busca.Receita
-                    Scraper.Busca.TudoGostoso
+                    Scraper.Busca.AllRecipes
+                    Scraper.Busca.CyberCook
+                    Scraper.Padrao
 
   ghc-options:      -Wall -fwarn-tabs -O2
 
@@ -40,10 +42,12 @@ executable          projeto
                 , shakespeare
                 , blaze-markup
                 , blaze-html
+                , xml-conduit
                 , utf8-string
                 , http-types
                 , blaze-builder
                 , yesod-form
                 , transformers
+                , unordered-containers
 
   ghc-options:    -threaded -O2 -rtsopts -with-rtsopts=-N

@@ -20,7 +20,7 @@ import Scraper.Ztestes.Scraper()
 import Scraper.Ztestes.Teste
 import Scraper.Ztestes.Secondtest
 import Scraper.Busca.Receita()
-import Scraper.Busca.TudoGostoso()
+import Scraper.Busca.AllRecipes()
 
 mkYesodDispatch "App" resourcesApp
 

@@ -19,7 +19,7 @@ data Busca = Busca
     }
     deriving Show
 
-data Sabor = Todos | Amargo | Agridoce | Azedo | Doce | Salgado | Umami
+data Sabor = Todos | Agridoce | Doce | Salgado
     deriving (Show, Eq, Enum, Bounded)
 
    
@@ -41,6 +41,4 @@ form = renderDivs $ Busca
                    (bfs (y :: Text) z)
     campoSelect x y = bfs (pack x) (pack y)
     sabores :: [(Text, Sabor)]
-    sabores = [("Todos", Todos), ("Amargo", Amargo), ("Agridoce", Agridoce), ("Azedo", Azedo), ("Doce", Doce), ("Salgado", Salgado), ("Umami", Umami)]
-    
-    
+    sabores = [("Todos", Todos), ("Agridoce", Agridoce), ("Doce", Doce), ("Salgado", Salgado)]
