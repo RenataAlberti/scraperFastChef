@@ -7,3 +7,4 @@
 /teste                  TesteR              GET
 /tes                    TesR                GET
 /viii                   ViiiR               GET
+/allrecipes/detalhe     ArDetalheR          GET

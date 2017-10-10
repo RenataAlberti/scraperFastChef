@@ -12,6 +12,7 @@ executable          projeto
                     Home
                     Handlers.Busca
                     Handlers.Detalhe
+                    Handlers.DetalheAllRecipes
                     Handlers.Sobre
                     Utils.WidgetResultadoBusca
                     Utils.SettingsForm
@@ -20,10 +21,11 @@ executable          projeto
                     Scraper.Ztestes.Scraper
                     Scraper.Ztestes.Teste
                     Scraper.Ztestes.Secondtest
+                    Scraper.Padrao
                     Scraper.Busca.Receita
                     Scraper.Busca.AllRecipes
                     Scraper.Busca.CyberCook
-                    Scraper.Padrao
+                    Scraper.Busca.ReceitasDeHoje
 
   ghc-options:      -Wall -fwarn-tabs -O2
 
@@ -49,5 +51,6 @@ executable          projeto
                 , yesod-form
                 , transformers
                 , unordered-containers
+                , containers
 
   ghc-options:    -threaded -O2 -rtsopts -with-rtsopts=-N

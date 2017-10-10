@@ -15,6 +15,7 @@ import Scraper.Ztestes.Boott as B
 import Scraper.Busca.Receita as R
 import Scraper.Busca.AllRecipes as AR
 import Scraper.Busca.CyberCook as CC
+import Scraper.Busca.ReceitasDeHoje as RDH
 import Text.Taggy 
 import Text.Taggy.Lens 
 
@@ -56,7 +57,10 @@ postBuscaR = do
                             <h1> Nenhum Resultado! :( </h1>
                             <a href="@{HomeR}" title="voltar"> Voltar para o início </a>
                     |]
-                Just x -> liftIO (CC.q $ unpack x) >>= \y -> defaultLayout $ do
+                Just x -> do
+                    cyberCook <- liftIO (CC.q $ unpack x)
+                    allRecipes <- liftIO (AR.texto $ unpack x)
+                    defaultLayout $ do
                     setTitle "FastChef - Resultados da Busca"
                     toWidgetHead[hamlet|
                         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -71,14 +75,34 @@ postBuscaR = do
                     
                     toWidget[julius|
                         window.onload=function(){
-                    		var x = document.getElementsByClassName("author");
-                    		var y = document.getElementsByClassName("mt10 grey--dark txt-small");
-                    		for(var i = 0; i < x.length; i++){
-                    			x[i].innerHTML = "Fonte: All Recipes";
+                    		var copyrightAr = document.getElementsByTagName("p");
+                    		// var copyrightRdh = document.getElementsByTagName("span");
+                    		var copyrightCc = document.getElementsByClassName("mt10 grey--dark txt-small");
+                    		var elementos = document.getElementsByClassName('card--half-image__image');
+                            var atributosDataPagespeed = [];
+                    		for(var i = 0; i < copyrightAr.length; i++){
+                    			if (copyrightAr[i].getAttribute("class") === "author"){
+                    			    copyrightAr[i].innerHTML = "Fonte: <a href='http://allrecipes.com.br' title='allrecipes'> All Recipes </a>";
+                    			};
                     		};
-                    		for(var aux = 0; aux < y.length; aux++){
-                    		   y[aux].innerHTML = "Fonte: <a href='https://cybercook.uol.com.br' title='cybercook'> CyberCook </a>"; 
+                    		for(var i = 0; i < copyrightCc.length; i++){
+                    		   copyrightCc[i].innerHTML = "Fonte: <a href='https://cybercook.uol.com.br' title='cybercook'> CyberCook </a>"; 
                     		};
+                    		/*for(var i = 0; i < copyrightRdh.length; i++){
+                    			if (copyrightRdh[i].getAttribute("class") === "author"){
+                    			    copyrightRdh[i].innerHTML = "Fonte: <a href='https://www.receitasdehoje.com.br' title='receitas-de-hoje'> Receitas de Hoje </a>";
+                    			};
+                    		};*/
+                            for (var i = 0; i < elementos.length; i++){
+                                atributosDataPagespeed[i] = elementos[i].firstChild;
+                            };
+                            for (var i = 0; i < atributosDataPagespeed.length; i++){
+                                atributosDataPagespeed[i].setAttribute('src', atributosDataPagespeed[i].getAttribute('data-pagespeed-lazy-src'));
+                            
+                            };
+                            for (var i = 0; i < atributosDataPagespeed.length; i++){
+                                atributosDataPagespeed[i].removeAttribute('data-pagespeed-lazy-src');
+                            };
                     	}
                     |]
                     
@@ -93,6 +117,7 @@ postBuscaR = do
                                             <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
                         <div  id="container">
                             <h1> Resultados da Busca </h1>
-                            #{Prelude.map (toMarkup False) y}
+                            #{Prelude.map (toMarkup False) cyberCook}
+                            #{Prelude.map (toMarkup False) allRecipes}
                     |]
         _ -> redirect  HomeR
