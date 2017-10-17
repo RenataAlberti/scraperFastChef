@@ -22,9 +22,10 @@ texto x = do
                            & header "Connection" .~ ["keep-alive"]
             r <- S.withSession $ \sess -> do
                 S.getWith header' sess $ constructUrl AllRecipes x
-            let fullBody =          r ^. responseBody . to LE.decodeUtf8
-            let lente =             fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "row recipe")
-            let filterDesc =        fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "js-truncate") . name /= Just "p"))) lente
+            let fullBody          = r ^. responseBody . to LE.decodeUtf8
+            let lente             = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "row recipe")
+            let filterSpan        = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "playButton") . name /= Just "span"))) lente
+            let filterDesc        = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "js-truncate") . name /= Just "p"))) filterSpan
             let filterReviewCount = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "recipeReviewCount") . name /= Just "div"))) filterDesc
             return filterReviewCount
 

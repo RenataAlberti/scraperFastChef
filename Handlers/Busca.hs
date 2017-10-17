@@ -105,7 +105,13 @@ postBuscaR = do
                             };
                             var x = document.getElementsByClassName("list");
                             while(x.length >= 2){y = document.getElementsByClassName("list")[((x.length) - 1)]; y.parentNode.removeChild(y);}
-                            
+                            /* ------- */
+                            $("section.list").attr("id", "padronizar");
+                            var elemento = document.getElementById("padronizar");
+                            var aux = elemento.childNodes.length;
+                            for(var i = 0; i < aux; i++){
+                                elemento.childNodes[i].setAttribute("class","row recipe");
+                            };
                     	}
                     |]
                     
@@ -120,7 +126,8 @@ postBuscaR = do
                                             <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
                         <div  id="container">
                             <h1> Resultados da Busca </h1>
-                            #{Prelude.map (toMarkup False) cyberCook}
+                            #{Prelude.map (toMarkup True) cyberCook}
+                            
                             #{Prelude.map (toMarkup False) allRecipes}
                     |]
         _ -> redirect  HomeR
