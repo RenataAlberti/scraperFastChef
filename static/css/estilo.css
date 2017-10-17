@@ -60,7 +60,7 @@ header nav #logo {
 }
 
 #container,
-#containerview {
+#containerview, section.list {
   width: 96%;
   margin: 0 auto;
 }
@@ -69,14 +69,13 @@ header nav #logo {
   border-left: 5px solid #190803;
   white-space: pre;
 }
-#container section,
 #containerview section, #container div.row.recipe {
   width: 20%;
   display: inline-block;
   margin: 2%;
   border-bottom: 1px solid #ff5722;
 }
-#container section h2,
+#container div h2, h3,
 #containerview section h2, .col-sm-7 h3 {
   text-align: center;
 }
@@ -101,6 +100,7 @@ a {
 }
 img {
   border-radius: 5px;
+  width: 100%;
 }
 dt,
 dd {
@@ -143,7 +143,6 @@ div.required:after{
     margin: 2%;
     padding: 0;
   }
-  body #container section,
   body #containerview section,
   .row.recipe,
   body #container aside,
@@ -179,14 +178,14 @@ div.required:after{
     margin: 2%;
     padding: 0;
   }
-  body #container section,
+  body #container div,
   body #containerview section, .row.recipe {
     color: #190803;
     width: 44%;
     display: inline-block;
     clear: both;
   }
-  body #container section,
+  body #container div,
   body #containerview section, .row.recipe {
     margin: 2%;
   }
@@ -206,14 +205,14 @@ div.required:after{
     margin: 2%;
     padding: 0;
   }
-  body #container section,
+  body #container div,
   body #containerview section, .row.recipe {
     color: #190803;
     width: 28%;
     display: inline-block;
     clear: both;
   }
-  body #container section,
+  body #container div,
   body #containerview section, .row.recipe {
     margin: 2%;
   }

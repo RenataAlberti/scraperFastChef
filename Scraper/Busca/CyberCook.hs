@@ -33,9 +33,11 @@ q x = do
                        & header "Connection" .~ ["keep-alive"]
         r <- S.withSession $ \sess -> do
             S.getWith header' sess $ constructUrl CyberCook x
-        let fullBody = r ^. responseBody . to LE.decodeUtf8
-        let lenteDiv = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "list")
-        let filterRating = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "card__score txt-small") . name /= Just "div"))) lenteDiv
+        let fullBody     = r ^. responseBody . to LE.decodeUtf8
+        let lenteDiv     = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "list")
+        let filterDiv    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "grid-lg-9") . name /= Just "div"))) lenteDiv
+        let filterImg    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "card__flag") . name /= Just "div"))) filterDiv
+        let filterRating = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "card__score txt-small") . name /= Just "div"))) filterImg
         return filterRating
 
 detalhe' = do

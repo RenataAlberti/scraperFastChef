@@ -103,6 +103,9 @@ postBuscaR = do
                             for (var i = 0; i < atributosDataPagespeed.length; i++){
                                 atributosDataPagespeed[i].removeAttribute('data-pagespeed-lazy-src');
                             };
+                            var x = document.getElementsByClassName("list");
+                            while(x.length >= 2){y = document.getElementsByClassName("list")[((x.length) - 1)]; y.parentNode.removeChild(y);}
+                            
                     	}
                     |]
                     
