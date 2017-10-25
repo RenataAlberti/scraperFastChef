@@ -22,23 +22,28 @@ import Yesod.Static()
 import Yesod.Core
 import Foundation
 
+{-
+http://www.renataalberti.com.br/
+-}
+
 q x = do
-        let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
-                       & header "Accept" .~ ["text/html, */*"]
-                       & header "X-Requested-With" .~ ["XMLHttpRequest"]
-                       & header "Accept-Language" .~ ["pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4"]
-                       & header "Accept-Encoding" .~ ["gzip, deflate"]
-                       & header "Referer" .~ ["https://www.google.com.br/search?q=cybercook&rlz=1C1AVFB_enBR731BR732&oq=cybercook&aqs=chrome..69i57j0l5.1755j0j9&sourceid=chrome&ie=UTF-8"]
-                       & header "Origin" .~ ["http://www.google.com.br"]
-                       & header "Connection" .~ ["keep-alive"]
-        r <- S.withSession $ \sess -> do
-            S.getWith header' sess $ constructUrl CyberCook x
-        let fullBody     = r ^. responseBody . to LE.decodeUtf8
-        let lenteDiv     = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "list")
-        let filterDiv    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "grid-lg-9") . name /= Just "div"))) lenteDiv
-        let filterImg    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "card__flag") . name /= Just "div"))) filterDiv
-        let filterRating = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "card__score txt-small") . name /= Just "div"))) filterImg
-        return filterRating
+    let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
+                   & header "Accept" .~ ["text/html, */*"]
+                   & header "X-Requested-With" .~ ["XMLHttpRequest"]
+                   & header "Accept-Language" .~ ["pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4"]
+                   & header "Accept-Encoding" .~ ["gzip, deflate"]
+                   & header "Referer" .~ ["https://www.google.com.br/search?q=cybercook&rlz=1C1AVFB_enBR731BR732&oq=cybercook&aqs=chrome..69i57j0l5.1755j0j9&sourceid=chrome&ie=UTF-8"]
+                   & header "Origin" .~ ["http://www.google.com.br"]
+                   & header "Connection" .~ ["keep-alive"]
+    r <- S.withSession $ \sess -> do
+        S.getWith header' sess $ constructUrl CyberCook x
+    let fullBody     = r ^. responseBody . to LE.decodeUtf8
+    let lenteDiv     = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "list")
+    let filterDiv    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "grid-lg-9") . name /= Just "div"))) lenteDiv
+    let filterImg    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "card__flag") . name /= Just "div"))) filterDiv
+    let filterRating = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "card__score txt-small") . name /= Just "div"))) filterImg
+    return filterRating
+
 
 detalhe' = do
             let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]

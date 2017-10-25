@@ -19,6 +19,7 @@ import Scraper.Busca.ReceitasDeHoje as RDH
 import Text.Taggy 
 import Text.Taggy.Lens 
 
+
 postBuscaR :: Handler Html
 postBuscaR = do
     ((res', widget), enctype) <- runFormPost form
@@ -75,24 +76,12 @@ postBuscaR = do
                     
                     toWidget[julius|
                         window.onload=function(){
-                    		var copyrightAr = document.getElementsByTagName("p");
-                    		// var copyrightRdh = document.getElementsByTagName("span");
-                    		var copyrightCc = document.getElementsByClassName("mt10 grey--dark txt-small");
+                    		$("p.author").html("Fonte: <a href='http://allrecipes.com.br' title='allrecipes'> All Recipes </a>");
+                    		$(".mt10.grey--dark.txt-small").html("Fonte: <a href='https://cybercook.uol.com.br' title='cybercook'> CyberCook </a>");
+                    		
                     		var elementos = document.getElementsByClassName('card--half-image__image');
                             var atributosDataPagespeed = [];
-                    		for(var i = 0; i < copyrightAr.length; i++){
-                    			if (copyrightAr[i].getAttribute("class") === "author"){
-                    			    copyrightAr[i].innerHTML = "Fonte: <a href='http://allrecipes.com.br' title='allrecipes'> All Recipes </a>";
-                    			};
-                    		};
-                    		for(var i = 0; i < copyrightCc.length; i++){
-                    		   copyrightCc[i].innerHTML = "Fonte: <a href='https://cybercook.uol.com.br' title='cybercook'> CyberCook </a>"; 
-                    		};
-                    		/*for(var i = 0; i < copyrightRdh.length; i++){
-                    			if (copyrightRdh[i].getAttribute("class") === "author"){
-                    			    copyrightRdh[i].innerHTML = "Fonte: <a href='https://www.receitasdehoje.com.br' title='receitas-de-hoje'> Receitas de Hoje </a>";
-                    			};
-                    		};*/
+                    		
                             for (var i = 0; i < elementos.length; i++){
                                 atributosDataPagespeed[i] = elementos[i].firstChild;
                             };
@@ -126,8 +115,7 @@ postBuscaR = do
                                             <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
                         <div  id="container">
                             <h1> Resultados da Busca </h1>
-                            #{Prelude.map (toMarkup True) cyberCook}
+                            #{Prelude.map (toMarkup False) cyberCook}
                             
-                            #{Prelude.map (toMarkup False) allRecipes}
                     |]
         _ -> redirect  HomeR

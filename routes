@@ -8,3 +8,4 @@
 /tes                    TesR                GET
 /viii                   ViiiR               GET
 /allrecipes/detalhe     ArDetalheR          GET
+/deta/#Text                  NotaR               GET

@@ -9,6 +9,7 @@ import Yesod.Static
 import Control.Applicative()
 import Data.Text()
 import Yesod.Form
+import Data.Text
 
 -- static
 staticFiles "static"
@@ -27,4 +28,3 @@ type Form a = Html -> MForm Handler (FormResult a, Widget)
 -- Formulario
 instance RenderMessage App FormMessage where
     renderMessage _ _ = defaultFormMessage
-    

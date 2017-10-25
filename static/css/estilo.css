@@ -217,3 +217,7 @@ div.required:after{
     margin: 2%;
   }
 }
+
+section{
+  display: inline;
+}

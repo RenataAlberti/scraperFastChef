@@ -103,7 +103,7 @@ getHomeR = do
                 
             <div  id="container">
                 <h1> Início </h1>
-                <section>
+                <div class="row recipe">
                     <a href=@{BoottR} title="pizza-link">
                         <h2> Macarrão sabor pizza </h2>
                         <img src=@{StaticR img_pizza_jpg} alt="pizza-imagem-principal" class="img-thumb">
