@@ -21,11 +21,35 @@ import qualified Data.HashMap.Strict as HM
 import Yesod.Static()
 import Yesod.Core
 import Foundation
+import Data.List
+import Data.Text (pack, unpack)
+
+haha x = do
+    let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
+                   & header "Accept" .~ ["text/html, */*"]
+                   & header "X-Requested-With" .~ ["XMLHttpRequest"]
+                   & header "Accept-Language" .~ ["pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4"]
+                   & header "Accept-Encoding" .~ ["gzip, deflate"]
+                   & header "Referer" .~ ["https://www.google.com.br/search?q=cybercook&rlz=1C1AVFB_enBR731BR732&oq=cybercook&aqs=chrome..69i57j0l5.1755j0j9&sourceid=chrome&ie=UTF-8"]
+                   & header "Origin" .~ ["http://www.google.com.br"]
+                   & header "Connection" .~ ["keep-alive"]
+    r <- S.withSession $ \sess -> do
+        S.getWith header' sess $ constructUrl CyberCook x
+    let fullBody     = r ^. responseBody . to LE.decodeUtf8
+    let nome     = (fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "h3") . children . traverse . contents)
+    let img      = (fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "img") . attr "data-pagespeed-lazy-src" . _Just)
+    let link     = (fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "a") . attributed (ix "class" . only "clickable") .attr "href" . _Just)
+    let conteudo = fmap (Data.List.transpose) [[nome], [img], [link]]
+    --liftIO $ print conteudo
+    return conteudo
+    
+
+-- data Receita = Receita{nome :: String, img :: String, link :: String, rend :: String, temp :: String, fonte :: String} deriving (Show, Eq, Read)
 
 {-
+
 http://www.renataalberti.com.br/
 -}
-
 q x = do
     let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
                    & header "Accept" .~ ["text/html, */*"]
@@ -39,11 +63,10 @@ q x = do
         S.getWith header' sess $ constructUrl CyberCook x
     let fullBody     = r ^. responseBody . to LE.decodeUtf8
     let lenteDiv     = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "list")
-    let filterDiv    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "grid-lg-9") . name /= Just "div"))) lenteDiv
-    let filterImg    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "card__flag") . name /= Just "div"))) filterDiv
-    let filterRating = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "card__score txt-small") . name /= Just "div"))) filterImg
+    let filterDiv    = fmap (transform (children %~ Prelude.filter (\z -> z ^? element . attributed(ix "class" . only "grid-lg-9") . name /= Just "div"))) lenteDiv
+    let filterImg    = fmap (transform (children %~ Prelude.filter (\z -> z ^? element . attributed(ix "class" . only "card__flag") . name /= Just "div"))) filterDiv
+    let filterRating = fmap (transform (children %~ Prelude.filter (\z -> z ^? element . attributed(ix "class" . only "card__score txt-small") . name /= Just "div"))) filterImg
     return filterRating
-
 
 detalhe' = do
             let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]

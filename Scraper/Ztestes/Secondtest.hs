@@ -36,6 +36,9 @@ header' = do
             let links             = fullBody ^.. html . allNamed(only "a") . attributed(ix "class" . only "informacoes")
             return $ lente `mappend` links
 
+--flavor :: Receita -> String
+--flavor (Receita _ _ _ _ _ flavor) = flavor  
+
 
 {-
 
@@ -67,6 +70,7 @@ getTesR = defaultLayout $ do
    
     [whamlet|
         #{Prelude.map (toMarkup False) rend}
+        
     |]
     
 getNotaR :: Text -> Handler Html
