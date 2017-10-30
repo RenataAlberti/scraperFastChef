@@ -11,7 +11,7 @@ import Data.Text()
 import Yesod.Form
 import Data.Text
 
-data Receita = Receita{nome :: String, img :: String, link :: String, rend :: String, temp :: String, fonte :: String} deriving (Show, Eq, Read)
+--data Receita = Receita{nome :: String, img :: String, link :: String, rend :: String, temp :: String, fonte :: String} deriving (Show, Eq, Read)
 
 -- static
 staticFiles "static"

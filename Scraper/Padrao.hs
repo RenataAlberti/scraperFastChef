@@ -19,8 +19,6 @@ data Receita a = ReceitaDesc{nomeReceita  :: Text,
 
 data Receita = ReceitaDesc{nomeReceita  :: Text, linkReceita  :: Text, imgReceita   :: Text, fonteReceita :: Text, prepReceita  :: Text} deriving Show
 
--- instance (Read a) => 
-
 data MyRoute = AllRecipes | CyberCook | ReceitasDeHoje | FastChef
 
 renderUrl :: MyRoute -> [(Text, Text)] -> Text

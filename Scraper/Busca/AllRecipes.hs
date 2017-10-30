@@ -11,7 +11,7 @@ import Data.Tree.Lens
 import Scraper.Padrao
 import Yesod.Core
 
-
+{-
 texto x = do
             let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
                            & header "Accept" .~ ["text/html, */*"]
@@ -32,8 +32,8 @@ texto x = do
             let filterReviewCount = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "recipeReviewCount") . name /= Just "div"))) filterDesc
             let as = show nomedareceita
             return $ nomedareceita
-            
-{-
+  -}          
+
 texto x = do
             let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
                            & header "Accept" .~ ["text/html, */*"]
@@ -52,7 +52,7 @@ texto x = do
             let filterDesc        = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "js-truncate") . name /= Just "p"))) filterSpan
             let filterReviewCount = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "recipeReviewCount") . name /= Just "div"))) filterDesc
             return filterReviewCount
--}
+
 
 detalhe = do
             let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]

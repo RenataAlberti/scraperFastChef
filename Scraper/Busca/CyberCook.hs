@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes       #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Scraper.Busca.CyberCook where
 
@@ -21,8 +22,30 @@ import qualified Data.HashMap.Strict as HM
 import Yesod.Static()
 import Yesod.Core
 import Foundation
-import Data.List
+import qualified Data.List as DT
 import Data.Text (pack, unpack)
+import GHC.Generics
+import Data.Aeson
+import Data.Aeson.Types
+import Control.Applicative
+
+data Recipe = Not | Recipe{
+    _nome :: String,
+    _link :: String,
+    _img :: String
+} deriving (Generic)
+
+instance Show a => Show (Recipe a)
+
+
+instance ToJSON Recipe where
+  toJSON = genericToJSON defaultOptions { fieldLabelModifier = DT.drop 1 }
+
+instance FromJSON Recipe where
+  parseJSON = genericParseJSON defaultOptions { fieldLabelModifier = DT.drop 1 }
+
+-- T.putStrLn . T.decodeUtf8 . encode $ Recipe "Guacamole" "linkkahshss" "imggjsjdjsd" "troreojsdjsjdjs"
+
 
 haha x = do
     let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
@@ -35,16 +58,15 @@ haha x = do
                    & header "Connection" .~ ["keep-alive"]
     r <- S.withSession $ \sess -> do
         S.getWith header' sess $ constructUrl CyberCook x
-    let fullBody     = r ^. responseBody . to LE.decodeUtf8
-    let nome     = (fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "h3") . children . traverse . contents)
-    let img      = (fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "img") . attr "data-pagespeed-lazy-src" . _Just)
-    let link     = (fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "a") . attributed (ix "class" . only "clickable") .attr "href" . _Just)
-    let conteudo = fmap (Data.List.transpose) [[nome], [img], [link]]
-    --liftIO $ print conteudo
-    return conteudo
+    let fullBody     = r ^. responseBody . Control.Lens.to LE.decodeUtf8
+    let nm     = (fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "h3") . children . traverse . contents)
+    let im      = (fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "img") . attr "data-pagespeed-lazy-src" . _Just)
+    let lin     = (fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "a") . attributed (ix "class" . only "clickable") .attr "href" . _Just)
+    let conteudo =  zip3 nm im lin
     
+    --print conteudo
+    return conteudo
 
--- data Receita = Receita{nome :: String, img :: String, link :: String, rend :: String, temp :: String, fonte :: String} deriving (Show, Eq, Read)
 
 {-
 
@@ -61,7 +83,7 @@ q x = do
                    & header "Connection" .~ ["keep-alive"]
     r <- S.withSession $ \sess -> do
         S.getWith header' sess $ constructUrl CyberCook x
-    let fullBody     = r ^. responseBody . to LE.decodeUtf8
+    let fullBody     = r ^. responseBody . Control.Lens.to LE.decodeUtf8
     let lenteDiv     = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "list")
     let filterDiv    = fmap (transform (children %~ Prelude.filter (\z -> z ^? element . attributed(ix "class" . only "grid-lg-9") . name /= Just "div"))) lenteDiv
     let filterImg    = fmap (transform (children %~ Prelude.filter (\z -> z ^? element . attributed(ix "class" . only "card__flag") . name /= Just "div"))) filterDiv
@@ -79,7 +101,7 @@ detalhe' = do
                            & header "Connection" .~ ["keep-alive"]
             r <- S.withSession $ \sess -> do
                 S.getWith header' sess "https://cybercook.uol.com.br/receita-de-bolo-de-chocolate-r-12-1603.html"
-            let fullBody      = r ^. responseBody . to LE.decodeUtf8
+            let fullBody      = r ^. responseBody . Control.Lens.to LE.decodeUtf8
             let h1            = fullBody ^.. html . allNamed(only "h1")
             let tempPrepRend  = fullBody ^.. html . allNamed(only "p") . attributed(ix "class" . only "font-serif pb20")
             let img           = fullBody ^.. html . allNamed(only "img") . attributed(ix "class" . only "photo")

@@ -115,7 +115,7 @@ postBuscaR = do
                                             <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
                         <div  id="container">
                             <h1> Resultados da Busca </h1>
+                            #{Prelude.map (toMarkup False) allRecipes}
                             #{Prelude.map (toMarkup False) cyberCook}
-                            
                     |]
         _ -> redirect  HomeR
