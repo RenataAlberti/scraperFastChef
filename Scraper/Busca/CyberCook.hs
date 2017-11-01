@@ -1,6 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes       #-}
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE DuplicateRecordFields #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 module Scraper.Busca.CyberCook where
 
@@ -24,28 +28,27 @@ import Yesod.Core
 import Foundation
 import qualified Data.List as DT
 import Data.Text (pack, unpack)
-import GHC.Generics
 import Data.Aeson
 import Data.Aeson.Types
 import Control.Applicative
+import Control.Monad
 
-data Recipe = Not | Recipe{
-    _nome :: String,
-    _link :: String,
-    _img :: String
-} deriving (Generic)
-
-instance Show a => Show (Recipe a)
-
-
-instance ToJSON Recipe where
-  toJSON = genericToJSON defaultOptions { fieldLabelModifier = DT.drop 1 }
 
 instance FromJSON Recipe where
-  parseJSON = genericParseJSON defaultOptions { fieldLabelModifier = DT.drop 1 }
+    parseJSON (Object o) = Recipe <$>
+                           o .: "nome" <*>
+                           o .: "link" <*>
+                           o .: "img"
+    parseJSON _ = mzero
 
--- T.putStrLn . T.decodeUtf8 . encode $ Recipe "Guacamole" "linkkahshss" "imggjsjdjsd" "troreojsdjsjdjs"
+instance ToJSON Recipe where
+    toJSON (Recipe n l i) = object ["nome" Data.Aeson..= n, "link" Data.Aeson..= l, "img" Data.Aeson..= i]
 
+treeMap [] [] [] = []
+treeMap (a:as) (b:bs) (c:cs) = Recipe a b (splitList 32 c) :(treeMap as bs cs)
+treeMap _ _ _ = []
+
+-- T.putStrLn . T.decodeUtf8 . encode $ Recipe "Guacamole" "linkkahshss" "imggjsjdjsd"
 
 haha x = do
     let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
@@ -59,14 +62,17 @@ haha x = do
     r <- S.withSession $ \sess -> do
         S.getWith header' sess $ constructUrl CyberCook x
     let fullBody     = r ^. responseBody . Control.Lens.to LE.decodeUtf8
-    let nm     = (fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "h3") . children . traverse . contents)
-    let im      = (fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "img") . attr "data-pagespeed-lazy-src" . _Just)
-    let lin     = (fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "a") . attributed (ix "class" . only "clickable") .attr "href" . _Just)
-    let conteudo =  zip3 nm im lin
+    let nm      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "h3") . children . traverse . contents
+    let im      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "img") . attr "data-pagespeed-lazy-src" . _Just
+    let lin     = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "a") . attributed (ix "class" . only "clickable") .attr "href" . _Just
+    --let nomer   = unpack (DT.head nm)
+    --let linker  = unpack (DT.head lin)
+    --let imager  = unpack (DT.head im)
+    --let recipe  = Recipe nomer linker imager
+    --let conteudo = encode $ treeMap (fmap unpack nm) (fmap unpack im) (fmap unpack lin)
+    --print conteudo $ treeMap (map unpack nm) (map unpack im) (map unpack lin)
     
-    --print conteudo
-    return conteudo
-
+    return $ treeMap (fmap unpack nm) (fmap unpack lin) (fmap unpack im)
 
 {-
 

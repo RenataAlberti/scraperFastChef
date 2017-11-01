@@ -34,6 +34,7 @@ texto x = do
             return $ nomedareceita
   -}          
 
+
 texto x = do
             let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
                            & header "Accept" .~ ["text/html, */*"]
@@ -44,7 +45,7 @@ texto x = do
                            & header "Origin" .~ ["http://www.allrecipes.com.br"]
                            & header "Connection" .~ ["keep-alive"]
             r <- S.withSession $ \sess -> do
-                S.getWith header' sess $ constructUrl AllRecipes x
+                S.getWith header' sess $ constructUrl AllRecipes Search x
             let fullBody          = r ^. responseBody . to LE.decodeUtf8
             let lente             = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "row recipe")
             let filterDiv         = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "iconHolder") . name /= Just "div"))) lente
