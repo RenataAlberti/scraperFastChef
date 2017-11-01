@@ -32,46 +32,28 @@ import Data.Aeson
 import Data.Aeson.Types
 import Control.Applicative
 import Control.Monad
+import qualified Data.ByteString.Char8 as DBC
 
 
-instance FromJSON Recipe where
-    parseJSON (Object o) = Recipe <$>
-                           o .: "nome" <*>
-                           o .: "link" <*>
-                           o .: "img"
-    parseJSON _ = mzero
-
-instance ToJSON Recipe where
-    toJSON (Recipe n l i) = object ["nome" Data.Aeson..= n, "link" Data.Aeson..= l, "img" Data.Aeson..= i]
-
-treeMap [] [] [] = []
-treeMap (a:as) (b:bs) (c:cs) = Recipe a b (splitList 32 c) :(treeMap as bs cs)
-treeMap _ _ _ = []
 
 -- T.putStrLn . T.decodeUtf8 . encode $ Recipe "Guacamole" "linkkahshss" "imggjsjdjsd"
 
 haha x = do
+    let search = constructUrl CyberCook Search x
     let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
                    & header "Accept" .~ ["text/html, */*"]
                    & header "X-Requested-With" .~ ["XMLHttpRequest"]
                    & header "Accept-Language" .~ ["pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4"]
                    & header "Accept-Encoding" .~ ["gzip, deflate"]
-                   & header "Referer" .~ ["https://www.google.com.br/search?q=cybercook&rlz=1C1AVFB_enBR731BR732&oq=cybercook&aqs=chrome..69i57j0l5.1755j0j9&sourceid=chrome&ie=UTF-8"]
-                   & header "Origin" .~ ["http://www.google.com.br"]
+                   & header "Referer" .~ [DBC.pack search]
+                   & header "Origin" .~ ["https://cybercook.uol.com.br"]
                    & header "Connection" .~ ["keep-alive"]
     r <- S.withSession $ \sess -> do
-        S.getWith header' sess $ constructUrl CyberCook x
+        S.getWith header' sess $ search
     let fullBody     = r ^. responseBody . Control.Lens.to LE.decodeUtf8
     let nm      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "h3") . children . traverse . contents
     let im      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "img") . attr "data-pagespeed-lazy-src" . _Just
     let lin     = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "a") . attributed (ix "class" . only "clickable") .attr "href" . _Just
-    --let nomer   = unpack (DT.head nm)
-    --let linker  = unpack (DT.head lin)
-    --let imager  = unpack (DT.head im)
-    --let recipe  = Recipe nomer linker imager
-    --let conteudo = encode $ treeMap (fmap unpack nm) (fmap unpack im) (fmap unpack lin)
-    --print conteudo $ treeMap (map unpack nm) (map unpack im) (map unpack lin)
-    
     return $ treeMap (fmap unpack nm) (fmap unpack lin) (fmap unpack im)
 
 {-
@@ -88,7 +70,7 @@ q x = do
                    & header "Origin" .~ ["http://www.google.com.br"]
                    & header "Connection" .~ ["keep-alive"]
     r <- S.withSession $ \sess -> do
-        S.getWith header' sess $ constructUrl CyberCook x
+        S.getWith header' sess $ constructUrl CyberCook Search x
     let fullBody     = r ^. responseBody . Control.Lens.to LE.decodeUtf8
     let lenteDiv     = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "list")
     let filterDiv    = fmap (transform (children %~ Prelude.filter (\z -> z ^? element . attributed(ix "class" . only "grid-lg-9") . name /= Just "div"))) lenteDiv
@@ -96,17 +78,17 @@ q x = do
     let filterRating = fmap (transform (children %~ Prelude.filter (\z -> z ^? element . attributed(ix "class" . only "card__score txt-small") . name /= Just "div"))) filterImg
     return filterRating
 
-detalhe' = do
+detalhe' x = do
             let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
                            & header "Accept" .~ ["text/html, */*"]
                            & header "X-Requested-With" .~ ["XMLHttpRequest"]
                            & header "Accept-Language" .~ ["pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4"]
                            & header "Accept-Encoding" .~ ["gzip, deflate"]
-                           & header "Referer" .~ ["https://www.google.com.br/search?q=cybercook&rlz=1C1AVFB_enBR731BR732&oq=cybercook&aqs=chrome..69i57j0l5.1755j0j9&sourceid=chrome&ie=UTF-8"]
+                           & header "Referer" .~ ["https://www.google.com.br/search?q=receita+de+bolo&rlz=1C1AVFA_enBR749BR752&ei=uOP5WcXpBMKSwgSooiY&start=20&sa=N&biw=1366&bih=662"]
                            & header "Origin" .~ ["http://www.google.com.br"]
                            & header "Connection" .~ ["keep-alive"]
             r <- S.withSession $ \sess -> do
-                S.getWith header' sess "https://cybercook.uol.com.br/receita-de-bolo-de-chocolate-r-12-1603.html"
+                S.getWith header' sess $ constructUrl CyberCook View x
             let fullBody      = r ^. responseBody . Control.Lens.to LE.decodeUtf8
             let h1            = fullBody ^.. html . allNamed(only "h1")
             let tempPrepRend  = fullBody ^.. html . allNamed(only "p") . attributed(ix "class" . only "font-serif pb20")

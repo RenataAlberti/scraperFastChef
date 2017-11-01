@@ -7,5 +7,5 @@
 /teste                  TesteR              GET
 /tes/                   TesR                GET
 /viii                   ViiiR               GET
-/allrecipes/detalhe     ArDetalheR          GET
+/allrecipes/#String     ArDetalheR          GET
 /deta/#Text             NotaR               GET

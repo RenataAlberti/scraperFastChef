@@ -20,12 +20,11 @@ import Text.Taggy
 import Text.Taggy.Lens 
 
 
-getArDetalheR :: Handler Html
-getArDetalheR = do
+getArDetalheR :: String -> Handler Html
+getArDetalheR x = do
             ((res', widget), enctype) <- runFormPost form
             defaultLayout $ do
-            detalhes <- liftIO AR.detalhe
-            detalhescc <- liftIO CC.detalhe'
+            detalhescc <- liftIO $ CC.detalhe' x
             setTitle "FastChef - Resultados da Busca"
             toWidgetHead[hamlet|
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -49,7 +48,6 @@ getArDetalheR = do
                                     <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
                 <div  id="container">
                     <h1> Detalhes da Receita </h1>
-                    #{Prelude.map (toMarkup False) detalhes}
                     <hr>
                     <hr>
                     #{Prelude.map (toMarkup False) detalhescc}

@@ -21,7 +21,7 @@ s x = do
                            & header "Origin" .~ ["http://www.allrecipes.com.br"]
                            & header "Connection" .~ ["keep-alive"]
             r <- S.withSession $ \sess -> do
-                S.getWith header' sess $ constructUrl ReceitasDeHoje x
+                S.getWith header' sess $ constructUrl ReceitasDeHoje Search x
             let fullBody = r ^. responseBody . to LE.decodeUtf8
             let lente = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "cat-view")
             let filterH1 = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "main-title") . name /= Just "h1"))) lente

@@ -22,7 +22,6 @@ data Recipe = Recipe{
 
 
 {- Funções padrão -}
-
 renderUrl :: MyRoute -> [(Text, Text)] -> Text
 renderUrl AllRecipes q      = "http://allrecipes.com.br/receitas/resultados-de-busca.aspx" 
                                     `append` TE.decodeUtf8 (toByteString $ renderQueryText True (DT.map (second Just) q))
@@ -32,34 +31,37 @@ renderUrl ReceitasDeHoje q  = "http://www.receitasdehoje.com.br/"
                                     `append` TE.decodeUtf8 (toByteString $ renderQueryText True (DT.map (second Just) q))
 
 
--- Recebe o site + o termo da busca e constrói a url com base no padrao de cada site.
+renderUrl' :: MyRoute -> (Text, Text) -> Text
+renderUrl' AllRecipes b     = pack $ "http://allrecipes.com.br/receita/" ++ (unpack (snd b))
+renderUrl' CyberCook b       = pack $ "https://cybercook.uol.com.br/" ++ (unpack (snd b))
+renderUrl' ReceitasDeHoje b  = pack $ "http://www.receitasdehoje.com.br/" ++ (unpack (snd b))
+
+
 constructUrl :: MyRoute -> TypeRoute -> String -> String    
 constructUrl AllRecipes Search x      = unpack $ renderUrl AllRecipes [(pack "texto", pack x)]
 constructUrl CyberCook Search x       = unpack $ renderUrl CyberCook [(pack "q", pack x)]
 constructUrl ReceitasDeHoje Search x  = unpack $ renderUrl ReceitasDeHoje [(pack "s", pack x)]
-constructUrl AllRecipes View x        = unpack $ renderUrl AllRecipes [(pack "", pack x)]
-constructUrl CyberCook View x         = unpack $ renderUrl AllRecipes [(pack "", pack x)]
-constructUrl ReceitasDeHoje View x    = unpack $ renderUrl AllRecipes [(pack "", pack x)]
-
---constructUrlDirect AllRecipes x = unpack $ 
+constructUrl AllRecipes View x        = unpack $ renderUrl' AllRecipes (pack "", pack x)
+constructUrl CyberCook View x         = unpack $ renderUrl' CyberCook (pack "", pack x)
+constructUrl ReceitasDeHoje View x    = unpack $ renderUrl' ReceitasDeHoje (pack "", pack x)
 
 
 splitList :: Int -> [a] -> [a]
 splitList x a = snd (DT.splitAt x a)
 
 
-{-class IsString MyRoute where
-    fromString "NotFound" = NotFound
-    fromString "AlRecipes" = AllRecipes
-    fromString "CyberCook" = CyberCook
-    fromString "ReceitasDeHoje" = ReceitasDeHoje
-    fromString "FastChef" = FastChef
-  -}  
---class MyRoute where
---  foo :: a -> String
+treeMap [] [] [] = []
+treeMap (a:as) (b:bs) (c:cs) = Recipe a b (splitList 32 c) :(treeMap as bs cs)
+treeMap _ _ _ = []
 
---instance MyRoute String where
---  foo _ = "String"
 
---instance Foo Text where
---  foo _ = "Text"
+{- Instâncias -}
+instance FromJSON Recipe where
+    parseJSON (Object o) = Recipe <$>
+                           o .: "nome" <*>
+                           o .: "link" <*>
+                           o .: "img"
+    parseJSON _ = mzero
+
+instance ToJSON Recipe where
+    toJSON (Recipe n l i) = object ["nome" Data.Aeson..= n, "link" Data.Aeson..= l, "img" Data.Aeson..= i]
