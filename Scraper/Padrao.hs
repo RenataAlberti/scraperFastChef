@@ -1,5 +1,8 @@
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings, FlexibleInstances #-}
 {-# LANGUAGE QuasiQuotes       #-}
+{-# LANGUAGE DeriveAnyClass #-}
+
 module Scraper.Padrao where
 
 import Network.HTTP.Types (renderQueryText)
@@ -8,6 +11,11 @@ import Data.Text (Text, append, pack, unpack)
 import qualified Data.List as DT
 import Control.Arrow (second)
 import Blaze.ByteString.Builder (toByteString)
+import Data.Aeson
+import Data.Aeson.Types
+import Control.Applicative
+import Control.Monad
+import GHC.Generics
 
 {- Tipos -}
 data MyRoute = AllRecipes | CyberCook | ReceitasDeHoje
@@ -15,10 +23,15 @@ data MyRoute = AllRecipes | CyberCook | ReceitasDeHoje
 data TypeRoute = Search | View
 
 data Recipe = Recipe{
-    nome :: String,
-    link :: String,
-    img :: String
-} deriving (Show)
+    titulo          :: String,
+    linkReceita     :: String,
+    linkImagem      :: String,
+    rendimento      :: String,
+    tempoDePreparo  :: String,
+    linkFonte       :: String,
+    ingredientes    :: Maybe String,
+    modoDePreparo   :: Maybe String
+} deriving (Generic, Show)
 
 
 {- Funções padrão -}
@@ -51,8 +64,14 @@ splitList x a = snd (DT.splitAt x a)
 
 
 treeMap [] [] [] = []
-treeMap (a:as) (b:bs) (c:cs) = Recipe a b (splitList 32 c) :(treeMap as bs cs)
+treeMap (a:as) (b:bs) (c:cs) = Recipe (juntaCaracteres "<a>" a) b (splitList 1 c) :(treeMap as bs cs)
 treeMap _ _ _ = []
+
+
+
+juntaCaracteres :: String -> String -> String
+juntaCaracteres x y = x ++ y
+
 
 
 {- Instâncias -}
@@ -65,3 +84,5 @@ instance FromJSON Recipe where
 
 instance ToJSON Recipe where
     toJSON (Recipe n l i) = object ["nome" Data.Aeson..= n, "link" Data.Aeson..= l, "img" Data.Aeson..= i]
+    
+ 

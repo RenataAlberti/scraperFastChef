@@ -9,3 +9,4 @@
 /viii                   ViiiR               GET
 /allrecipes/#String     ArDetalheR          GET
 /deta/#Text             NotaR               GET
+/testejson              JsonnaveiaR         GET 

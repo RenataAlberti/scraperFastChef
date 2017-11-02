@@ -20,7 +20,7 @@ import Scraper.Ztestes.Boott
 import Scraper.Ztestes.Scraper()
 import Scraper.Ztestes.Teste
 import Scraper.Ztestes.Secondtest
-
+import Handlers.Jsonnaveia
 
 mkYesodDispatch "App" resourcesApp
 

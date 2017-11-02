@@ -26,6 +26,7 @@ executable          projeto
                     Scraper.Busca.AllRecipes
                     Scraper.Busca.CyberCook
                     Scraper.Busca.ReceitasDeHoje
+                    Handlers.Jsonnaveia
 
   ghc-options:      -Wall -fwarn-tabs -O2
 

@@ -28,13 +28,8 @@ import Yesod.Core
 import Foundation
 import qualified Data.List as DT
 import Data.Text (pack, unpack)
-import Data.Aeson
-import Data.Aeson.Types
-import Control.Applicative
-import Control.Monad
 import qualified Data.ByteString.Char8 as DBC
-
-
+import qualified Data.Aeson as Aeson
 
 -- T.putStrLn . T.decodeUtf8 . encode $ Recipe "Guacamole" "linkkahshss" "imggjsjdjsd"
 
@@ -54,7 +49,7 @@ haha x = do
     let nm      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "h3") . children . traverse . contents
     let im      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "img") . attr "data-pagespeed-lazy-src" . _Just
     let lin     = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "a") . attributed (ix "class" . only "clickable") .attr "href" . _Just
-    return $ treeMap (fmap unpack nm) (fmap unpack lin) (fmap unpack im)
+    return $ treeMap (fmap unpack nm) (fmap unpack lin) (fmap unpack im) :: IO [Recipe]
 
 {-
 
