@@ -5,6 +5,7 @@
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Scraper.Busca.CyberCook where
 
@@ -49,9 +50,31 @@ haha x = do
     let nm      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "h3") . children . traverse . contents
     let im      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "img") . attr "data-pagespeed-lazy-src" . _Just
     let lin     = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "a") . attributed (ix "class" . only "clickable") .attr "href" . _Just
+    
     return $ treeMap (fmap unpack nm) (fmap unpack lin) (fmap unpack im) :: IO [Recipe]
 
-{-
+hoho x = do
+    let view = constructUrl CyberCook View x
+    let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
+                   & header "Accept" .~ ["text/html, */*"]
+                   & header "X-Requested-With" .~ ["XMLHttpRequest"]
+                   & header "Accept-Language" .~ ["pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4"]
+                   & header "Accept-Encoding" .~ ["gzip, deflate"]
+                   & header "Referer" .~ ["https://www.google.com.br/search?rlz=1C1AVFA_enBR749BR752&ei=VXH6WeuyLcHimAG8oZTQDQ&q=cybercook+receitas&oq=cybercook+receitas&gs_l=psy-ab.3..0l3j0i22i30k1l7.8043.9363.0.10797.9.7.0.0.0.0.568.568.5-1.1.0....0...1.1.64.psy-ab..8.1.567....0.4uTXplKOXXY"]
+                   & header "Origin" .~ ["https://www.google.com.br"]
+                   & header "Connection" .~ ["keep-alive"]
+    r <- S.withSession $ \sess -> do
+        S.getWith header' sess $ view
+    let fullBody     = r ^. responseBody . Control.Lens.to LE.decodeUtf8
+    let nm      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "h3") . children . traverse . contents
+    let im      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "img") . attr "data-pagespeed-lazy-src" . _Just
+    let lin     = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "a") . attributed (ix "class" . only "clickable") .attr "href" . _Just
+    
+    let ing = fullBody ^.. html . allNamed(only "ul") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . allNamed(only "li") . children . traverse . contents
+    let mdp = fullBody ^.. html . allNamed(only "ol") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . allNamed(only "li") . children . traverse . contents
+    return $ treeMap (fmap unpack nm) (fmap unpack lin) (fmap unpack im) :: IO [Recipe]
+
+{-ingredient-list grid-lg-12 grid-sm-12
 
 http://www.renataalberti.com.br/
 -}
@@ -88,7 +111,7 @@ detalhe' x = do
             let h1            = fullBody ^.. html . allNamed(only "h1")
             let tempPrepRend  = fullBody ^.. html . allNamed(only "p") . attributed(ix "class" . only "font-serif pb20")
             let img           = fullBody ^.. html . allNamed(only "img") . attributed(ix "class" . only "photo")
-            let ingredientes  = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "printable")
+            let ingredientes  = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "printable-108462")
             let filterIng1    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "id" . only "banner-1x1-4-area") . name /= Just "div"))) ingredientes
             let filterIng2    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "id" . only "banner-1x1-5-area") . name /= Just "div"))) filterIng1
             let filterIng3    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "id" . only "banner-1x1-9-area") . name /= Just "div"))) filterIng2

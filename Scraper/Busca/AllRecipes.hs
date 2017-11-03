@@ -61,11 +61,11 @@ detalhe = do
                            & header "X-Requested-With" .~ ["XMLHttpRequest"]
                            & header "Accept-Language" .~ ["pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4"]
                            & header "Accept-Encoding" .~ ["gzip, deflate"]
-                           & header "Referer" .~ ["http://www.allrecipes.com.br"]
-                           & header "Origin" .~ ["http://www.allrecipes.com.br"]
+                           & header "Referer" .~ ["https://www.google.com.br/search?q=receitas+allrecipes&rlz=1C1AVFA_enBR749BR752&oq=receitas+allrecipes&aqs=chrome..69i57j69i60l3j69i65j0.14064j0j7&sourceid=chrome&ie=UTF-8"]
+                           & header "Origin" .~ ["https://www.google.com.br"]
                            & header "Connection" .~ ["keep-alive"]
             r <- S.withSession $ \sess -> do
-                S.getWith header' sess "http://allrecipes.com.br/receita/7449/torta--de-frutas-com-creme.aspx"
+                S.getWith header' sess "http://allrecipes.com.br/receita/6804/batata-gratinada-com-bacon.aspx"
             let fullBody      = r ^. responseBody . to LE.decodeUtf8
             let h1            = fullBody ^.. html . allNamed(only "h1")
             let tempPrepRend  = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "stat1")
@@ -74,7 +74,9 @@ detalhe = do
             let modoDePreparo = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "recipeDirections gridResponsive__module")
             let filterModoDep = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "epsilon") . name /= Just "small"))) modoDePreparo
             return $ h1 `mappend` tempPrepRend `mappend` img `mappend` ingredientes `mappend` filterModoDep
-            
+
+
+   
 --http://allrecipes.com.br/receitas/resultados-de-busca.aspx?texto=morango%20a%C3%A7%C3%BAcar
 --http://www.tudogostoso.com.br/busca.php?q=morango+a%E7%FAcar
 -- div class row recipe

@@ -22,7 +22,7 @@ getJsonnaveiaR :: Handler Html
 getJsonnaveiaR = do
     (widget, enctype) <- generateFormPost form
     defaultLayout $ do
-        infor <- liftIO $ haha "arroz"
+        infor <- liftIO $ hoho "receita-de-fatias-de-tender-ao-molho-de-laranja-e-mel-r-3-12617.html"
         setTitle "FastChef"
        
         toWidgetHead[hamlet|

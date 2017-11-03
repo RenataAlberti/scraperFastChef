@@ -20,11 +20,11 @@ import Text.Taggy
 import Text.Taggy.Lens 
 
 
-getArDetalheR :: String -> Handler Html
-getArDetalheR x = do
+getArDetalheR :: Handler Html
+getArDetalheR = do
             ((res', widget), enctype) <- runFormPost form
             defaultLayout $ do
-            detalhescc <- liftIO $ CC.detalhe' x
+            detalhescc <- liftIO $ AR.detalhe
             setTitle "FastChef - Resultados da Busca"
             toWidgetHead[hamlet|
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

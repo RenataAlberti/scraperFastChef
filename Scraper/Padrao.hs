@@ -23,6 +23,13 @@ data MyRoute = AllRecipes | CyberCook | ReceitasDeHoje
 data TypeRoute = Search | View
 
 data Recipe = Recipe{
+    nome  :: String,
+    link  :: String,
+    img   :: String
+} deriving (Generic, Show)
+
+{-
+data Recipe = Recipe{
     titulo          :: String,
     linkReceita     :: String,
     linkImagem      :: String,
@@ -32,7 +39,7 @@ data Recipe = Recipe{
     ingredientes    :: Maybe String,
     modoDePreparo   :: Maybe String
 } deriving (Generic, Show)
-
+-}
 
 {- Funções padrão -}
 renderUrl :: MyRoute -> [(Text, Text)] -> Text
@@ -79,10 +86,10 @@ instance FromJSON Recipe where
     parseJSON (Object o) = Recipe <$>
                            o .: "nome" <*>
                            o .: "link" <*>
-                           o .: "img"
+                           o .: "img"  
     parseJSON _ = mzero
 
 instance ToJSON Recipe where
     toJSON (Recipe n l i) = object ["nome" Data.Aeson..= n, "link" Data.Aeson..= l, "img" Data.Aeson..= i]
-    
- 
+
+
