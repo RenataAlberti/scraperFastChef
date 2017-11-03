@@ -16,16 +16,37 @@ import Data.Aeson.Types
 import Control.Applicative
 import Control.Monad
 import GHC.Generics
+import Data.Text
 
 {- Tipos -}
 data MyRoute = AllRecipes | CyberCook | ReceitasDeHoje
 
 data TypeRoute = Search | View
 
-data Recipe = Recipe{
+data Recipes = Recipes{
     nome  :: String,
     link  :: String,
     img   :: String
+} deriving (Generic, Show)
+
+data Recipe = Recipe{
+    h1 :: String,
+    imagem :: String,
+    rendimento :: String,
+    preparo :: String,
+    fonte :: String,
+    ingredientes :: [Ingredients],
+    modopreparo :: [Directions]
+} deriving (Generic, Show)
+
+data Ingredients = Ingredients{
+    titulo :: String,
+    lista  :: String
+} deriving (Generic, Show)
+
+data Directions = Directions{
+    title :: String,
+    list  :: String
 } deriving (Generic, Show)
 
 {-
@@ -71,17 +92,33 @@ splitList x a = snd (DT.splitAt x a)
 
 
 treeMap [] [] [] = []
-treeMap (a:as) (b:bs) (c:cs) = Recipe (juntaCaracteres "<a>" a) b (splitList 1 c) :(treeMap as bs cs)
+treeMap (a:as) (b:bs) (c:cs) = Recipes (joinCharacters "<a>" a) b (splitList 1 c) :(treeMap as bs cs)
 treeMap _ _ _ = []
 
 
-
-juntaCaracteres :: String -> String -> String
-juntaCaracteres x y = x ++ y
-
+joinCharacters :: String -> String -> String
+joinCharacters x y = x ++ y
 
 
-{- Instâncias -}
+-- idRecipe x = (reverse x)
+
+
+-- https://cybercook.uol.com.br/bolo-de-aniversario-r-12-108462.html
+-- https://cybercook.uol.com.br/receita-de-bombom-de-morango-gigante-r-7-121441.html
+
+{- Funções padrão CyberCook -}
+linkReverse x = Prelude.reverse x
+
+
+htmlRemove x y = DT.drop x y
+
+
+hifenRemove x = unpack (Data.Text.takeWhile (/= '-') (pack x))
+
+idRemove x = linkReverse (hifenRemove (htmlRemove 5 (linkReverse x))) :: [Char]
+
+
+{- Instâncias 
 instance FromJSON Recipe where
     parseJSON (Object o) = Recipe <$>
                            o .: "nome" <*>
@@ -91,5 +128,5 @@ instance FromJSON Recipe where
 
 instance ToJSON Recipe where
     toJSON (Recipe n l i) = object ["nome" Data.Aeson..= n, "link" Data.Aeson..= l, "img" Data.Aeson..= i]
-
+-}
 
