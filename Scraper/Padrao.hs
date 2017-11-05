@@ -19,7 +19,7 @@ import GHC.Generics
 import Data.Text
 
 {- Tipos -}
-data MyRoute = AllRecipes | CyberCook | ReceitasDeHoje
+data MyRoute = AllRecipes | CyberCook | ReceitasDeHoje deriving Show
 
 data TypeRoute = Search | View
 
@@ -34,33 +34,23 @@ data Recipe = Recipe{
     imagem :: String,
     rendimento :: String,
     preparo :: String,
-    fonte :: String,
-    ingredientes :: [Ingredients],
-    modopreparo :: [Directions]
+    fonte :: Fonte,
+    ingredientes :: [Lista],
+    modopreparo :: [Lista]
 } deriving (Generic, Show)
 
-data Ingredients = Ingredients{
-    titulo :: String,
-    lista  :: String
+
+data Lista = Lista{
+    h3 :: Maybe String,
+    ingrediente  :: [String]
 } deriving (Generic, Show)
 
-data Directions = Directions{
-    title :: String,
-    list  :: String
+
+data Fonte = Fonte{
+    servico :: MyRoute,
+    fonteUrl :: String
 } deriving (Generic, Show)
 
-{-
-data Recipe = Recipe{
-    titulo          :: String,
-    linkReceita     :: String,
-    linkImagem      :: String,
-    rendimento      :: String,
-    tempoDePreparo  :: String,
-    linkFonte       :: String,
-    ingredientes    :: Maybe String,
-    modoDePreparo   :: Maybe String
-} deriving (Generic, Show)
--}
 
 {- Funções padrão -}
 renderUrl :: MyRoute -> [(Text, Text)] -> Text
@@ -96,10 +86,18 @@ treeMap (a:as) (b:bs) (c:cs) = Recipes (joinCharacters "<a>" a) b (splitList 1 c
 treeMap _ _ _ = []
 
 
+
 joinCharacters :: String -> String -> String
 joinCharacters x y = x ++ y
+{-
+category Nothing [] = Lista Nothing []
+category Nothing (y:ys) = Lista Nothing y :(category ys)
+category (Just x) (y:ys) = Lista (Just x) y:(category ys)
 
+-}
 
+-- head Lists = ["\n6 unidades de clara de ovo batidas em neve ","\n500 ml de creme de leite fresco ","\n1 x\237cara (ch\225) de a\231\250car "]
+-- Maybe h3 - ["Massa","Recheio","Calda","Massa","Recheio","Calda"]
 -- idRecipe x = (reverse x)
 
 
