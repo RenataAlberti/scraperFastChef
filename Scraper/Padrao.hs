@@ -2,6 +2,7 @@
 {-# LANGUAGE OverloadedStrings, FlexibleInstances #-}
 {-# LANGUAGE QuasiQuotes       #-}
 {-# LANGUAGE DeriveAnyClass #-}
+{-# LANGUAGE FlexibleContexts #-}
 
 module Scraper.Padrao where
 
@@ -35,8 +36,7 @@ data Recipe = Recipe{
     rendimento :: String,
     preparo :: String,
     fonte :: Fonte,
-    ingredientes :: [Lista],
-    modopreparo :: [Lista]
+    ingredientes :: [Lista]
 } deriving (Generic, Show)
 
 
@@ -45,12 +45,52 @@ data Lista = Lista{
     ingrediente  :: [String]
 } deriving (Generic, Show)
 
-
 data Fonte = Fonte{
     servico :: MyRoute,
     fonteUrl :: String
 } deriving (Generic, Show)
 
+primeiro preLista lista = fst (DT.span (\x -> x /= (DT.last preLista)) lista)
+
+
+segundo preList list = snd (DT.span (\x -> x /= (DT.last preList)) list)
+
+
+inicio preLis = DT.init preLis
+
+
+
+colocanomaybe :: String -> Maybe String
+colocanomaybe l = (Just l)
+
+-- 
+compareLength' title preList
+    | (DT.length title) /= (DT.length preList) = [""] ++ title
+    | otherwise = title
+
+
+--categoryOne title preList list = do
+--categoryTwo title preList list = do
+    
+
+
+-- tres listas
+categoryThree title preList list = do
+    let lista = compareLength' title preList
+    let a = snd (DT.span (\x -> x /= (DT.last preList)) list)
+    let b = fst (DT.span (\x -> x /= (DT.last preList)) list)
+    let c = DT.init preList
+    let d = snd (DT.span (\x -> x /= (DT.last c)) b)
+    let e = fst (DT.span (\x -> x /= (DT.last c)) b)
+    let f = Lista  (Just (DT.head lista)) e
+    let g = DT.tail lista
+    let h = Lista (Just (DT.head  g)) d
+    let i = DT.tail g
+    let j = Lista (Just (DT.head  i)) a
+    a <- [f, h, j]
+    return a
+
+   
 
 {- Funções padrão -}
 renderUrl :: MyRoute -> [(Text, Text)] -> Text
@@ -86,14 +126,15 @@ treeMap (a:as) (b:bs) (c:cs) = Recipes (joinCharacters "<a>" a) b (splitList 1 c
 treeMap _ _ _ = []
 
 
-
 joinCharacters :: String -> String -> String
 joinCharacters x y = x ++ y
+
+
+
 {-
 category Nothing [] = Lista Nothing []
 category Nothing (y:ys) = Lista Nothing y :(category ys)
 category (Just x) (y:ys) = Lista (Just x) y:(category ys)
-
 -}
 
 -- head Lists = ["\n6 unidades de clara de ovo batidas em neve ","\n500 ml de creme de leite fresco ","\n1 x\237cara (ch\225) de a\231\250car "]
