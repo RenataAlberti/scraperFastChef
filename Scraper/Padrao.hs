@@ -69,10 +69,17 @@ compareLength' title preList
     | otherwise = title
 
 
---categoryOne title preList list = do
---categoryTwo title preList list = do
-    
+categoryOne title _ list = Lista (Nothing) list
 
+    
+categoryTwo title preList list = do
+    let lista = compareLength' title preList
+    let a = fst (DT.span (\x -> x /= (DT.last preList)) list)
+    let b = snd (DT.span (\x -> x /= (DT.last preList)) list)
+    let a' = Lista (Just (DT.head lista)) a
+    let b' = Lista (Just (DT.last lista)) b
+    c <- [a', b']
+    return c
 
 -- tres listas
 categoryThree title preList list = do
@@ -90,6 +97,8 @@ categoryThree title preList list = do
     a <- [f, h, j]
     return a
 
+-- categoryFour title preList list = do
+-- categoryFive title preList list = do
    
 
 {- Funções padrão -}
