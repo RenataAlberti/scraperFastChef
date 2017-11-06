@@ -33,16 +33,15 @@ data Recipes = Recipes{
 data Recipe = Recipe{
     h1 :: String,
     imagem :: String,
-    rendimento :: String,
-    preparo :: String,
     fonte :: Fonte,
-    ingredientes :: [Lista]
+    ingredientes :: [Lista],
+    modopreparo :: [Lista]
 } deriving (Generic, Show)
 
 
 data Lista = Lista{
     h3 :: Maybe String,
-    ingrediente  :: [String]
+    lista  :: [String]
 } deriving (Generic, Show)
 
 data Fonte = Fonte{
@@ -50,56 +49,7 @@ data Fonte = Fonte{
     fonteUrl :: String
 } deriving (Generic, Show)
 
-primeiro preLista lista = fst (DT.span (\x -> x /= (DT.last preLista)) lista)
-
-
-segundo preList list = snd (DT.span (\x -> x /= (DT.last preList)) list)
-
-
-inicio preLis = DT.init preLis
-
-
-
-colocanomaybe :: String -> Maybe String
-colocanomaybe l = (Just l)
-
--- 
-compareLength' title preList
-    | (DT.length title) /= (DT.length preList) = [""] ++ title
-    | otherwise = title
-
-
-categoryOne title _ list = Lista (Nothing) list
-
-    
-categoryTwo title preList list = do
-    let lista = compareLength' title preList
-    let a = fst (DT.span (\x -> x /= (DT.last preList)) list)
-    let b = snd (DT.span (\x -> x /= (DT.last preList)) list)
-    let a' = Lista (Just (DT.head lista)) a
-    let b' = Lista (Just (DT.last lista)) b
-    c <- [a', b']
-    return c
-
--- tres listas
-categoryThree title preList list = do
-    let lista = compareLength' title preList
-    let a = snd (DT.span (\x -> x /= (DT.last preList)) list)
-    let b = fst (DT.span (\x -> x /= (DT.last preList)) list)
-    let c = DT.init preList
-    let d = snd (DT.span (\x -> x /= (DT.last c)) b)
-    let e = fst (DT.span (\x -> x /= (DT.last c)) b)
-    let f = Lista  (Just (DT.head lista)) e
-    let g = DT.tail lista
-    let h = Lista (Just (DT.head  g)) d
-    let i = DT.tail g
-    let j = Lista (Just (DT.head  i)) a
-    a <- [f, h, j]
-    return a
-
--- categoryFour title preList list = do
--- categoryFive title preList list = do
-   
+  
 
 {- Funções padrão -}
 renderUrl :: MyRoute -> [(Text, Text)] -> Text
@@ -130,6 +80,7 @@ splitList :: Int -> [a] -> [a]
 splitList x a = snd (DT.splitAt x a)
 
 
+-- Tipo Recipes
 treeMap [] [] [] = []
 treeMap (a:as) (b:bs) (c:cs) = Recipes (joinCharacters "<a>" a) b (splitList 1 c) :(treeMap as bs cs)
 treeMap _ _ _ = []
@@ -137,6 +88,100 @@ treeMap _ _ _ = []
 
 joinCharacters :: String -> String -> String
 joinCharacters x y = x ++ y
+
+-- Tipo Lista
+
+comparePreList :: [String] -> [String] -> [String] -> [Lista]
+comparePreList title preList list
+    | (DT.length preList) < 2 = [Lista Nothing list]
+    | (DT.length preList) == 2 = categoryTwo title preList list
+    | (DT.length preList) == 3 = categoryThree title preList list
+    | (DT.length preList) == 4 = categoryFour title preList list
+    | (DT.length preList) == 5 = categoryFive title preList list
+    | otherwise = [Lista Nothing list]
+
+
+compareLength' :: [String] -> [String] -> [String]
+compareLength' title preList
+    | (DT.length title) /= (DT.length preList) = [""] ++ title
+    | otherwise = title
+
+{-categoryOne :: [String] -> [String] -> [String] -> [Lista]
+categoryOne [] [] list = [Lista (Nothing) list]
+categoryOne title _ list = [Lista (Just title) list]
+-}
+categoryTwo :: [String] -> [String] -> [String] -> [Lista]    
+categoryTwo title preList list = do
+    let lista = compareLength' title preList
+    let a = fst (DT.span (\x -> x /= (DT.last preList)) list)
+    let b = snd (DT.span (\x -> x /= (DT.last preList)) list)
+    let a' = Lista (Just (DT.head lista)) a
+    let b' = Lista (Just (DT.last lista)) b
+    c <- [a', b']
+    return c
+
+categoryThree :: [String] -> [String] -> [String] -> [Lista]
+categoryThree title preList list = do
+    let lista = compareLength' title preList
+    let a = fst (DT.span (\x -> x /= (DT.last preList)) list)
+    let b = snd (DT.span (\x -> x /= (DT.last preList)) list)
+    let c = DT.init preList
+    let d = fst (DT.span (\x -> x /= (DT.last c)) a)
+    let e = snd (DT.span (\x -> x /= (DT.last c)) a)
+    let f = Lista  (Just (DT.head lista)) d
+    let g = DT.tail lista
+    let h = Lista (Just (DT.head  g)) e
+    let i = DT.tail g
+    let j = Lista (Just (DT.head  i)) b
+    a' <- [f, h, j]
+    return a'
+    
+
+categoryFour :: [String] -> [String] -> [String] -> [Lista]
+categoryFour title preList list = do
+    let lista = compareLength' title preList
+    let a = fst (DT.span (\x -> x /= (DT.last preList)) list)
+    let b = snd (DT.span (\x -> x /= (DT.last preList)) list)
+    let c = DT.init preList
+    let d = fst (DT.span (\x -> x /= (DT.last c)) a)
+    let e = snd (DT.span (\x -> x /= (DT.last c)) a)
+    let f = DT.init c
+    let g = fst (DT.span (\x -> x /= (DT.last f)) d)
+    let h = snd (DT.span (\x -> x /= (DT.last f)) d)
+    let i = Lista  (Just (DT.head lista)) g
+    let j = DT.tail lista
+    let k = Lista (Just (DT.head  j)) h
+    let l = DT.tail j
+    let m = Lista (Just (DT.head  l)) e
+    let n = DT.tail l
+    let o = Lista (Just (DT.head n)) b
+    a' <- [i, k, m, o]
+    return a'
+
+categoryFive :: [String] -> [String] -> [String] -> [Lista]
+categoryFive title preList list = do
+    let lista = compareLength' title preList
+    let a = fst (DT.span (\x -> x /= (DT.last preList)) list)
+    let b = snd (DT.span (\x -> x /= (DT.last preList)) list)
+    let c = DT.init preList
+    let d = fst (DT.span (\x -> x /= (DT.last c)) a)
+    let e = snd (DT.span (\x -> x /= (DT.last c)) a)
+    let f = DT.init c
+    let g = fst (DT.span (\x -> x /= (DT.last f)) d)
+    let h = snd (DT.span (\x -> x /= (DT.last f)) d)
+    let i = DT.init f
+    let j = fst (DT.span (\x -> x /= (DT.last i)) g)
+    let k = snd (DT.span (\x -> x /= (DT.last i)) g)
+    let l = Lista  (Just (DT.head lista)) j
+    let m = DT.tail lista
+    let n = Lista (Just (DT.head  m)) k
+    let o = DT.tail m
+    let p = Lista (Just (DT.head  o)) h
+    let q = DT.tail o
+    let r = Lista (Just (DT.head q)) e
+    let s = Lista (Just (DT.last q)) b
+    a' <- [l, n, p, r, s]
+    return a'    
 
 
 
