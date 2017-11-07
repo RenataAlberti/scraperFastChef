@@ -109,48 +109,14 @@ detalhe' x = do
             r <- S.withSession $ \sess -> do
                 S.getWith header' sess $ view
             let fullBody      = r ^. responseBody . Control.Lens.to LE.decodeUtf8
-            let h1            = fullBody ^.. html . allNamed(only "h1")
-            {-let tempPrepRend  = fullBody ^.. html . allNamed(only "p") . attributed(ix "class" . only "font-serif pb20")
-            let img           = fullBody ^.. html . allNamed(only "img") . attributed(ix "class" . only "photo")
-            let ingredientes  = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only (pack (joinCharacters "printable-" (idRemove view))))
-            let filterIng1    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "id" . only "banner-1x1-4-area") . name /= Just "div"))) ingredientes
-            let filterIng2    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "id" . only "banner-1x1-5-area") . name /= Just "div"))) filterIng1
-            let filterIng3    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "id" . only "banner-1x1-9-area") . name /= Just "div"))) filterIng2
-            let filterIng4    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "id" . only "preparo") . name /= Just "div"))) filterIng3
-            let filterIng5    = fmap (transform (children %~ filter (\z -> z ^? element . name /= Just "hr"))) filterIng4
-            let filterIng6    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "mais-receitas mt15 mb15 grid-sm-12") . name /= Just "div"))) filterIng5
-            let filterIng7    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "player_dynad_tv") . name /= Just "div"))) filterIng6
-            let filterIng8    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "green txt-large font-serif txt-bold mb25 mt25") . name /= Just "h2"))) filterIng7
-            let filterIng9    = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . name /= Just "ol"))) filterIng8
-            let filterIng10   = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "recipe__actions centering grid-sm-12 grid-lg-12 white mb10 font-serif txt-very-small omega") . name /= Just "div"))) filterIng9
-            let filterIng11   = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "txt-center printable--none") . name /= Just "div"))) filterIng10
-            let h3s      = fullBody ^.. html . allNamed (only "h3") . attributed (ix "class" . only "font-serif txt-bold mb10 grid-lg-12 grid-sm-12 mt10")
-            let modoDePreparo = fullBody ^.. html . allNamed(only "ol") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12")
-            -}
             let titulo = fullBody ^.. html . allNamed(only "h1") . contents
-            let h3 = fullBody ^.. html . allNamed(only "h3") . attributed(ix "class" . only "font-serif txt-bold mb10 grid-lg-12 grid-sm-12 mt10") . contents
-            let ing  = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only (pack (joinCharacters "printable-" (idRemove view)))) . allNamed(only "ul") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . allNamed(only "li") . element . children . ix 1 . contents
-            let ingr  = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only (pack (joinCharacters "printable-" (idRemove view)))) . allNamed(only "ul") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . element . children . ix 0 .  allNamed(only "label") . contents
+            let im      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "swiper-content pos-relative") . allNamed(only "img") . attributed(ix "class" . only "photo") . attr "src" . _Just
+            let list  = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only (pack (joinCharacters "printable-" (idRemove view)))) . allNamed(only "ul") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . allNamed(only "li") . element . children . ix 1 . contents
+            let preList  = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only (pack (joinCharacters "printable-" (idRemove view)))) . allNamed(only "ul") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . element . children . ix 0 .  allNamed(only "label") . contents
             let mdp = fullBody ^.. html . allNamed(only "ol") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . allNamed(only "li") . element . children . ix 1 . contents
             let h3 = fullBody ^.. html . allNamed(only "h3") . attributed(ix "class" . only "font-serif txt-bold mb10 grid-lg-12 grid-sm-12 mt10") . contents
-            --let ingr = filterLens ing
-            -- element . children . traverse . element . children
-            
-            print $ titulo
-            print $ "---------"
-            print $ h3
-            print $ "---------"
-            print $ "---------"
-            print $ ing
-            print $ "---------"
-            print $ ingr
-            print $ "---------"
-            print $ "---------"
-            print $ mdp
-            print $ "---------"
-            -- font-serif txt-bold mb10 grid-lg-12 grid-sm-12 mt10
-            -- `mappend` tempPrepRend `mappend` img `mappend` filterIng11 `mappend` h3s `mappend` modoDePreparo
-            return $ h1 
+            let receita = (Recipe (unpack (DT.head titulo)) (unpack (DT.head im)) (Fonte CyberCook view) (comparePreList (DT.map unpack h3) (DT.map unpack preList) (DT.map unpack list)))
+            return $ receita :: IO Recipe
 
 
 filterLens x = fmap (transform

@@ -34,8 +34,7 @@ data Recipe = Recipe{
     h1 :: String,
     imagem :: String,
     fonte :: Fonte,
-    ingredientes :: [Lista],
-    modopreparo :: [Lista]
+    ingredientes :: [Lista]
 } deriving (Generic, Show)
 
 
@@ -93,11 +92,11 @@ joinCharacters x y = x ++ y
 
 comparePreList :: [String] -> [String] -> [String] -> [Lista]
 comparePreList title preList list
-    | (DT.length preList) < 2 = [Lista Nothing list]
-    | (DT.length preList) == 2 = categoryTwo title preList list
-    | (DT.length preList) == 3 = categoryThree title preList list
-    | (DT.length preList) == 4 = categoryFour title preList list
-    | (DT.length preList) == 5 = categoryFive title preList list
+    | (DT.length preList) < 2  = [Lista Nothing list]
+    | (DT.length preList) == 2 = categoryTwo (DT.drop (DT.length title `div` 2) title) preList list
+    | (DT.length preList) == 3 = categoryThree (DT.drop (DT.length title `div` 2) title) preList list
+    | (DT.length preList) == 4 = categoryFour (DT.drop (DT.length title `div` 2) title) preList list
+    | (DT.length preList) == 5 = categoryFive (DT.drop (DT.length title `div` 2) title) preList list
     | otherwise = [Lista Nothing list]
 
 
@@ -106,10 +105,6 @@ compareLength' title preList
     | (DT.length title) /= (DT.length preList) = [""] ++ title
     | otherwise = title
 
-{-categoryOne :: [String] -> [String] -> [String] -> [Lista]
-categoryOne [] [] list = [Lista (Nothing) list]
-categoryOne title _ list = [Lista (Just title) list]
--}
 categoryTwo :: [String] -> [String] -> [String] -> [Lista]    
 categoryTwo title preList list = do
     let lista = compareLength' title preList
