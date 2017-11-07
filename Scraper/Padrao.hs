@@ -20,21 +20,23 @@ import GHC.Generics
 import Data.Text
 
 {- Tipos -}
-data MyRoute = AllRecipes | CyberCook | ReceitasDeHoje deriving Show
+data Site = AllRecipes | CyberCook | ReceitasDeHoje deriving Show
 
 data TypeRoute = Search | View
 
 data Recipes = Recipes{
     nome  :: String,
-    link  :: String,
-    img   :: String
+    link  :: Fonte,
+    img   :: String,
+    fonte :: Fonte
 } deriving (Generic, Show)
 
 data Recipe = Recipe{
     h1 :: String,
     imagem :: String,
-    fonte :: Fonte,
-    ingredientes :: [Lista]
+    fonte' :: Fonte,
+    ingredientes :: [Lista],
+    modopreparo :: [Lista]
 } deriving (Generic, Show)
 
 
@@ -44,14 +46,13 @@ data Lista = Lista{
 } deriving (Generic, Show)
 
 data Fonte = Fonte{
-    servico :: MyRoute,
+    servico :: Site,
     fonteUrl :: String
 } deriving (Generic, Show)
 
-  
 
 {- Funções padrão -}
-renderUrl :: MyRoute -> [(Text, Text)] -> Text
+renderUrl :: Site -> [(Text, Text)] -> Text
 renderUrl AllRecipes q      = "http://allrecipes.com.br/receitas/resultados-de-busca.aspx" 
                                     `append` TE.decodeUtf8 (toByteString $ renderQueryText True (DT.map (second Just) q))
 renderUrl CyberCook q       = "https://cybercook.uol.com.br/resultado.php"
@@ -60,13 +61,13 @@ renderUrl ReceitasDeHoje q  = "http://www.receitasdehoje.com.br/"
                                     `append` TE.decodeUtf8 (toByteString $ renderQueryText True (DT.map (second Just) q))
 
 
-renderUrl' :: MyRoute -> (Text, Text) -> Text
+renderUrl' :: Site -> (Text, Text) -> Text
 renderUrl' AllRecipes b     = pack $ "http://allrecipes.com.br/receita/" ++ (unpack (snd b))
 renderUrl' CyberCook b       = pack $ "https://cybercook.uol.com.br/" ++ (unpack (snd b))
 renderUrl' ReceitasDeHoje b  = pack $ "http://www.receitasdehoje.com.br/" ++ (unpack (snd b))
 
 
-constructUrl :: MyRoute -> TypeRoute -> String -> String    
+constructUrl :: Site -> TypeRoute -> String -> String    
 constructUrl AllRecipes Search x      = unpack $ renderUrl AllRecipes [(pack "texto", pack x)]
 constructUrl CyberCook Search x       = unpack $ renderUrl CyberCook [(pack "q", pack x)]
 constructUrl ReceitasDeHoje Search x  = unpack $ renderUrl ReceitasDeHoje [(pack "s", pack x)]
@@ -80,16 +81,21 @@ splitList x a = snd (DT.splitAt x a)
 
 
 -- Tipo Recipes
-treeMap [] [] [] = []
-treeMap (a:as) (b:bs) (c:cs) = Recipes (joinCharacters "<a>" a) b (splitList 1 c) :(treeMap as bs cs)
-treeMap _ _ _ = []
+
+
+recipeMap [] [] [] [] = []
+recipeMap (a:as) (b:bs) (c:cs) (d:ds) = Recipes a (Fonte CyberCook b) c (Fonte CyberCook d) :(recipeMap as bs cs ds)
+recipeMap _ _ _ _ = []
 
 
 joinCharacters :: String -> String -> String
 joinCharacters x y = x ++ y
 
--- Tipo Lista
 
+-- Tipo Fonte
+
+
+-- Tipo Lista
 comparePreList :: [String] -> [String] -> [String] -> [Lista]
 comparePreList title preList list
     | (DT.length preList) < 2  = [Lista Nothing list]
