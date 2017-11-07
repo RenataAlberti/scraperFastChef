@@ -20,7 +20,7 @@ import GHC.Generics
 import Data.Text
 
 {- Tipos -}
-data Site = AllRecipes | CyberCook | ReceitasDeHoje deriving Show
+data Site = AllRecipes | CyberCook | ReceitasDeHoje deriving (Show, Read)
 
 data TypeRoute = Search | View
 
@@ -37,18 +37,18 @@ data Recipe = Recipe{
     fonte' :: Fonte,
     ingredientes :: [Lista],
     modopreparo :: [Lista]
-} deriving (Generic, Show)
+} deriving (Generic, Show, Read)
 
 
 data Lista = Lista{
     h3 :: Maybe String,
     lista  :: [String]
-} deriving (Generic, Show)
+} deriving (Generic, Show, Read)
 
 data Fonte = Fonte{
     servico :: Site,
     fonteUrl :: String
-} deriving (Generic, Show)
+} deriving (Generic, Show, Read)
 
 
 {- Funções padrão -}

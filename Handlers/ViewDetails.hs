@@ -15,8 +15,12 @@ import Utils.SettingsForm
 import Yesod.Form
 import Scraper.Busca.CyberCook
 import Text.Taggy 
-import Text.Taggy.Lens 
-
+import Text.Taggy.Lens
+import qualified Text.Blaze.Html as TBH
+import Data.Text.Lazy.Encoding
+import Data.Text (pack, unpack)
+import Blaze.ByteString.Builder (Builder, fromByteString)
+import Blaze.ByteString.Builder.Char.Utf8 (fromShow)
 
 getViewDetailsR :: String -> Handler Html
 getViewDetailsR x = do
@@ -48,7 +52,7 @@ getViewDetailsR x = do
                     <div id="containerview">
                         <h1>  #{h1 receita} </h1>
                         <aside>
-                                <img src=#{imagem receita} alt="pizza-imagem-principal" class="img-receita">
+                                <img src=#{imagem receita} alt="pizza-imagem-principal" class="img-receita">            
                         <div>  
                             <dl>
                                 <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>
@@ -59,9 +63,13 @@ getViewDetailsR x = do
                                     <dd> <a href="" title="link-cybercook">  </a></dd>
                             
                             <h3> Ingredientes </h3>
-                            <h2> </h2>
-                            <p> </p>
-                                    
+                            $forall row <- (ingredientes receita)
+                                $maybe h2 <- (h3 $ row)
+                                    <h2> #{pack h2}
+                                $forall ingred <- (lista $ row)
+                                    <p> #{pack ingred}
+                            
+                        
                             <h3> Modo de preparo </h3>
                             <p> Frite a linguiça em uma panela, com uma colher (sopa) de azeite-de-oliva </p>
                             <p> Em um refratário redondo, untado, acomode a massa cozida, cubra com molho de tomate , linguiça, queijo mussarela, rodelas de tomate, folhas de manjericão e polvilhe orégano </p>

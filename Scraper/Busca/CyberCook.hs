@@ -68,15 +68,11 @@ q x = do
     r <- S.withSession $ \sess -> do
         S.getWith header' sess $ constructUrl CyberCook Search x
     let fullBody     = r ^. responseBody . Control.Lens.to LE.decodeUtf8
-    let nm = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "list") . element . children . ix 0
-    {-
-    
     let lenteDiv     = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "list")
     let filterDiv    = fmap (transform (children %~ Prelude.filter (\z -> z ^? element . attributed(ix "class" . only "grid-lg-9") . name /= Just "div"))) lenteDiv
     let filterImg    = fmap (transform (children %~ Prelude.filter (\z -> z ^? element . attributed(ix "class" . only "card__flag") . name /= Just "div"))) filterDiv
     let filterRating = fmap (transform (children %~ Prelude.filter (\z -> z ^? element . attributed(ix "class" . only "card__score txt-small") . name /= Just "div"))) filterImg
-    -}
-    return nm
+    return filterRating
 
 detalhe' :: String -> IO Recipe
 detalhe' x = do
@@ -94,8 +90,8 @@ detalhe' x = do
             let fullBody      = r ^. responseBody . Control.Lens.to LE.decodeUtf8
             let titulo = fullBody ^.. html . allNamed(only "h1") . contents
             let im      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "swiper-content pos-relative") . allNamed(only "img") . attributed(ix "class" . only "photo") . attr "src" . _Just
-            let list  = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only (pack (joinCharacters "printable-" (idRemove view)))) . allNamed(only "ul") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . allNamed(only "li") . element . children . ix 1 . contents
-            let preList  = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only (pack (joinCharacters "printable-" (idRemove view)))) . allNamed(only "ul") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . element . children . ix 0 .  allNamed(only "label") . contents
+            let list  = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only (pack (joinCharacters "printable-" (idRemove view)))) . allNamed(only "ul") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . allNamed(only "li") . children . ix 1 . contents
+            let preList  = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only (pack (joinCharacters "printable-" (idRemove view)))) . allNamed(only "ul") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . children . ix 0 .  allNamed(only "label") . contents
             let preMdp = fullBody ^.. html . allNamed(only "ol") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . children . ix 0 . allNamed(only "div") . attributed(ix "class" . only "grid-lg-11 grid-sm-11 omega") . contents
             let mdp = fullBody ^.. html . allNamed(only "ol") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . allNamed(only "li") . element . children . ix 1 . contents
             let h3 = fullBody ^.. html . allNamed(only "h3") . attributed(ix "class" . only "font-serif txt-bold mb10 grid-lg-12 grid-sm-12 mt10") . contents

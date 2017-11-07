@@ -75,7 +75,33 @@ postBuscaR = do
                     addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"
                     
                     toWidget[julius|
-                        
+                        window.onload=function(){
+                    		$("p.author").html("Fonte: <a href='http://allrecipes.com.br' title='allrecipes'> All Recipes </a>");
+                    		$(".mt10.grey--dark.txt-small").html("Fonte: <a href='https://cybercook.uol.com.br' title='cybercook'> CyberCook </a>");
+                    		
+                    		var elementos = document.getElementsByClassName('card--half-image__image');
+                            var atributosDataPagespeed = [];
+                    		
+                            for (var i = 0; i < elementos.length; i++){
+                                atributosDataPagespeed[i] = elementos[i].firstChild;
+                            };
+                            for (var i = 0; i < atributosDataPagespeed.length; i++){
+                                atributosDataPagespeed[i].setAttribute('src', atributosDataPagespeed[i].getAttribute('data-pagespeed-lazy-src'));
+                            
+                            };
+                            for (var i = 0; i < atributosDataPagespeed.length; i++){
+                                atributosDataPagespeed[i].removeAttribute('data-pagespeed-lazy-src');
+                            };
+                            var x = document.getElementsByClassName("list");
+                            while(x.length >= 2){y = document.getElementsByClassName("list")[((x.length) - 1)]; y.parentNode.removeChild(y);}
+                            /* ------- */
+                            $("section.list").attr("id", "padronizar");
+                            var elemento = document.getElementById("padronizar");
+                            var aux = elemento.childNodes.length;
+                            for(var i = 0; i < aux; i++){
+                                elemento.childNodes[i].setAttribute("class","row recipe");
+                            };
+                    	}
                     |]
                     
                     [whamlet|
