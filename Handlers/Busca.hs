@@ -64,12 +64,6 @@ postBuscaR = do
                     
                     addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"
                     
-                    toWidget[julius|
-                        window.onload=function(){
-                            
-                        }
-                    |]
-                    
                     [whamlet|
                         <header> 
                             <nav id="menu">

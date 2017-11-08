@@ -1,26 +1,16 @@
-{-# LANGUAGE TupleSections, OverloadedStrings, QuasiQuotes, TemplateHaskell, TypeFamilies, RecordWildCards, MultiParamTypeClasses  #-}
+{-# LANGUAGE OverloadedStrings, QuasiQuotes #-}
 
 module Handlers.ViewDetails where
 
 import Foundation
 import Yesod.Core
-import Yesod.Static()
-import Data.Aeson
-import Data.Aeson.Types
-import Control.Applicative
-import Control.Monad
+import Yesod.Static
 import Scraper.Padrao
-import Utils.WidgetResultadoBusca
 import Utils.SettingsForm
 import Yesod.Form
 import Scraper.Busca.CyberCook
-import Text.Taggy 
-import Text.Taggy.Lens
-import qualified Text.Blaze.Html as TBH
-import Data.Text.Lazy.Encoding
-import Data.Text (pack, unpack)
-import Blaze.ByteString.Builder (Builder, fromByteString)
-import Blaze.ByteString.Builder.Char.Utf8 (fromShow)
+import Data.Text
+
 
 getViewDetailsR :: String -> Handler Html
 getViewDetailsR x = do
