@@ -48,11 +48,13 @@ haha x = do
     r <- S.withSession $ \sess -> do
         S.getWith header' sess $ search
     let fullBody     = r ^. responseBody . Control.Lens.to LE.decodeUtf8
-    let nm      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "h3") . children . traverse . contents
+    let nm      = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "list") . allNamed(only "div") . allNamed(only "h3") . children . traverse . contents
     let im      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "img") . attr "data-pagespeed-lazy-src" . _Just
     let lin     = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "a") . attributed (ix "class" . only "clickable") .attr "href" . _Just
     let font   = (replicate (DT.length nm) "https://cybercook.uol.com.br")
-    return $ recipeMap (fmap unpack nm) (fmap unpack lin) (fmap unpack im) (fmap unpack font) :: IO [Recipes]
+    return $ recipeMap (fmap unpack (removeElements 8 (removeRepetition nm))) (fmap unpack lin) (fmap unpack im) (fmap unpack font) :: IO [Recipes]
+    --  - ok
+    -- recipeMap (fmap unpack nm) (fmap unpack lin) (fmap unpack im) (fmap unpack font) :: IO [Recipes]
 
 
 
@@ -73,6 +75,7 @@ q x = do
     let filterImg    = fmap (transform (children %~ Prelude.filter (\z -> z ^? element . attributed(ix "class" . only "card__flag") . name /= Just "div"))) filterDiv
     let filterRating = fmap (transform (children %~ Prelude.filter (\z -> z ^? element . attributed(ix "class" . only "card__score txt-small") . name /= Just "div"))) filterImg
     return filterRating
+
 
 detalhe' :: String -> IO Recipe
 detalhe' x = do

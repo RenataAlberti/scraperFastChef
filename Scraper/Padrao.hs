@@ -25,16 +25,16 @@ data Site = AllRecipes | CyberCook | ReceitasDeHoje deriving (Show, Read)
 data TypeRoute = Search | View
 
 data Recipes = Recipes{
-    nome  :: String,
-    link  :: Fonte,
+    titulo  :: String,
+    lin  :: String,
     img   :: String,
-    fonte :: Fonte
+    lincopy :: Fonte
 } deriving (Generic, Show)
 
 data Recipe = Recipe{
     h1 :: String,
     imagem :: String,
-    fonte' :: Fonte,
+    copyright :: Fonte,
     ingredientes :: [Lista],
     modopreparo :: [Lista]
 } deriving (Generic, Show, Read)
@@ -46,8 +46,8 @@ data Lista = Lista{
 } deriving (Generic, Show, Read)
 
 data Fonte = Fonte{
-    servico :: Site,
-    fonteUrl :: String
+    nm :: Site,
+    fonteurl :: String
 } deriving (Generic, Show, Read)
 
 
@@ -84,7 +84,7 @@ splitList x a = snd (DT.splitAt x a)
 
 
 recipeMap [] [] [] [] = []
-recipeMap (a:as) (b:bs) (c:cs) (d:ds) = Recipes a (Fonte CyberCook b) c (Fonte CyberCook d) :(recipeMap as bs cs ds)
+recipeMap (a:as) (b:bs) (c:cs) (d:ds) = Recipes a b c (Fonte CyberCook d) :(recipeMap as bs cs ds)
 recipeMap _ _ _ _ = []
 
 
@@ -92,7 +92,12 @@ joinCharacters :: String -> String -> String
 joinCharacters x y = x ++ y
 
 
--- Tipo Fonte
+removeRepetition :: [a] -> [a]
+removeRepetition a = DT.map snd $ DT.filter (odd . fst) (DT.zip [0 .. ] a)
+
+-- remove os elementos do final da lista
+removeElements :: Int -> [a] -> [a]
+removeElements x y = DT.reverse (DT.drop x (DT.reverse y))
 
 
 -- Tipo Lista

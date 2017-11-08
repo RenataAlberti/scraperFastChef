@@ -1,3 +1,6 @@
+ul li{
+  list-style-type: none;
+}
 header nav {
   background-color: #ff5722;
   color: #ecf0f1;
@@ -75,17 +78,18 @@ header nav #logo {
   margin: 2%;
   border-bottom: 1px solid #ff5722;
 }
-#container div h2, h3,
-#containerview section h2, .col-sm-7 h3 {
+#container div h2,
+#containerview section h2 {
   text-align: center;
 }
+
 #container section .img-thumb,
 #containerview section .img-thumb{
   width: 100%;
   display: inline;
 }
-#containerview aside .img-receita {
-  float: left;
+#containerview aside{
+  float: right;
   border: transparent thin solid;
   margin: 0px 30px 0px 0;
   max-width: 40%;
@@ -124,6 +128,10 @@ ul {
   width: 100%;
   font-size: 1em;
 }
+div#containerview, div#containerview ul{
+  font-size: 1.1em;
+}
+
 div.required:after{
  content:"";
  display:block;
@@ -166,7 +174,7 @@ div.required:after{
   }
   body #input-search {
     color: #190803;
-    width: 70%;
+    width: 60%;
     display: inline;
     clear: both;
   }
