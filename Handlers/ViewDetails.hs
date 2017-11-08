@@ -16,7 +16,7 @@ getViewDetailsR :: String -> Handler Html
 getViewDetailsR x = do
         ((res', widget), enctype) <- runFormPost form
         defaultLayout $ do
-            receita <- liftIO $ detalhe' x
+            receita <- liftIO $ viewCyberCook x
             
             setTitle "FastChef - Resultados da Busca"
             toWidgetHead[hamlet|

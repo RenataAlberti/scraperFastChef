@@ -1,38 +1,19 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE QuasiQuotes       #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE NamedFieldPuns #-}
-{-# LANGUAGE DeriveAnyClass #-}
-{-# LANGUAGE DuplicateRecordFields #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE TemplateHaskell #-}
 
 module Scraper.Busca.CyberCook where
 
 import Network.Wreq
 import qualified Network.Wreq.Session as S
 import Data.Text.Lazy.Encoding as LE
-import Text.Taggy.Lens (html, attr, contents, element, named, name, allAttributed, allNamed, attributed, content, attrs , children, Element, Node(NodeContent))
+import Text.Taggy.Lens 
 import Control.Lens hiding (children, element)
 import Scraper.Padrao
-import Data.Tree
-import Data.Tree.Lens
-import Data.String.UTF8
-import qualified Text.Taggy.Lens as TGL
-import qualified Data.Text.Encoding as DTE
-import qualified Text.Taggy.Renderer as Renderer
-import qualified Text.XML.Cursor as XML
-import Data.Aeson
-import qualified Data.HashMap.Strict as HM
-import Yesod.Static()
-import Yesod.Core
-import Foundation
 import qualified Data.List as DT
 import Data.Text (pack, unpack)
 import qualified Data.ByteString.Char8 as DBC
-import qualified Data.Aeson as Aeson
 
 
+searchCyberCook :: String -> IO [Recipes]
 searchCyberCook x = do
     let search = constructUrl CyberCook Search x
     let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
@@ -53,15 +34,7 @@ searchCyberCook x = do
     return $ recipeMap (fmap unpack (removeElements 8 (removeRepetition nm))) (fmap unpack lin) (fmap unpack im) (fmap unpack font) :: IO [Recipes]
 
 
--- T.putStrLn . T.decodeUtf8 . encode $ Recipe "Guacamole" "linkkahshss" "imggjsjdjsd"
-
-
-
-    --  - ok
-    -- recipeMap (fmap unpack nm) (fmap unpack lin) (fmap unpack im) (fmap unpack font) :: IO [Recipes]
-
-
-
+q :: String -> IO [Element]
 q x = do
     let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
                    & header "Accept" .~ ["text/html, */*"]
@@ -81,8 +54,8 @@ q x = do
     return filterRating
 
 
-detalhe' :: String -> IO Recipe
-detalhe' x = do
+viewCyberCook :: String -> IO Recipe
+viewCyberCook x = do
             let view = constructUrl CyberCook View x
             let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
                            & header "Accept" .~ ["text/html, */*"]
@@ -104,20 +77,3 @@ detalhe' x = do
             let h3 = fullBody ^.. html . allNamed(only "h3") . attributed(ix "class" . only "font-serif txt-bold mb10 grid-lg-12 grid-sm-12 mt10") . contents
             let receita = (Recipe (unpack (DT.head titulo)) (unpack (DT.head im)) (Fonte CyberCook view) (comparePreList (DT.map unpack h3) (DT.map unpack preList) (DT.map unpack list)) (comparePreList (DT.map unpack h3) (DT.map unpack preMdp) (DT.map unpack mdp)))
             return $ receita :: IO Recipe
-            
-
-filterLens x = fmap (transform
-                        (children %~ 
-                            Prelude.filter (\z -> z ^? element . attributed(ix "class" . only "grid-lg-1 grid-sm-1")
-                            . name /= Just "input")
-                        )
-                    ) x 
-                    
-recebe x = x . element . children . traverse . element . children
-
-
--- receita-de-empanada-da-paola-carosella-r-13-121379.html
--- treeMap (fmap unpack nm) (fmap unpack lin) (fmap unpack im) :: IO [Recipes]
--- ix "class" . only "card--half-image--without-image"
--- https://cybercook.uol.com.br/resultado.php?q=arroz
--- https://cybercook.uol.com.br/resultado.php?q=caldo+de+feijão

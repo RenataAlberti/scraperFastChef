@@ -9,4 +9,3 @@
 /viii                       ViiiR               GET
 /cybercook/#String          ViewDetailsR        GET
 /deta/#Text                 NotaR               GET
-/testejson                  JsonnaveiaR         GET 
