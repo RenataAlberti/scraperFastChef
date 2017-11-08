@@ -22,5 +22,6 @@ import Scraper.Ztestes.Secondtest
 import Handlers.Jsonnaveia
 import Handlers.ViewDetails
 
+
 mkYesodDispatch "App" resourcesApp
 

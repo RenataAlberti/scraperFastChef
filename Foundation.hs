@@ -12,6 +12,7 @@ import Yesod.Form
 import Data.Text
 import Scraper.Padrao
 
+
 -- static
 staticFiles "static"
 

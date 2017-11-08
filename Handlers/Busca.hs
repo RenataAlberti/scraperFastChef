@@ -1,26 +1,14 @@
-{-# LANGUAGE OverloadedStrings, FlexibleContexts, ScopedTypeVariables,
-             GeneralizedNewtypeDeriving, TemplateHaskell, GADTs,
-             TypeFamilies, QuasiQuotes, MultiParamTypeClasses #-}
+{-# LANGUAGE OverloadedStrings, QuasiQuotes #-}
 
 module Handlers.Busca where
 
 import Foundation
 import Yesod.Core
-import Yesod.Static()
-import Data.Text(Text, pack, unpack)
+import Data.Text
 import Yesod.Form
-import Data.Text.Encoding as TE
-import Data.Text.Lazy.Encoding as LE
-import Utils.WidgetResultadoBusca
 import Utils.SettingsForm
-import Scraper.Ztestes.Boott as B
-import Scraper.Busca.Receita as R
-import Scraper.Busca.AllRecipes as AR
-import Scraper.Busca.CyberCook as CC
-import Scraper.Busca.ReceitasDeHoje as RDH
-import Text.Taggy 
-import Text.Taggy.Lens 
 import Scraper.Padrao
+import Scraper.Busca.CyberCook
 
 
 postBuscaR :: Handler Html
@@ -29,7 +17,7 @@ postBuscaR = do
     case res' of
         FormSuccess res -> do
             case (buscaCampo3 res) of
-                Nothing -> liftIO (CC.haha $ unpack " +") >>= \y -> defaultLayout $ do
+                Nothing -> liftIO (searchCyberCook $ unpack " +") >>= \y -> defaultLayout $ do
                     setTitle "FastChef - Nenhum resultado :("
                     toWidgetHead[hamlet|
                         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -62,7 +50,7 @@ postBuscaR = do
                             <a href="@{HomeR}" title="voltar"> Voltar para o início </a>
                     |]
                 Just x -> do
-                    cyberCook <- liftIO (CC.haha $ unpack x)
+                    cyberCook <- liftIO (searchCyberCook $ unpack x)
                     defaultLayout $ do
                     setTitle "FastChef - Resultados da Busca"
                     toWidgetHead[hamlet|

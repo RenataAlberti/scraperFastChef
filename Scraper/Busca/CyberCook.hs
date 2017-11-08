@@ -33,9 +33,7 @@ import qualified Data.ByteString.Char8 as DBC
 import qualified Data.Aeson as Aeson
 
 
--- T.putStrLn . T.decodeUtf8 . encode $ Recipe "Guacamole" "linkkahshss" "imggjsjdjsd"
-
-haha x = do
+searchCyberCook x = do
     let search = constructUrl CyberCook Search x
     let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
                    & header "Accept" .~ ["text/html, */*"]
@@ -53,6 +51,12 @@ haha x = do
     let lin     = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "a") . attributed (ix "class" . only "clickable") .attr "href" . _Just
     let font   = (replicate (DT.length nm) "https://cybercook.uol.com.br")
     return $ recipeMap (fmap unpack (removeElements 8 (removeRepetition nm))) (fmap unpack lin) (fmap unpack im) (fmap unpack font) :: IO [Recipes]
+
+
+-- T.putStrLn . T.decodeUtf8 . encode $ Recipe "Guacamole" "linkkahshss" "imggjsjdjsd"
+
+
+
     --  - ok
     -- recipeMap (fmap unpack nm) (fmap unpack lin) (fmap unpack im) (fmap unpack font) :: IO [Recipes]
 
