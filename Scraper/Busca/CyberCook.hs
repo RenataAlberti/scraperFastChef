@@ -7,7 +7,7 @@ import qualified Network.Wreq.Session as S
 import Data.Text.Lazy.Encoding as LE
 import Text.Taggy.Lens 
 import Control.Lens hiding (children, element)
-import Scraper.Padrao
+import Scraper.General
 import qualified Data.List as DT
 import Data.Text (pack, unpack)
 import qualified Data.ByteString.Char8 as DBC

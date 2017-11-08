@@ -7,7 +7,7 @@ import Yesod.Core
 import Data.Text
 import Yesod.Form
 import Utils.SettingsForm
-import Scraper.Padrao
+import Scraper.General
 import Scraper.Busca.CyberCook
 
 

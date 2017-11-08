@@ -20,7 +20,7 @@ executable          projeto
                     Scraper.Ztestes.Scraper
                     Scraper.Ztestes.Teste
                     Scraper.Ztestes.Secondtest
-                    Scraper.Padrao
+                    Scraper.General
                     Scraper.Busca.Receita
                     Scraper.Busca.AllRecipes
                     Scraper.Busca.CyberCook

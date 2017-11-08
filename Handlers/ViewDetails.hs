@@ -5,7 +5,7 @@ module Handlers.ViewDetails where
 import Foundation
 import Yesod.Core
 import Yesod.Static
-import Scraper.Padrao
+import Scraper.General
 import Utils.SettingsForm
 import Yesod.Form
 import Scraper.Busca.CyberCook

@@ -10,7 +10,7 @@ import Control.Applicative()
 import Data.Text()
 import Yesod.Form
 import Data.Text
-import Scraper.Padrao
+import Scraper.General
 
 
 -- static
