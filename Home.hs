@@ -114,4 +114,7 @@ getHomeR = do
                             <dd>25 min </dd><br>
                             <dt><span class="margin-right"><i class="fa fa-copyright" aria-hidden="true"></i></span>  Fonte: </dt>
                             <dd> TudoGostoso </dd>
+            <footer>
+                        <p> Colossenses 3.17 </p>
+                        <p> Desenvolvido por: Renata Alberti </p>
         |]

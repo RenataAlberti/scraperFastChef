@@ -78,31 +78,7 @@ postBuscaR = do
                     
                     toWidget[julius|
                         window.onload=function(){
-                            $("p.author").html("Fonte: <a href='http://allrecipes.com.br' title='allrecipes'> All Recipes </a>");
-                            $(".mt10.grey--dark.txt-small").html("Fonte: <a href='https://cybercook.uol.com.br' title='cybercook'> CyberCook </a>");
                             
-                            var elementos = document.getElementsByClassName('card--half-image__image');
-                            var atributosDataPagespeed = [];
-                            
-                            for (var i = 0; i < elementos.length; i++){
-                                atributosDataPagespeed[i] = elementos[i].firstChild;
-                            };
-                            for (var i = 0; i < atributosDataPagespeed.length; i++){
-                                atributosDataPagespeed[i].setAttribute('src', atributosDataPagespeed[i].getAttribute('data-pagespeed-lazy-src'));
-                            
-                            };
-                            for (var i = 0; i < atributosDataPagespeed.length; i++){
-                                atributosDataPagespeed[i].removeAttribute('data-pagespeed-lazy-src');
-                            };
-                            var x = document.getElementsByClassName("list");
-                            while(x.length >= 2){y = document.getElementsByClassName("list")[((x.length) - 1)]; y.parentNode.removeChild(y);}
-                            /* ------- */
-                            $("section.list").attr("id", "padronizar");
-                            var elemento = document.getElementById("padronizar");
-                            var aux = elemento.childNodes.length;
-                            for(var i = 0; i < aux; i++){
-                                elemento.childNodes[i].setAttribute("class","row recipe");
-                            };
                         }
                     |]
                     
@@ -118,16 +94,20 @@ postBuscaR = do
                         <div  id="container">
                             <h1> Resultados da Busca - #{x} </h1>
                             $forall cc <- cyberCook
-                                <section>
-                                    <a href="@{ViewDetailsR (lin cc)}" title="#{titulo cc}">
-                                        <h2> #{titulo cc} </h2>
-                                        <img src="#{img cc}" alt="#{titulo cc}" class="img-thumb">
-                                        <dl>
-                                            <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>
-                                                <dd> 6 porções <dd><br>
-                                            <dt><span class="margin-right"><i class="fa fa-clock-o" aria-hidden="true"></i></span>  Tempo de preparo: </dt>
-                                                <dd>25 min </dd><br>
-                                            <dt><span class="margin-right"><i class="fa fa-external-link" aria-hidden="true"></i></span>  Fonte: </dt>
-                                                <dd> <a href="#{fonteurl (lincopy cc)}" title="#{show $ nm (lincopy cc)}"> #{show $ nm (lincopy cc)} </a> </dd>
+                                <div class="row recipe">
+                                    <h2> #{titulo cc} </h2>
+                                    <img src="#{img cc}" alt="#{titulo cc}" class="img-thumb">
+                                    <dl>
+                                        <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>
+                                        <dd> 6 porções <dd><br/>
+                                        <dt><span class="margin-right"><i class="fa fa-clock-o" aria-hidden="true"></i></span>  Tempo de preparo: </dt>
+                                        <dd>25 min </dd><br/>
+                                        <dt><span class="margin-right"><i class="fa fa-external-link" aria-hidden="true"></i></span>  Fonte: </dt>
+                                        <dd> <a href="#{fonteurl (lincopy cc)}" title="#{show $ nm (lincopy cc)}"> #{show $ nm (lincopy cc)} </a> </dd>
+                                    <div class="btnlink">
+                                        <a href="@{ViewDetailsR (lin cc)}" title="#{titulo cc}" class="linkbtn"> Ver receita </a>
+                        <footer>
+                            <p> Colossenses 3.17 </p>
+                            <p> Desenvolvido por: Renata Alberti </p>
                     |]
         _ -> redirect  HomeR

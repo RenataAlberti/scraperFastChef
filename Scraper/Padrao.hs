@@ -62,9 +62,9 @@ renderUrl ReceitasDeHoje q  = "http://www.receitasdehoje.com.br/"
 
 
 renderUrl' :: Site -> (Text, Text) -> Text
-renderUrl' AllRecipes b     = pack $ "http://allrecipes.com.br/receita/" ++ (unpack (snd b))
-renderUrl' CyberCook b       = pack $ "https://cybercook.uol.com.br/" ++ (unpack (snd b))
-renderUrl' ReceitasDeHoje b  = pack $ "http://www.receitasdehoje.com.br/" ++ (unpack (snd b))
+renderUrl' AllRecipes b     = pack $ "http://allrecipes.com.br/receita" ++ (unpack (snd b))
+renderUrl' CyberCook b       = pack $ "https://cybercook.uol.com.br" ++ (unpack (snd b))
+renderUrl' ReceitasDeHoje b  = pack $ "http://www.receitasdehoje.com.br" ++ (unpack (snd b))
 
 
 constructUrl :: Site -> TypeRoute -> String -> String    

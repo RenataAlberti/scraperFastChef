@@ -79,4 +79,8 @@ getViewDetailsR x = do
                                 $forall ingred <- (lista $ mdp)
                                     <ul>
                                         <li> #{pack ingred}
+                    <footer>
+                        <p> Colossenses 3.17 </p>
+                        <p> Desenvolvido por: Renata Alberti </p>
+                        
             |]
