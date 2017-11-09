@@ -12,6 +12,7 @@ import GHC.Generics
 import Data.Text
 
 {- Tipos -}
+
 data Site = AllRecipes | CyberCook | ReceitasDeHoje deriving (Show, Read)
 
 data TypeRoute = Search | View
@@ -43,6 +44,7 @@ data Fonte = Fonte{
 
 
 {- Funções de Url -}
+
 renderUrl :: Site -> [(Text, Text)] -> Text
 renderUrl AllRecipes q      = "http://allrecipes.com.br/receitas/resultados-de-busca.aspx" 
                                     `append` TE.decodeUtf8 (toByteString $ renderQueryText True 
@@ -54,18 +56,18 @@ renderUrl ReceitasDeHoje q  = "http://www.receitasdehoje.com.br/"
                                     `append` TE.decodeUtf8 (toByteString $ renderQueryText True 
                                     (DT.map (second Just) q))
 
-renderUrl' :: Site -> (Text, Text) -> Text
-renderUrl' AllRecipes b     = pack $ "http://allrecipes.com.br/receita" ++ (unpack (snd b))
-renderUrl' CyberCook b       = pack $ "https://cybercook.uol.com.br" ++ (unpack (snd b))
-renderUrl' ReceitasDeHoje b  = pack $ "http://www.receitasdehoje.com.br" ++ (unpack (snd b))
+renderUrl' :: Site -> Text -> Text
+renderUrl' AllRecipes b     = pack $ "http://allrecipes.com.br/receita" ++ (unpack b)
+renderUrl' CyberCook b       = pack $ "https://cybercook.uol.com.br" ++ (unpack b)
+renderUrl' ReceitasDeHoje b  = pack $ "http://www.receitasdehoje.com.br" ++ (unpack b)
 
 constructUrl :: Site -> TypeRoute -> String -> String    
 constructUrl AllRecipes Search x      = unpack $ renderUrl AllRecipes [(pack "texto", pack x)]
 constructUrl CyberCook Search x       = unpack $ renderUrl CyberCook [(pack "q", pack x)]
 constructUrl ReceitasDeHoje Search x  = unpack $ renderUrl ReceitasDeHoje [(pack "s", pack x)]
-constructUrl AllRecipes View x        = unpack $ renderUrl' AllRecipes (pack "", pack x)
-constructUrl CyberCook View x         = unpack $ renderUrl' CyberCook (pack "", pack x)
-constructUrl ReceitasDeHoje View x    = unpack $ renderUrl' ReceitasDeHoje (pack "", pack x)
+constructUrl AllRecipes View x        = unpack $ renderUrl' AllRecipes (pack x)
+constructUrl CyberCook View x         = unpack $ renderUrl' CyberCook (pack x)
+constructUrl ReceitasDeHoje View x    = unpack $ renderUrl' ReceitasDeHoje (pack x)
 
 -- Separa em duas listas conforme o Int e retorna somente a segunda
 splitList :: Int -> [a] -> [a]

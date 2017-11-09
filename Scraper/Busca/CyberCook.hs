@@ -77,3 +77,4 @@ viewCyberCook x = do
             let h3 = fullBody ^.. html . allNamed(only "h3") . attributed(ix "class" . only "font-serif txt-bold mb10 grid-lg-12 grid-sm-12 mt10") . contents
             let receita = (Recipe (unpack (DT.head titulo)) (unpack (DT.head im)) (Fonte CyberCook view) (comparePreList (DT.map unpack h3) (DT.map unpack preList) (DT.map unpack list)) (comparePreList (DT.map unpack h3) (DT.map unpack preMdp) (DT.map unpack mdp)))
             return $ receita :: IO Recipe
+

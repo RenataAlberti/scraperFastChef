@@ -61,7 +61,6 @@ getViewDetailsR x = do
                                 $forall ingred <- (lista $ ings)
                                     <ul>    
                                         <li> #{pack ingred}
-                            
                             <h2> Modo de preparo </h2>
                             $forall mdp <- (modopreparo receita)
                                 $maybe h' <- (h3 $ mdp)
@@ -72,5 +71,4 @@ getViewDetailsR x = do
                     <footer>
                         <p> Colossenses 3.17 </p>
                         <p> Desenvolvido por: Renata Alberti </p>
-                        
             |]

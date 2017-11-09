@@ -8,7 +8,7 @@ import Data.Text.Lazy.Encoding as LE
 import Text.Taggy.Lens (html, attr, contents, element, named, name, allAttributed, allNamed, attributed, content, attrs , children, Element, Node(NodeContent))
 import Control.Lens hiding (children, element)
 import Data.Tree.Lens
-import Scraper.Padrao
+import Scraper.General
 import Yesod.Core
 
 s x = do
