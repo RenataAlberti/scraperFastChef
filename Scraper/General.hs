@@ -57,17 +57,20 @@ renderUrl ReceitasDeHoje q  = "http://www.receitasdehoje.com.br/"
                                     (DT.map (second Just) q))
 
 renderUrl' :: Site -> Text -> Text
-renderUrl' AllRecipes b     = pack $ "http://allrecipes.com.br/receita" ++ (unpack b)
+renderUrl' AllRecipes b     = pack $ "http://allrecipes.com.br/receita/" ++ (unpack b) 
 renderUrl' CyberCook b       = pack $ "https://cybercook.uol.com.br" ++ (unpack b)
 renderUrl' ReceitasDeHoje b  = pack $ "http://www.receitasdehoje.com.br" ++ (unpack b)
 
 constructUrl :: Site -> TypeRoute -> String -> String    
-constructUrl AllRecipes Search x      = unpack $ renderUrl AllRecipes [(pack "texto", pack x)]
+constructUrl AllRecipes Search x      = (unpack $ renderUrl AllRecipes [(pack "texto", pack x)]) ++ (unpack "&o_is=Search")
 constructUrl CyberCook Search x       = unpack $ renderUrl CyberCook [(pack "q", pack x)]
 constructUrl ReceitasDeHoje Search x  = unpack $ renderUrl ReceitasDeHoje [(pack "s", pack x)]
 constructUrl AllRecipes View x        = unpack $ renderUrl' AllRecipes (pack x)
 constructUrl CyberCook View x         = unpack $ renderUrl' CyberCook (pack x)
 constructUrl ReceitasDeHoje View x    = unpack $ renderUrl' ReceitasDeHoje (pack x)
+
+-- http://allrecipes.com.br/receitas/resultados-de-busca.aspx?texto=maracuj%C3%A1&o_is=Search
+
 
 -- Separa em duas listas conforme o Int e retorna somente a segunda
 splitList :: Int -> [a] -> [a]
@@ -190,3 +193,7 @@ categoryFive title preList list = do
     let s = Lista (Just (DT.last q)) b
     a' <- [l, n, p, r, s]
     return a'
+    
+    
+    
+    

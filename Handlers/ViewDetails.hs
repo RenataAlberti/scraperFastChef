@@ -52,7 +52,7 @@ getViewDetailsR x = do
                                 <dt><span class="margin-right"><i class="fa fa-clock-o" aria-hidden="true"></i></span>  Tempo de preparo: </dt>
                                     <dd>25 min </dd><br>
                                 <dt><span class="margin-right"><i class="fa fa-external-link" aria-hidden="true"></i></span>  Fonte: </dt>
-                                    <dd> <a href="#{fonteurl (copyright receita)}" title="#{fonteurl (copyright receita)}">#{show $ nm (copyright receita)} </a></dd>
+                                    <dd> <a href="#{fonteurl (copyright receita)}" title="#{fonteurl (copyright receita)}"> #{show $ nm (copyright receita)} </a></dd>
                         <div>  
                             <h2> Ingredientes </h2>
                             $forall ings <- (ingredientes receita)
@@ -72,3 +72,9 @@ getViewDetailsR x = do
                         <p> Colossenses 3.17 </p>
                         <p> Desenvolvido por: Renata Alberti </p>
             |]
+            
+            
+            
+            
+            
+            

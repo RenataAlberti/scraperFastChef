@@ -82,7 +82,7 @@ postBuscaR = do
                                         <img src="#{img cc}" alt="#{titulo cc}" class="img-thumb">
                                         <dl>
                                             <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>
-                                            <dd> 6 porções <dd><br/>
+                                            <dd> 6 porções </dd><br/>
                                             <dt><span class="margin-right"><i class="fa fa-clock-o" aria-hidden="true"></i></span>  Tempo de preparo: </dt>
                                             <dd>25 min </dd><br/>
                                             <dt><span class="margin-right"><i class="fa fa-external-link" aria-hidden="true"></i></span>  Fonte: </dt>
@@ -93,6 +93,8 @@ postBuscaR = do
                             <p> Colossenses 3.17 </p>
                             <p> Desenvolvido por: Renata Alberti </p>
                     |]
+                    
+                    
                     
                     
         _ -> redirect  HomeR
