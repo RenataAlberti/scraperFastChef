@@ -17,6 +17,16 @@ data Site = AllRecipes | CyberCook | ReceitasDeHoje deriving (Show, Read)
 
 data TypeRoute = Search | View
 
+data Fonte = Fonte{
+    nm :: Site,
+    fonteurl :: String
+} deriving (Generic, Show, Read)
+
+data Lista = Lista{
+    h3 :: Maybe String,
+    lista  :: [String]
+} deriving (Generic, Show, Read)
+
 data Recipes = Recipes{
     titulo  :: String,
     lin  :: String,
@@ -32,15 +42,6 @@ data Recipe = Recipe{
     modopreparo :: [Lista]
 } deriving (Generic, Show, Read)
 
-data Lista = Lista{
-    h3 :: Maybe String,
-    lista  :: [String]
-} deriving (Generic, Show, Read)
-
-data Fonte = Fonte{
-    nm :: Site,
-    fonteurl :: String
-} deriving (Generic, Show, Read)
 
 
 {- Funções de Url -}

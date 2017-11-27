@@ -25,7 +25,7 @@ searchCyberCook x = do
                    & header "Origin" .~ ["https://cybercook.uol.com.br"]
                    & header "Connection" .~ ["keep-alive"]
     r <- S.withSession $ \sess -> do
-        S.getWith header' sess $ search
+        S.getWith header' sess $ search 
     let fullBody     = r ^. responseBody . Control.Lens.to LE.decodeUtf8
     let nm      = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "list") . allNamed(only "div") . allNamed(only "h3") . children . traverse . contents
     let im      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "img") . attr "data-pagespeed-lazy-src" . _Just
