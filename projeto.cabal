@@ -10,22 +10,16 @@ executable          projeto
                     Foundation
 
                     Home
-                    Handlers.Busca
-                    Handlers.Detalhe
-                    Handlers.Sobre
+                    Handlers.Receitas.Busca
+                    Handlers.Receitas.ViewDetails
                     Utils.WidgetResultadoBusca
                     Utils.SettingsForm
-                    Scraper.Ztestes.Viii
-                    Scraper.Ztestes.Boott
-                    Scraper.Ztestes.Scraper
-                    Scraper.Ztestes.Teste
-                    Scraper.Ztestes.Secondtest
                     Scraper.General
-                    Scraper.Busca.Receita
-                    Scraper.Busca.AllRecipes
-                    Scraper.Busca.CyberCook
-                    Scraper.Busca.ReceitasDeHoje
-                    Handlers.ViewDetails
+                    Scraper.Services.Receita
+                    Scraper.Services.AllRecipes
+                    Scraper.Services.CyberCook
+                    Scraper.Services.ReceitasDeHoje
+
 
   ghc-options:      -Wall -fwarn-tabs -O2
 

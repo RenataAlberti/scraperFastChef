@@ -9,7 +9,7 @@ import Yesod.Static()
 import Data.Text
 import Yesod.Form
 import Utils.SettingsForm
-import Scraper.Busca.Receita
+import Scraper.Services.Receita
 
 widgetResultNothing ::[Text] -> Widget
 widgetResultNothing y = do

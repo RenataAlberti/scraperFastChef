@@ -11,8 +11,8 @@ import Data.Text.Encoding as TE
 import Data.Text.Lazy.Encoding as LE
 import Utils.WidgetResultadoBusca
 import Utils.SettingsForm
-import Handlers.Busca
-import Scraper.Busca.Receita
+import Handlers.Receitas.Busca
+import Scraper.Services.Receita
 {-
 funcWidget :: Widget
 funcWidget x = do
@@ -104,7 +104,7 @@ getHomeR = do
             <div  id="container">
                 <h1> Início </h1>
                 <div class="row recipe">
-                    <a href=@{BoottR} title="pizza-link">
+                    <a href="" title="pizza-link">
                         <h2> Macarrão sabor pizza </h2>
                         <img src=@{StaticR img_pizza_jpg} alt="pizza-imagem-principal" class="img-thumb">
                         <dl>
