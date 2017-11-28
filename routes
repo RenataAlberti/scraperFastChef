@@ -1,5 +1,10 @@
-/                           HomeR               GET
-/busca                      BuscaR                  POST
-/static                     StaticR     Static  getStatic
-/cybercook/#String          ViewDetailsR        GET
-
+/static                             StaticR     Static  getStatic
+/                                   HomeR               GET
+/busca                              BuscaR                  POST
+/cybercook/#String                  ViewDetailsR        GET
+/cadastro                           RegisterR           GET POST
+/login                              LoginR              GET POST
+/login/esqueciminhasenha            RecuperaSenhaR      GET POST
+/favoritos                          ListarFavR          GET POST
+/favoritos/editar/#FavoritosId      EditarFavR          GET POST
+/favoritos/excluir/#FavoritosId     ExcluirFavR         GET POST

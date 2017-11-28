@@ -10,25 +10,27 @@ import Control.Lens hiding (children, element)
 import Data.Tree.Lens
 import Scraper.General
 import Yesod.Core
+import qualified Data.ByteString.Char8 as DBC
 
 texto x = do
-            let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
-                           & header "Accept" .~ ["text/html, */*"]
-                           & header "X-Requested-With" .~ ["XMLHttpRequest"]
-                           & header "Accept-Language" .~ ["pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4"]
-                           & header "Accept-Encoding" .~ ["gzip, deflate"]
-                           & header "Referer" .~ ["http://www.allrecipes.com.br"]
-                           & header "Origin" .~ ["http://www.allrecipes.com.br"]
-                           & header "Connection" .~ ["keep-alive"]
-            r <- S.withSession $ \sess -> do
-                S.getWith header' sess $ constructUrl AllRecipes Search x
-            let fullBody          = r ^. responseBody . to LE.decodeUtf8
-            let lente             = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "row recipe")
-            let filterDiv         = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "iconHolder") . name /= Just "div"))) lente
-            let filterSpan        = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "playButton") . name /= Just "span"))) filterDiv
-            let filterDesc        = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "js-truncate") . name /= Just "p"))) filterSpan
-            let filterReviewCount = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "recipeReviewCount") . name /= Just "div"))) filterDesc
-            return filterReviewCount
+    let search = constructUrl AllRecipes Search x
+    let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
+                   & header "Accept" .~ ["text/html, */*"]
+                   & header "X-Requested-With" .~ ["XMLHttpRequest"]
+                   & header "Accept-Language" .~ ["pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4"]
+                   & header "Accept-Encoding" .~ ["gzip, deflate"]
+                   & header "Referer" .~ [DBC.pack search]
+                   & header "Origin" .~ ["http://www.allrecipes.com.br"]
+                   & header "Connection" .~ ["keep-alive"]
+    r <- S.withSession $ \sess -> do
+        S.getWith header' sess $ search
+    let fullBody          = r ^. responseBody . to LE.decodeUtf8
+    let lente             = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "row recipe")
+    let filterDiv         = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "iconHolder") . name /= Just "div"))) lente
+    let filterSpan        = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "playButton") . name /= Just "span"))) filterDiv
+    let filterDesc        = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "js-truncate") . name /= Just "p"))) filterSpan
+    let filterReviewCount = fmap (transform (children %~ filter (\z -> z ^? element . attributed(ix "class" . only "recipeReviewCount") . name /= Just "div"))) filterDesc
+    return filterReviewCount
 
 
 detalhe = do

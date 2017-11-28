@@ -11,8 +11,12 @@ import Yesod.Core
 import Home
 import Handlers.Receitas.Busca
 import Handlers.Receitas.ViewDetails
-import Utils.WidgetResultadoBusca()
-import Utils.SettingsForm()
+import Handlers.Usuarios.Favoritos
+import Handlers.Usuarios.Login
+import Handlers.Usuarios.Register
+import Widgets.WidgetResultadoBusca()
+import Widgets.SettingsForm()
+import Widgets.PageGenericContent()
 
 
 mkYesodDispatch "App" resourcesApp

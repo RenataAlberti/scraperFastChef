@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings, QuasiQuotes #-}
+{-# LANGUAGE OverloadedStrings, QuasiQuotes, TemplateHaskell #-}
 
 module Handlers.Receitas.ViewDetails where
 
@@ -6,32 +6,17 @@ import Foundation
 import Yesod.Core
 import Yesod.Static
 import Scraper.General
-import Utils.SettingsForm
+import Widgets.SettingsForm
+import Widgets.PageGenericContent
 import Yesod.Form
 import Scraper.Services.CyberCook
 import Data.Text
 
-
 getViewDetailsR :: String -> Handler Html
 getViewDetailsR x = do
         ((res', widget), enctype) <- runFormPost form
-        defaultLayout $ do
+        newLayout ("Detalhe da Receita") $ do
             receita <- liftIO $ viewCyberCook x
-            
-            setTitle "FastChef - Resultados da Busca"
-            toWidgetHead[hamlet|
-                <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-            |]
-            
-            addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-            
-            addStylesheetRemote "https://fonts.googleapis.com/css?family=Dosis"
-            
-            addStylesheet $ StaticR css_estilo_css
-            
-            addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"
-            
             [whamlet|
                     <header> 
                             <nav id="menu">
@@ -68,13 +53,5 @@ getViewDetailsR x = do
                                 $forall ingred <- (lista $ mdp)
                                     <ul>
                                         <li> #{pack ingred}
-                    <footer>
-                        <p> Colossenses 3.17 </p>
-                        <p> Desenvolvido por: Renata Alberti </p>
+                    ^{footer}
             |]
-            
-            
-            
-            
-            
-            

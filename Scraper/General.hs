@@ -103,7 +103,7 @@ removeElements :: Int -> [a] -> [a]
 removeElements x y = DT.reverse (DT.drop x (DT.reverse y))
 
 {- Função para o tipo Recipes -}
-recipeMap :: [String] -> [String] -> [String] -> [String] -> [Recipes]
+recipeMap ::[String] -> [String] -> [String] -> [String] -> [Recipes]
 recipeMap [] [] [] [] = []
 recipeMap (a:as) (b:bs) (c:cs) (d:ds) = Recipes a b c (Fonte CyberCook d) :(recipeMap as bs cs ds)
 recipeMap _ _ _ _ = []

@@ -9,8 +9,8 @@ import Data.Text(Text, pack, unpack)
 import Yesod.Form
 import Data.Text.Encoding as TE
 import Data.Text.Lazy.Encoding as LE
-import Utils.WidgetResultadoBusca
-import Utils.SettingsForm
+import Widgets.WidgetResultadoBusca
+import Widgets.SettingsForm
 import Handlers.Receitas.Busca
 import Scraper.Services.Receita
 {-
@@ -75,22 +75,7 @@ getHomeR ::Handler Html
 getHomeR = do 
     (widget, enctype) <- generateFormPost form
     -- ver  <- liftIO $ scrapDirect (unpack "/receita/417-gelatina-da-barbie.html")
-    defaultLayout $ do
-        setTitle "FastChef"
-        toWidgetHead[hamlet|
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-        |]
-        
-        -- Adicionando o FontAwesome
-        addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-        
-        -- Adicionando a folha de estilos
-        addStylesheet $ StaticR css_estilo_css
-        
-        -- Adicionando o jquery via CDN
-        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"
-        
+    newLayout ("FastChef")
         [whamlet|
             <header> 
                 <nav id="menu">

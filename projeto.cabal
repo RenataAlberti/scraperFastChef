@@ -12,8 +12,12 @@ executable          projeto
                     Home
                     Handlers.Receitas.Busca
                     Handlers.Receitas.ViewDetails
-                    Utils.WidgetResultadoBusca
-                    Utils.SettingsForm
+                    Handlers.Usuarios.Favoritos
+                    Handlers.Usuarios.Login
+                    Handlers.Usuarios.Register
+                    Widgets.WidgetResultadoBusca
+                    Widgets.SettingsForm
+                    Widgets.PageGenericContent
                     Scraper.General
                     Scraper.Services.Receita
                     Scraper.Services.AllRecipes
