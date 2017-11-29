@@ -3,6 +3,6 @@
         <ul>
             <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
             <li>
-                <form method=post action=@{BuscaR} enctype=#{enctype}>
+                <form method=post action=@{rota} enctype=#{enctype}>
                     ^{widget}
                     <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 

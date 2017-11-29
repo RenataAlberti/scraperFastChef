@@ -16,14 +16,7 @@ getRegisterR = do
     let title = "Cadastro"
     newLayout title
         [whamlet|
-            <header> 
-                <nav id="menu">
-                    <ul>
-                        <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
-                        <li>
-                            <form method=post action=@{BuscaR} enctype=#{enctype}>
-                                ^{widget}
-                                <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
+            ^{menu BuscaR enctype widget}    
             <div  id="container">
                 <h1> #{title} </h1>
                 <p> Já se cadastrou? <a href="@{LoginR}" title="cadastro"> Clique aqui</a> para ser redirecionado para a página de login.</p>
@@ -32,7 +25,6 @@ getRegisterR = do
                     <form method=post action=@{RegisterR} enctype=#{enctype}>
                         ^{register}
                         <button type="submit" class="form-busca button">Cadastrar</button> 
-
             ^{footer}
         |]
 
@@ -50,14 +42,7 @@ postRegisterR = do
                         usid <- runDB $ insert (Usuario userid (Just nome) senha email)
                         newLayout sucesso
                             [whamlet|
-                                <header> 
-                                    <nav id="menu">
-                                        <ul>
-                                            <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
-                                            <li>
-                                                <form method=post action=@{BuscaR} enctype=#{enctype}>
-                                                    ^{widget}
-                                                    <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
+                                ^{menu BuscaR enctype widget}    
                                 <div id="container">
                                     <h1> Cadastro </h1>
                                     <p> #{sucesso} </p>
@@ -67,14 +52,7 @@ postRegisterR = do
                     False -> do
                         newLayout erro
                             [whamlet|
-                                <header> 
-                                    <nav id="menu">
-                                        <ul>
-                                            <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
-                                            <li>
-                                                <form method=post action=@{BuscaR} enctype=#{enctype}>
-                                                    ^{widget}
-                                                    <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
+                                ^{menu BuscaR enctype widget}    
                                 <div id="container">
                                     <h1> Cadastro </h1>
                                     <p> #{erro} As senhas devem ser semelhantes!!
@@ -86,14 +64,7 @@ postRegisterR = do
             _ -> do
                 newLayout erro
                     [whamlet|
-                        <header> 
-                            <nav id="menu">
-                                <ul>
-                                    <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
-                                    <li>
-                                        <form method=post action=@{BuscaR} enctype=#{enctype}>
-                                            ^{widget}
-                                            <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
+                        ^{menu BuscaR enctype widget}    
                         <div id="container">
                             <h1> Cadastro </h1>
                             <p> #{erro} Preencha os campos corretamente!!

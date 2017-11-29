@@ -31,6 +31,10 @@ data RedefinirSenha = RedefinirSenha
     deriving Show
 
 {- Configurações de placeholder -}   
+withHidden :: Text -> FieldSettings site -> FieldSettings site
+withHidden hidden fs = fs { fsAttrs = newAttrs }
+    where newAttrs = ("hidden", hidden) : fsAttrs fs
+
 withAutofocus :: FieldSettings site -> FieldSettings site
 withAutofocus fs = fs {fsName = (Just "autofocus")}
 
@@ -44,8 +48,12 @@ bfs msg s = FieldSettings (SomeMessage msg) Nothing Nothing Nothing [("class", s
 settings :: String -> Text -> Text -> FieldSettings site
 settings x y z = withPlaceholder (pack x) $ (bfs (y :: Text) z)
 
+settingsHidden :: String -> Text -> Text -> FieldSettings site
+settingsHidden x y z = withHidden (pack x) $ (bfs (y :: Text) z)
+
 {- Formulario de busca, cadastro e login -}
 -- areq: required | aopt: optional
+-- Handler (todas, formulario de busca)
 form :: Form Busca
 form = renderDivs $ Busca
     <$> aopt textField (settings "exemplo: leite, soja " "\nExcluir ingrediente(s): " "select") Nothing
@@ -55,19 +63,29 @@ form = renderDivs $ Busca
     campoSelect x y = bfs (pack x) (pack y)
     sabores :: [(Text, Sabor)]
     sabores = [("Todos", Todos), ("Agridoce", Agridoce), ("Doce", Doce), ("Salgado", Salgado)]
-    
+
+-- Handler Usuarios/Register    
 formRegister :: Form (Maybe Text, Text, Text, Text)
 formRegister = renderDivs $ (,,,)
     <$> aopt textField (withAutofocus (settings "digite seu nome ou apelido" "\nNome: " "form-busca input qb-linha")) Nothing
-    <*> areq textField (settings "digite seu e-mail" "\nE-mail:" "input qb-linha") Nothing
+    <*> areq emailField (settings "digite seu e-mail" "\nE-mail:" "input qb-linha") Nothing
     <*> areq passwordField  (settings "digite uma senha" "\nSenha: " "") Nothing
     <*> areq passwordField  (settings "repita a senha que você criou" "\nRepita a senha: " "") Nothing
-   
+
+-- Handler Usuarios/Login   
 formLogin :: Form Login
 formLogin = renderDivs $ Login
-    <$> areq textField (withAutofocus (settings "digite seu e-mail aqui" "\nE-mail: " "form-control")) Nothing
+    <$> areq emailField (withAutofocus (settings "digite seu e-mail aqui" "\nE-mail: " "form-control")) Nothing
     <*> areq passwordField (settings "digite sua senha aqui" "\nSenha: " "form-control") Nothing
     
 formEmail :: Form Email
 formEmail = renderDivs $ Email
-    <$> areq textField (withAutofocus (settings "digite o e-mail cadastrado" "\nE-mail: " "form-control")) Nothing
+    <$> areq emailField (withAutofocus (settings "digite o e-mail cadastrado" "\nE-mail: " "form-control")) Nothing
+
+-- Handler Usuarios/Favoritos
+formEdit :: Form (Text, Text, Text, Text)
+formEdit = renderDivsNoLabels $ (,,,)
+    <$> areq textField (settingsHidden "true" "" "form-control") Nothing
+    <*> areq textField (settingsHidden "true" "" "form-control") Nothing
+    <*> areq textField (settingsHidden "true" "" "form-control") Nothing
+    <*> areq textField (settingsHidden "true" "" "form-control") Nothing

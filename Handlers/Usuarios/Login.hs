@@ -15,14 +15,7 @@ getLoginR = do
     let title = "Login"
     newLayout title
         [whamlet|
-            <header> 
-                <nav id="menu">
-                    <ul>
-                        <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
-                        <li>
-                            <form method=post action=@{BuscaR} enctype=#{enctype}>
-                                ^{widget}
-                                <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
+            ^{menu BuscaR enctype widget}
             <div  id="container">
                 <h1> #{title} </h1>
                 <p> Ainda não tem cadastro? <a href="@{RegisterR}" title="cadastro"> Clique aqui</a> e faça seu cadastro.</p>
@@ -46,14 +39,7 @@ postLoginR = do
                 Nothing -> do
                     newLayout erro
                         [whamlet|
-                            <header> 
-                                <nav id="menu">
-                                    <ul>
-                                        <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
-                                        <li>
-                                            <form method=post action=@{BuscaR} enctype=#{enctype}>
-                                                ^{widget}
-                                                <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
+                            ^{menu BuscaR enctype widget}
                             <div  id="container">
                                 <h1> Login </h1>
                                 <p>#{erro} Usuário ou senha incorreta.
@@ -65,19 +51,14 @@ postLoginR = do
                     setSession "_ID" (pack $ show uid)
                     newLayout "Sessão iniciada"
                         [whamlet|
-                            <a href=@{LogoutR} title="encerrar sessao"> Sair </a>
+                            ^{menu BuscaR enctype widget}
+                            <div id="container">
+                                <a href=@{LogoutR} title="encerrar sessao"> Sair </a>
                         |]
         _ -> do
             newLayout erro
                 [whamlet|
-                    <header> 
-                        <nav id="menu">
-                            <ul>
-                                <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
-                                <li>
-                                    <form method=post action=@{BuscaR} enctype=#{enctype}>
-                                        ^{widget}
-                                        <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
+                    ^{menu BuscaR enctype widget}
                     <div  id="container">
                         <h1> Login </h1>
                         <p>#{erro} Preencha os campos corretamente.
@@ -88,10 +69,13 @@ postLoginR = do
 
 getLogoutR :: Handler Html
 getLogoutR = do
+    (widget, enctype) <- generateFormPost form
     deleteSession "_ID"
     newLayout "Sessão encerrada"
         [whamlet|
-            <h1> Sessao encerrada!</h1>
+            ^{menu BuscaR enctype widget}
+            <div  id="container">
+                <h1> Sessao encerrada!</h1>
         |]
 
 getRecuperaSenhaR :: Handler Html
@@ -101,15 +85,7 @@ getRecuperaSenhaR = do
     let title = "Recuperação de senha"
     newLayout title
         [whamlet|
-            <header> 
-                <nav id="menu">
-                    <ul>
-                        <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
-                        <li>
-                            <form method=post action=@{BuscaR} enctype=#{enctype}>
-                                ^{widget}
-                                <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
-                
+            ^{menu BuscaR enctype widget}    
             <div  id="container">
                 <h1> #{title} </h1>
                 <p> Lembrou sua senha? <a href=@{LoginR} title=""> Clique aqui </a> para fazer login. </p>
@@ -122,6 +98,3 @@ getRecuperaSenhaR = do
 
 postRecuperaSenhaR :: Handler Html
 postRecuperaSenhaR = undefined
-                    
-                
-                

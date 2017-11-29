@@ -36,14 +36,10 @@ Login
 
 Favoritos
     usuarioId       UsuarioId
-    categoriaId     CategoriaId
     nomefavoritos   Text
     url             Text
     urlimg          Text
-    deriving Show
-
-Categoria
-    nomecategoria   Text
+    fonte           Text
     deriving Show
 |]
 
@@ -79,6 +75,7 @@ instance Yesod App
 -- Formulario
 type Form a = Html -> MForm Handler (FormResult a, Widget)
 
+
 -- Formulario
 instance RenderMessage App FormMessage where
     renderMessage _ _ = defaultFormMessage
@@ -108,3 +105,4 @@ instance YesodPersist App where
         master <- getYesod
         let pool = connPool master
         runSqlPool f pool
+        

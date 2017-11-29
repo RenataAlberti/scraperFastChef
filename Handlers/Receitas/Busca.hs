@@ -21,14 +21,7 @@ postBuscaR = do
             case (buscaCampo3 res) of
                 Nothing -> liftIO (searchCyberCook $ unpack " +") >>= \y -> newLayout title
                         [whamlet|
-                            <header> 
-                                <nav id="menu">
-                                    <ul>
-                                        <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
-                                        <li>
-                                            <form method=post action=@{BuscaR} enctype=#{enctype}>
-                                                ^{widget}
-                                                <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
+                            ^{menu BuscaR enctype widget}
                             <div id="container">    
                                 <h1> Nenhum Resultado! :( </h1>
                                 <a href="@{HomeR}" title="voltar"> Voltar para o início </a>
@@ -38,14 +31,7 @@ postBuscaR = do
                     cyberCook <- liftIO (searchCyberCook $ unpack x)
                     newLayout title
                         [whamlet|
-                            <header> 
-                                <nav id="menu">
-                                    <ul>
-                                        <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
-                                        <li>
-                                            <form method=post action=@{BuscaR} enctype=#{enctype}>
-                                                ^{widget}
-                                                <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
+                            ^{menu BuscaR enctype widget}
                             <div  id="container">
                                 <h1> #{title} - #{x} </h1>
                                 $forall cc <- cyberCook

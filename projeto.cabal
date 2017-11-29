@@ -57,5 +57,6 @@ executable          projeto
                 , persistent-postgresql
                 , monad-logger
                 , mime-mail >= 0.3
+                , http-types
 
   ghc-options:    -threaded -O2 -rtsopts -with-rtsopts=-N

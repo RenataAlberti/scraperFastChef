@@ -1,8 +1,0 @@
-<header> 
-    <nav id="menu">
-        <ul>
-            <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
-            <li>
-                <form method=post action=@{BuscaR} enctype=#{x}>
-                    ^{y}
-                    <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 

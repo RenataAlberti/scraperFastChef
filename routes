@@ -1,12 +1,12 @@
-/static                             StaticR     Static  getStatic
-/                                   HomeR               GET
-/busca                              BuscaR                  POST
-/cybercook/#String                  ViewDetailsR        GET
-/cadastro                           RegisterR           GET POST
-/login                              LoginR              GET POST
-/login/esqueciminhasenha            RecuperaSenhaR      GET POST
-/logout                             LogoutR             GET
-/favoritos                          ListarFavR          GET POST
-/favoritos/salvar                   SalvarFavR              POST
-/favoritos/editar/#FavoritosId      EditarFavR          GET POST
-/favoritos/excluir/#FavoritosId     ExcluirFavR         GET POST
+/static                                     StaticR     Static  getStatic
+/                                           HomeR               GET
+/busca                                      BuscaR                  POST
+/cybercook/#String                          ViewDetailsR        GET
+/cadastro                                   RegisterR           GET POST
+/login                                      LoginR              GET POST
+/login/esqueciminhasenha                    RecuperaSenhaR      GET POST
+/logout                                     LogoutR             GET
+/favoritos                                  ListarFavR          GET
+/favoritos/salvar                           SalvarFavR              POST
+/favoritos/editar/#FavoritosId              EditarFavR              POST
+/favoritos/excluir/#FavoritosId             ExcluirFavR             POST
