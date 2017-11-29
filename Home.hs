@@ -5,14 +5,8 @@ module Home where
 import Foundation
 import Yesod.Core
 import Yesod.Static()
-import Data.Text(Text, pack, unpack)
 import Yesod.Form
-import Data.Text.Encoding as TE
-import Data.Text.Lazy.Encoding as LE
-import Widgets.WidgetResultadoBusca
 import Widgets.SettingsForm
-import Handlers.Receitas.Busca
-import Scraper.Services.Receita
 {-
 funcWidget :: Widget
 funcWidget x = do

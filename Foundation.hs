@@ -6,15 +6,9 @@
 module Foundation where
 
 import Yesod
-import Yesod.Core.Handler
 import Yesod.Static
-import Control.Applicative()
-import Data.Text()
-import Yesod.Form
 import Data.Text
-import Scraper.General
-import Text.Lucius
-import Database.Persist
+import Control.Applicative()
 import Database.Persist.Postgresql
     ( ConnectionPool, SqlBackend, runSqlPool)
 
@@ -27,9 +21,17 @@ data App = App {getStatic :: Static, connPool :: ConnectionPool}
 -- criacao do banco
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 Usuario
+    loginId         LoginId
     nome            Text Maybe
-    senha           Text
     email           Text
+    senha           Text
+    UniqueUsuario  email
+    deriving Show
+
+Login
+    email    Text
+    senha    Text
+    UniqueLogin email
     deriving Show
 
 Favoritos

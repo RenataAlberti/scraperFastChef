@@ -4,7 +4,6 @@ module Handlers.Receitas.ViewDetails where
 
 import Foundation
 import Yesod.Core
-import Yesod.Static
 import Scraper.General
 import Widgets.SettingsForm
 import Widgets.PageGenericContent

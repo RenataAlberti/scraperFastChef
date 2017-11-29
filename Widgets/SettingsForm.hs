@@ -22,20 +22,6 @@ data Busca = Busca
 data Sabor = Todos | Agridoce | Doce | Salgado
     deriving (Show, Eq, Enum, Bounded)
 
-data Register = Register
-    { nome   :: Text
-    , email   :: Text
-    , senha   :: Text
-    , repitaSenha :: Text
-    }
-    deriving Show
-
-data Login = Login
-    { loginEmail :: Text
-    , loginSenha :: Text
-    }
-    deriving Show
-
 data Email = Email { emailcadastro :: Text } deriving Show
 
 data RedefinirSenha = RedefinirSenha
@@ -70,9 +56,9 @@ form = renderDivs $ Busca
     sabores :: [(Text, Sabor)]
     sabores = [("Todos", Todos), ("Agridoce", Agridoce), ("Doce", Doce), ("Salgado", Salgado)]
     
-formRegister :: Form Register
-formRegister = renderDivs $ Register
-    <$> areq textField (withAutofocus (settings "digite seu nome ou apelido" "\nNome: " "form-busca input qb-linha")) Nothing
+formRegister :: Form (Maybe Text, Text, Text, Text)
+formRegister = renderDivs $ (,,,)
+    <$> aopt textField (withAutofocus (settings "digite seu nome ou apelido" "\nNome: " "form-busca input qb-linha")) Nothing
     <*> areq textField (settings "digite seu e-mail" "\nE-mail:" "input qb-linha") Nothing
     <*> areq passwordField  (settings "digite uma senha" "\nSenha: " "") Nothing
     <*> areq passwordField  (settings "repita a senha que você criou" "\nRepita a senha: " "") Nothing
@@ -84,4 +70,4 @@ formLogin = renderDivs $ Login
     
 formEmail :: Form Email
 formEmail = renderDivs $ Email
-    <$> areq textField (withAutofocus (settings "digite seu e-mail aqui" "\nE-mail: " "form-control")) Nothing
+    <$> areq textField (withAutofocus (settings "digite o e-mail cadastrado" "\nE-mail: " "form-control")) Nothing
