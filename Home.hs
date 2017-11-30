@@ -73,7 +73,7 @@ getDetalheR = do
 -}
  -}      
 
-getHomeR ::Handler Html
+getHomeR :: Handler Html
 getHomeR = do 
     (widget, enctype) <- generateFormPost form
     maid <- maybeAuthId

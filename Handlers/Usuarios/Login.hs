@@ -7,23 +7,33 @@ import Yesod
 import Data.Text
 import Widgets.SettingsForm
 import Widgets.PageGenericContent
+import Yesod.Auth
+import Data.Default (def)
+import Network.HTTP.Client.Conduit (Manager, newManager)
+import Yesod.Auth.BrowserId
+import Yesod.Auth.GoogleEmail2
 
 getLooginR :: Handler Html
 getLooginR = do 
     (widget, enctype) <- generateFormPost form
     (login, enctype) <- generateFormPost formLogin
+    maid <- maybeAuthId
     let title = "Login"
     newLayout title
         [whamlet|
             ^{menu BuscaR enctype widget}
             <div  id="container">
                 <h1> #{title} </h1>
-                <p> Ainda não tem cadastro? <a href="@{RegisterR}" title="cadastro"> Clique aqui</a> e faça seu cadastro.</p>
-                <p> Já se cadastrou? Então preencha o formulário abaixo para entrar no sistema. </p>
-                <div>
-                    <form method=post action=@{LooginR} enctype=#{enctype}>
-                        ^{login}
-                        <button type="submit" class="form-busca button">Entrar</button> 
+                $maybe _ <- maid
+                    <p class="alert">Hey! Você já fez login.
+                    <p> <a href=@{LoogoutR} title="logout"> Clique aqui </a> para sair da sua conta.
+                $nothing
+                    <p> Ainda não tem cadastro? <a href="@{RegisterR}" title="cadastro"> Clique aqui</a> e faça seu cadastro.</p>
+                    <p> Já se cadastrou? Então preencha o formulário abaixo para entrar no sistema. </p>
+                    <div>
+                        <form method=post action=@{LooginR} enctype=#{enctype}>
+                            ^{login}
+                            <button type="submit" class="form-busca button">Entrar</button> 
             ^{footer}
         |]
 
@@ -72,12 +82,7 @@ getLoogoutR :: Handler Html
 getLoogoutR = do
     (widget, enctype) <- generateFormPost form
     deleteSession "_USER"
-    newLayout "Sessão encerrada"
-        [whamlet|
-            ^{menu BuscaR enctype widget}
-            <div  id="container">
-                <h1> Sessao encerrada!</h1>
-        |]
+    redirect LooginR
 
 getRecuperaSenhaR :: Handler Html
 getRecuperaSenhaR = do 

@@ -106,9 +106,13 @@ header nav #logo {
   display: inline-block;
   margin: 2%;
 }
-#container div h2, h3,
+#container div h2, #container div h3,
 #containerview section h2{
   text-align: center;
+}
+
+div#containerview h3{
+  text-align: left;
 }
 #container section .img-thumb,
 #containerview section .img-thumb{

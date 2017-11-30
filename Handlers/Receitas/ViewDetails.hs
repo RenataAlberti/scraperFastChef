@@ -10,10 +10,18 @@ import Widgets.PageGenericContent
 import Yesod.Form
 import Scraper.Services.CyberCook
 import Data.Text
+import Yesod.Auth
+import Yesod
+import Data.Default (def)
+import Network.HTTP.Client.Conduit (Manager, newManager)
+import Yesod.Auth.BrowserId
+import Yesod.Auth.GoogleEmail2
+
 
 getViewDetailsR :: String -> Handler Html
 getViewDetailsR x = do
         ((res', widget), enctype) <- runFormPost form
+        maid <- maybeAuthId
         newLayout ("Detalhe da Receita") $ do
             receita <- liftIO $ viewCyberCook x
             [whamlet|
@@ -25,6 +33,7 @@ getViewDetailsR x = do
                             <img src=#{imagem receita} alt="pizza-imagem-principal" class="img-receita">            
                             <dl>
                             <dt>
+                            $maybe _ <- maid
                                 <form action=@{SalvarFavR} method=post>
                                     <input type=text value=#{pack $ (h1 receita)} name="nome" hidden>
                                     <input type=text value=#{pack $ x} name="url" hidden>
@@ -32,6 +41,8 @@ getViewDetailsR x = do
                                     <input type=text value=#{pack $ (fonteurl (copyright receita))} name="urlfonte" hidden>
                                     <input type=text value=#{pack $ show $ nm (copyright receita)} name="nomefonte" hidden>
                                     <button type=submit class="favoritos"> <span class="margin-right"><i class="fa fa-heart" aria-hidden="true"></i></span> Salvar nos favoritos </button>
+                            $nothing
+                                                                
                                         <dd></dd>
                             <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>
                                 <dd> 6 porções <dd><br>

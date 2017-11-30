@@ -12,7 +12,7 @@ import Control.Applicative()
 import GHC.Generics
 import Yesod.Auth
 import Data.Default (def)
-import Network.HTTP.Client.Conduit (Manager, newManager)
+import Network.HTTP.Client.Conduit (Manager)
 import Yesod.Auth.BrowserId
 import Yesod.Auth.GoogleEmail2
 import Database.Persist.Postgresql
@@ -81,7 +81,7 @@ newLayout title widget = do
 type Form a = Html -> MForm Handler (FormResult a, Widget)
 
 semlogin :: Text
-semlogin = "Sem"
+semlogin = "Sem login"
 
 comlogin :: Text
 comlogin = "Com login"
@@ -98,8 +98,8 @@ instance YesodAuth App where
     type AuthId App = Text
     getAuthId = return . Just . credsIdent
 
-    loginDest _ = HomeR
-    logoutDest _ = HomeR
+    loginDest _ = LooginR
+    logoutDest _ = LooginR
 
     authPlugins _ = [authBrowserId def, authGoogleEmail semlogin comlogin]
     

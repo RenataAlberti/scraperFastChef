@@ -9,23 +9,33 @@ import Yesod
 import Data.Text
 import Widgets.SettingsForm
 import Widgets.PageGenericContent
+import Yesod.Auth
+import Data.Default (def)
+import Network.HTTP.Client.Conduit (Manager, newManager)
+import Yesod.Auth.BrowserId
+import Yesod.Auth.GoogleEmail2
 
 getRegisterR :: Handler Html
 getRegisterR = do 
     (widget, enctype) <- generateFormPost form
     (register, enctype) <- generateFormPost formRegister
+    maid <- maybeAuthId
     let title = "Cadastro"
     newLayout title
         [whamlet|
             ^{menu BuscaR enctype widget}    
             <div  id="container">
                 <h1> #{title} </h1>
-                <p> Já se cadastrou? <a href=@{LooginR} title="cadastro"> Clique aqui</a> para ser redirecionado para a página de login.</p>
-                <p> Ainda não tem cadastro? Então preencha o formulário abaixo para se cadastrar no sistema. </p>
-                <div>
-                    <form method=post action=@{RegisterR} enctype=#{enctype}>
-                        ^{register}
-                        <button type="submit" class="form-busca button">Cadastrar</button> 
+                $maybe _ <- maid
+                    <p class="alert"> Hey! Você já fez login.
+                    <p> <a href=@{LoogoutR} title="logout"> Clique aqui </a> para sair da sua conta.
+                $nothing
+                    <p> Já se cadastrou? <a href=@{LooginR} title="cadastro"> Clique aqui</a> para ser redirecionado para a página de login.</p>
+                    <p> Ainda não tem cadastro? Então preencha o formulário abaixo para se cadastrar no sistema. </p>
+                    <div>
+                        <form method=post action=@{RegisterR} enctype=#{enctype}>
+                            ^{register}
+                            <button type="submit" class="form-busca button">Cadastrar</button> 
             ^{footer}
         |]
 
