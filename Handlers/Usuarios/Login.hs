@@ -43,6 +43,7 @@ postLoginR = do
                             <div  id="container">
                                 <h1> Login </h1>
                                 <p>#{erro} Usuário ou senha incorreta.
+                                <p> Você ainda não se cadastrou? <a href=@{RegisterR} title="cadastro"> Clique aqui </a> e faça seu cadastro.
                                 <form method=post action=@{LoginR} enctype=#{enctype}>
                                     ^{login}
                                     <button type="submit" class="form-busca button">Entrar</button> 

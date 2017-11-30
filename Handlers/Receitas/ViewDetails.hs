@@ -10,7 +10,6 @@ import Widgets.PageGenericContent
 import Yesod.Form
 import Scraper.Services.CyberCook
 import Data.Text
-import Handlers.Usuarios.Favoritos
 
 getViewDetailsR :: String -> Handler Html
 getViewDetailsR x = do
@@ -28,9 +27,10 @@ getViewDetailsR x = do
                             <dt>
                                 <form action=@{SalvarFavR} method=post>
                                     <input type=text value=#{pack $ (h1 receita)} name="nome" hidden>
-                                    <input type=text value=#{pack $ (fonteurl (copyright receita))} name="url" hidden>
+                                    <input type=text value=#{pack $ x} name="url" hidden>
                                     <input type=text value=#{pack $ imagem receita} name="urlimg" hidden>
-                                    <input type=text value=#{pack $ (fonteurl (copyright receita))} name="fonte" hidden>
+                                    <input type=text value=#{pack $ (fonteurl (copyright receita))} name="urlfonte" hidden>
+                                    <input type=text value=#{pack $ show $ nm (copyright receita)} name="nomefonte" hidden>
                                     <button type=submit class="favoritos"> <span class="margin-right"><i class="fa fa-heart" aria-hidden="true"></i></span> Salvar nos favoritos </button>
                                         <dd></dd>
                             <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>

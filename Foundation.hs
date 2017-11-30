@@ -2,6 +2,7 @@
              TemplateHaskell, GADTs, FlexibleContexts,
              MultiParamTypeClasses, DeriveDataTypeable, EmptyDataDecls,
              GeneralizedNewtypeDeriving, ViewPatterns, FlexibleInstances #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 module Foundation where
 
@@ -9,6 +10,7 @@ import Yesod
 import Yesod.Static
 import Data.Text
 import Control.Applicative()
+import GHC.Generics
 import Database.Persist.Postgresql
     ( ConnectionPool, SqlBackend, runSqlPool)
 
@@ -26,21 +28,22 @@ Usuario
     email           Text
     senha           Text
     UniqueUsuario  email
-    deriving Show Read
+    deriving Generic Show Read
 
 Login
     email    Text
     senha    Text
     UniqueLogin email
-    deriving Show Read
+    deriving Generic Show Read
 
 Favoritos
     usuarioId       UsuarioId
     nomefavoritos   Text
     url             Text
     urlimg          Text
-    fonte           Text
-    deriving Show Read
+    urlfonte        Text
+    nomefonte       Text
+    deriving Generic Show Read
 |]
 
 -- arquivo routes

@@ -1,3 +1,10 @@
+.fa.fa-trash{
+  color: #e74c3c;
+}
+
+.fa.fa-pencil{
+  color: #3498db;
+}
 ul{
 	list-style: none;
 }

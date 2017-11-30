@@ -6,6 +6,7 @@ module Handlers.Usuarios.Register where
 
 import Foundation
 import Yesod
+import Data.Text
 import Widgets.SettingsForm
 import Widgets.PageGenericContent
 
@@ -36,31 +37,36 @@ postRegisterR = do
         let erro = "Erro! "
         case res' of 
             FormSuccess ((Just nome), email, senha, repitaSenha) -> do
-                case senha == repitaSenha of
+                uemail <- runDB $ selectFirst [LoginEmail ==. email] []
+                case ((Prelude.length uemail) > 0) of
                     True -> do
-                        userid <- runDB $ insert (Login email senha)
-                        usid <- runDB $ insert (Usuario userid (Just nome) senha email)
-                        newLayout sucesso
-                            [whamlet|
-                                ^{menu BuscaR enctype widget}    
-                                <div id="container">
-                                    <h1> Cadastro </h1>
-                                    <p> #{sucesso} </p>
-                                    <p> Seja bem vindo!! <a href=@{LoginR} title="login"> Clique aqui </a> para fazer login.</p>
-                                ^{footer}
-                            |]
+                        redirect LoginR
                     False -> do
-                        newLayout erro
-                            [whamlet|
-                                ^{menu BuscaR enctype widget}    
-                                <div id="container">
-                                    <h1> Cadastro </h1>
-                                    <p> #{erro} As senhas devem ser semelhantes!!
-                                    <form method=post action=@{RegisterR} enctype=#{enctype}>
-                                        ^{register}
-                                        <button type="submit" class="form-busca button">Cadastrar</button> 
-                                ^{footer}
-                            |]
+                        case senha == repitaSenha of
+                            True -> do
+                                userid <- runDB $ insert (Login email senha)
+                                usid <- runDB $ insert (Usuario userid (Just nome) senha email)
+                                newLayout sucesso
+                                    [whamlet|
+                                        ^{menu BuscaR enctype widget}    
+                                        <div id="container">
+                                            <h1> Cadastro </h1>
+                                            <p> #{sucesso} </p>
+                                            <p> Seja bem vindo!! <a href=@{LoginR} title="login"> Clique aqui </a> para fazer login.</p>
+                                        ^{footer}
+                                    |]
+                            False -> do
+                                newLayout erro
+                                    [whamlet|
+                                        ^{menu BuscaR enctype widget}    
+                                        <div id="container">
+                                            <h1> Cadastro </h1>
+                                            <p> #{erro} As senhas devem ser semelhantes!!
+                                            <form method=post action=@{RegisterR} enctype=#{enctype}>
+                                                ^{register}
+                                                <button type="submit" class="form-busca button">Cadastrar</button> 
+                                        ^{footer}
+                                    |]
             _ -> do
                 newLayout erro
                     [whamlet|

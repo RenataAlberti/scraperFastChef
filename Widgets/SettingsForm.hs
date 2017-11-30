@@ -30,6 +30,14 @@ data RedefinirSenha = RedefinirSenha
     }
     deriving Show
 
+data Prefav = Prefav
+    { prefavNome        :: Text
+    , prefavUrl         :: Text
+    , prefavUrlimg      :: Text
+    , prefavUrlfonte    :: Text
+    , prefavNomefonte   :: Text
+    }deriving Show
+
 {- Configurações de placeholder -}   
 withHidden :: Text -> FieldSettings site -> FieldSettings site
 withHidden hidden fs = fs { fsAttrs = newAttrs }
@@ -81,13 +89,3 @@ formLogin = renderDivs $ Login
 formEmail :: Form Email
 formEmail = renderDivs $ Email
     <$> areq emailField (withAutofocus (settings "digite o e-mail cadastrado" "\nE-mail: " "form-control")) Nothing
-
-{-
--- Handler Usuarios/Favoritos
-formEdit :: Form (Text, Text, Text, Text)
-formEdit = renderDivsNoLabels $ (,,,)
-    <$> areq textField (settingsHidden "true" "" "form-control") Nothing
-    <*> areq textField (settingsHidden "true" "" "form-control") Nothing
-    <*> areq textField (settingsHidden "true" "" "form-control") Nothing
-    <*> areq textField (settingsHidden "true" "" "form-control") Nothing
--}
