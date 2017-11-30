@@ -8,8 +8,8 @@ import Data.Text
 import Widgets.SettingsForm
 import Widgets.PageGenericContent
 
-getLoginR :: Handler Html
-getLoginR = do 
+getLooginR :: Handler Html
+getLooginR = do 
     (widget, enctype) <- generateFormPost form
     (login, enctype) <- generateFormPost formLogin
     let title = "Login"
@@ -21,14 +21,14 @@ getLoginR = do
                 <p> Ainda não tem cadastro? <a href="@{RegisterR}" title="cadastro"> Clique aqui</a> e faça seu cadastro.</p>
                 <p> Já se cadastrou? Então preencha o formulário abaixo para entrar no sistema. </p>
                 <div>
-                    <form method=post action=@{LoginR} enctype=#{enctype}>
+                    <form method=post action=@{LooginR} enctype=#{enctype}>
                         ^{login}
                         <button type="submit" class="form-busca button">Entrar</button> 
             ^{footer}
         |]
 
-postLoginR :: Handler Html
-postLoginR = do
+postLooginR :: Handler Html
+postLooginR = do
     (widget, enctype) <- generateFormPost form
     ((res', login), enctype) <- runFormPost formLogin
     let erro = "Erro! "
@@ -44,7 +44,7 @@ postLoginR = do
                                 <h1> Login </h1>
                                 <p>#{erro} Usuário ou senha incorreta.
                                 <p> Você ainda não se cadastrou? <a href=@{RegisterR} title="cadastro"> Clique aqui </a> e faça seu cadastro.
-                                <form method=post action=@{LoginR} enctype=#{enctype}>
+                                <form method=post action=@{LooginR} enctype=#{enctype}>
                                     ^{login}
                                     <button type="submit" class="form-busca button">Entrar</button> 
                         |]
@@ -54,7 +54,7 @@ postLoginR = do
                         [whamlet|
                             ^{menu BuscaR enctype widget}
                             <div id="container">
-                                <a href=@{LogoutR} title="encerrar sessao"> Sair </a>
+                                <a href=@{LoogoutR} title="encerrar sessao"> Sair </a>
                         |]
         _ -> do
             newLayout erro
@@ -63,13 +63,13 @@ postLoginR = do
                     <div  id="container">
                         <h1> Login </h1>
                         <p>#{erro} Preencha os campos corretamente.
-                        <form method=post action=@{LoginR} enctype=#{enctype}>
+                        <form method=post action=@{LooginR} enctype=#{enctype}>
                             ^{login}
                             <button type="submit" class="form-busca button">Entrar</button>
                 |]
 
-getLogoutR :: Handler Html
-getLogoutR = do
+getLoogoutR :: Handler Html
+getLoogoutR = do
     (widget, enctype) <- generateFormPost form
     deleteSession "_USER"
     newLayout "Sessão encerrada"
@@ -89,7 +89,7 @@ getRecuperaSenhaR = do
             ^{menu BuscaR enctype widget}    
             <div  id="container">
                 <h1> #{title} </h1>
-                <p> Lembrou sua senha? <a href=@{LoginR} title=""> Clique aqui </a> para fazer login. </p>
+                <p> Lembrou sua senha? <a href=@{LooginR} title=""> Clique aqui </a> para fazer login. </p>
                 <div>
                     <form method=post action=@{RecuperaSenhaR} enctype=#{enctype}>
                         ^{email}

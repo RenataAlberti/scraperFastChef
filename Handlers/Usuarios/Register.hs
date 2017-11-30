@@ -20,7 +20,7 @@ getRegisterR = do
             ^{menu BuscaR enctype widget}    
             <div  id="container">
                 <h1> #{title} </h1>
-                <p> Já se cadastrou? <a href="@{LoginR}" title="cadastro"> Clique aqui</a> para ser redirecionado para a página de login.</p>
+                <p> Já se cadastrou? <a href=@{LooginR} title="cadastro"> Clique aqui</a> para ser redirecionado para a página de login.</p>
                 <p> Ainda não tem cadastro? Então preencha o formulário abaixo para se cadastrar no sistema. </p>
                 <div>
                     <form method=post action=@{RegisterR} enctype=#{enctype}>
@@ -40,7 +40,7 @@ postRegisterR = do
                 uemail <- runDB $ selectFirst [LoginEmail ==. email] []
                 case ((Prelude.length uemail) > 0) of
                     True -> do
-                        redirect LoginR
+                        redirect LooginR
                     False -> do
                         case senha == repitaSenha of
                             True -> do
@@ -52,7 +52,7 @@ postRegisterR = do
                                         <div id="container">
                                             <h1> Cadastro </h1>
                                             <p> #{sucesso} </p>
-                                            <p> Seja bem vindo!! <a href=@{LoginR} title="login"> Clique aqui </a> para fazer login.</p>
+                                            <p> Seja bem vindo!! <a href=@{LooginR} title="login"> Clique aqui </a> para fazer login.</p>
                                         ^{footer}
                                     |]
                             False -> do

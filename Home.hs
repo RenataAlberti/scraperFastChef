@@ -7,6 +7,14 @@ import Yesod.Core
 import Yesod.Static()
 import Yesod.Form
 import Widgets.SettingsForm
+import Yesod.Auth
+import Yesod
+import Data.Default (def)
+import Network.HTTP.Client.Conduit (Manager, newManager)
+import Yesod.Auth.BrowserId
+import Yesod.Auth.GoogleEmail2
+
+
 {-
 funcWidget :: Widget
 funcWidget x = do
@@ -68,6 +76,7 @@ getDetalheR = do
 getHomeR ::Handler Html
 getHomeR = do 
     (widget, enctype) <- generateFormPost form
+    maid <- maybeAuthId
     -- ver  <- liftIO $ scrapDirect (unpack "/receita/417-gelatina-da-barbie.html")
     newLayout ("FastChef")
         [whamlet|
@@ -79,7 +88,12 @@ getHomeR = do
                             <form method=post action=@{BuscaR} enctype=#{enctype}>
                                 ^{widget}
                                 <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
-                
+            $maybe _ <- maid
+                <p>
+                    oi faça logout!
+            $nothing
+                <p>
+                    Go to the login page
             <div  id="container">
                 <h1> Início </h1>
                 <div class="row recipe">

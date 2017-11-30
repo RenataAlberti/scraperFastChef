@@ -58,5 +58,8 @@ executable          projeto
                 , monad-logger
                 , mime-mail >= 0.3
                 , http-types
+                , yesod-auth
+                , http-conduit
+                , data-default
 
   ghc-options:    -threaded -O2 -rtsopts -with-rtsopts=-N

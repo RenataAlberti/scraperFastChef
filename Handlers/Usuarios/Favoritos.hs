@@ -57,7 +57,7 @@ postSalvarFavR = do
             favo <- runDB $ selectFirst [FavoritosUsuarioId ==. favid, FavoritosUrlfonte ==. (prefavUrlfonte favoritos)] []
             case ((Prelude.length favo) > 0) of
                 True -> do
-                    redirect LoginR
+                    redirect LooginR
                 False -> do
                     redirect HomeR
 

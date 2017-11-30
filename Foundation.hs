@@ -1,8 +1,7 @@
 {-# LANGUAGE OverloadedStrings, TypeFamilies, QuasiQuotes,
              TemplateHaskell, GADTs, FlexibleContexts,
              MultiParamTypeClasses, DeriveDataTypeable, EmptyDataDecls,
-             GeneralizedNewtypeDeriving, ViewPatterns, FlexibleInstances #-}
-{-# LANGUAGE DeriveGeneric #-}
+             GeneralizedNewtypeDeriving, ViewPatterns, FlexibleInstances, DeriveGeneric #-}
 
 module Foundation where
 
@@ -11,6 +10,11 @@ import Yesod.Static
 import Data.Text
 import Control.Applicative()
 import GHC.Generics
+import Yesod.Auth
+import Data.Default (def)
+import Network.HTTP.Client.Conduit (Manager, newManager)
+import Yesod.Auth.BrowserId
+import Yesod.Auth.GoogleEmail2
 import Database.Persist.Postgresql
     ( ConnectionPool, SqlBackend, runSqlPool)
 
@@ -18,7 +22,7 @@ import Database.Persist.Postgresql
 staticFiles "static"
 
 -- importanto o getStatic para coisas estaticas e connPool para conexao do banco
-data App = App {getStatic :: Static, connPool :: ConnectionPool}
+data App = App {getStatic :: Static, connPool :: ConnectionPool, httpManager :: Manager}
 
 -- criacao do banco
 share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
@@ -45,6 +49,7 @@ Favoritos
     nomefonte       Text
     deriving Generic Show Read
 |]
+
 
 -- arquivo routes
 mkYesodData "App" $(parseRoutesFile "routes")
@@ -75,30 +80,33 @@ newLayout title widget = do
 -- Formulario
 type Form a = Html -> MForm Handler (FormResult a, Widget)
 
-{-newLayout "testando posicoes"
-        [whamlet|
-            <p> #{prefavNome person}
-        |]-}
-        
+semlogin :: Text
+semlogin = "Sem"
+
+comlogin :: Text
+comlogin = "Com login"
+
 -- Formulario
 instance RenderMessage App FormMessage where
     renderMessage _ _ = defaultFormMessage
     
     
 instance Yesod App where
-    authRoute _ = Just LoginR
-    isAuthorized HomeR _        = return Authorized
-    isAuthorized BuscaR _       = return Authorized
-    isAuthorized LoginR _       = return Authorized
-    isAuthorized RegisterR _    = return Authorized
-    isAuthorized _ _ = isUser
+    approot = ApprootStatic "https://projeto-final-c-renataalberti.c9users.io"
 
-isUser = do
-    mu <- lookupSession "_USER"
-    return $ case mu of
-        Nothing -> AuthenticationRequired
-        Just _ -> Authorized
-        
+instance YesodAuth App where
+    type AuthId App = Text
+    getAuthId = return . Just . credsIdent
+
+    loginDest _ = HomeR
+    logoutDest _ = HomeR
+
+    authPlugins _ = [authBrowserId def, authGoogleEmail semlogin comlogin]
+    
+    authHttpManager = httpManager
+    
+    maybeAuthId = lookupSession "_USER"
+
 passwordConfirmField :: Field Handler Text
 passwordConfirmField = Field
     { fieldParse = \rawVals _fileVals ->

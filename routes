@@ -3,9 +3,9 @@
 /busca                                      BuscaR                  POST
 /cybercook/#String                          ViewDetailsR        GET
 /cadastro                                   RegisterR           GET POST
-/login                                      LoginR              GET POST
+/login                                      LooginR             GET POST
 /login/esqueciminhasenha                    RecuperaSenhaR      GET POST
-/logout                                     LogoutR             GET
+/logout                                     LoogoutR            GET
 /favoritos                                  ListarFavR          GET
 /favoritos/salvar                           SalvarFavR              POST
 /favoritos/excluir/#FavoritosId             ExcluirFavR         GET
