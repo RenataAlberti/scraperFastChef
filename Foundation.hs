@@ -26,13 +26,13 @@ Usuario
     email           Text
     senha           Text
     UniqueUsuario  email
-    deriving Show
+    deriving Show Read
 
 Login
     email    Text
     senha    Text
     UniqueLogin email
-    deriving Show
+    deriving Show Read
 
 Favoritos
     usuarioId       UsuarioId
@@ -40,7 +40,7 @@ Favoritos
     url             Text
     urlimg          Text
     fonte           Text
-    deriving Show
+    deriving Show Read
 |]
 
 -- arquivo routes
@@ -69,17 +69,33 @@ newLayout title widget = do
                         ^{pageBody pc}
         |]
 
--- sei la pra que eh
-instance Yesod App
-
 -- Formulario
 type Form a = Html -> MForm Handler (FormResult a, Widget)
 
-
+{-newLayout "testando posicoes"
+        [whamlet|
+            <p> #{prefavNome person}
+        |]-}
+        
 -- Formulario
 instance RenderMessage App FormMessage where
     renderMessage _ _ = defaultFormMessage
     
+    
+instance Yesod App where
+    authRoute _ = Just LoginR
+    isAuthorized HomeR _        = return Authorized
+    isAuthorized BuscaR _       = return Authorized
+    isAuthorized LoginR _       = return Authorized
+    isAuthorized RegisterR _    = return Authorized
+    isAuthorized _ _ = isUser
+
+isUser = do
+    mu <- lookupSession "_USER"
+    return $ case mu of
+        Nothing -> AuthenticationRequired
+        Just _ -> Authorized
+        
 passwordConfirmField :: Field Handler Text
 passwordConfirmField = Field
     { fieldParse = \rawVals _fileVals ->

@@ -82,6 +82,7 @@ formEmail :: Form Email
 formEmail = renderDivs $ Email
     <$> areq emailField (withAutofocus (settings "digite o e-mail cadastrado" "\nE-mail: " "form-control")) Nothing
 
+{-
 -- Handler Usuarios/Favoritos
 formEdit :: Form (Text, Text, Text, Text)
 formEdit = renderDivsNoLabels $ (,,,)
@@ -89,3 +90,4 @@ formEdit = renderDivsNoLabels $ (,,,)
     <*> areq textField (settingsHidden "true" "" "form-control") Nothing
     <*> areq textField (settingsHidden "true" "" "form-control") Nothing
     <*> areq textField (settingsHidden "true" "" "form-control") Nothing
+-}

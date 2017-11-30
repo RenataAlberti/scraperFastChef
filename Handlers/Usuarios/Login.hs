@@ -47,8 +47,8 @@ postLoginR = do
                                     ^{login}
                                     <button type="submit" class="form-busca button">Entrar</button> 
                         |]
-                Just (Entity uid jEmail) -> do
-                    setSession "_ID" (pack $ show uid)
+                Just (Entity uid uEmail) -> do
+                    setSession "_USER" (pack $ show uid)
                     newLayout "Sessão iniciada"
                         [whamlet|
                             ^{menu BuscaR enctype widget}
@@ -70,7 +70,7 @@ postLoginR = do
 getLogoutR :: Handler Html
 getLogoutR = do
     (widget, enctype) <- generateFormPost form
-    deleteSession "_ID"
+    deleteSession "_USER"
     newLayout "Sessão encerrada"
         [whamlet|
             ^{menu BuscaR enctype widget}

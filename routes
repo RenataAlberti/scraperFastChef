@@ -8,5 +8,5 @@
 /logout                                     LogoutR             GET
 /favoritos                                  ListarFavR          GET
 /favoritos/salvar                           SalvarFavR              POST
-/favoritos/editar/#FavoritosId              EditarFavR              POST
+/favoritos/ver                              EditarFavR          GET POST
 /favoritos/excluir/#FavoritosId             ExcluirFavR             POST
