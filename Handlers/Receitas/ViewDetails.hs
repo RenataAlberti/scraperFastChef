@@ -30,26 +30,26 @@ getViewDetailsR x = do
                     <h1>  #{h1 receita} </h1>
                     <aside>
                         <div>
-                            <img src=#{imagem receita} alt="pizza-imagem-principal" class="img-receita">            
+                            <img src=#{imagem receita} alt="#{h1 receita}" class="img-receita">            
                             <dl>
-                            <dt>
-                            $maybe _ <- maid
-                                <form action=@{SalvarFavR} method=post>
-                                    <input type=text value=#{pack $ (h1 receita)} name="nome" hidden>
-                                    <input type=text value=#{pack $ x} name="url" hidden>
-                                    <input type=text value=#{pack $ imagem receita} name="urlimg" hidden>
-                                    <input type=text value=#{pack $ (fonteurl (copyright receita))} name="urlfonte" hidden>
-                                    <input type=text value=#{pack $ show $ nm (copyright receita)} name="nomefonte" hidden>
-                                    <button type=submit class="favoritos"> <span class="margin-right"><i class="fa fa-heart" aria-hidden="true"></i></span> Salvar nos favoritos </button>
-                            $nothing
-                                                                
-                                        <dd></dd>
-                            <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>
-                                <dd> 6 porções <dd><br>
-                            <dt><span class="margin-right"><i class="fa fa-clock-o" aria-hidden="true"></i></span>  Tempo de preparo: </dt>
-                                <dd>25 min </dd><br>
-                            <dt><span class="margin-right"><i class="fa fa-external-link" aria-hidden="true"></i></span>  Fonte: </dt>
-                                <dd> <a href="#{fonteurl (copyright receita)}" title="#{fonteurl (copyright receita)}"> #{show $ nm (copyright receita)} </a></dd> <br>
+                                <dt>
+                                $maybe _ <- maid
+                                    <form action=@{SalvarFavR} method=post>
+                                        <input type=text value=#{pack $ (h1 receita)} name="nome" hidden>
+                                        <input type=text value=#{pack $ x} name="url" hidden>
+                                        <input type=text value=#{pack $ imagem receita} name="urlimg" hidden>
+                                        <input type=text value=#{pack $ (fonteurl (copyright receita))} name="urlfonte" hidden>
+                                        <input type=text value=#{pack $ show $ nm (copyright receita)} name="nomefonte" hidden>
+                                        <button type=submit class="favoritos">
+                                            <span class="margin-right"><i class="fa fa-heart" aria-hidden="true"></i></span> Salvar nos favoritos
+                                $nothing
+                                    <dd></dd>
+                                <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>
+                                    <dd> 6 porções <br>
+                                <dt><span class="margin-right"><i class="fa fa-clock-o" aria-hidden="true"></i></span>  Tempo de preparo: </dt>
+                                    <dd>25 min <br>
+                                <dt><span class="margin-right"><i class="fa fa-external-link" aria-hidden="true"></i></span>  Fonte: </dt>
+                                    <dd> <a href="#{fonteurl (copyright receita)}" title="#{fonteurl (copyright receita)}"> #{show $ nm (copyright receita)} </a> <br>
                     <div>
                         <h2> Ingredientes </h2>
                         $forall ings <- (ingredientes receita)
@@ -67,3 +67,5 @@ getViewDetailsR x = do
                                     <li> #{pack ingred}
                 ^{footer}
             |]
+            
+            

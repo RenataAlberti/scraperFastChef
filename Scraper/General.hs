@@ -196,7 +196,3 @@ categoryFive title preList list = do
     let s = Lista (Just (DT.last q)) b
     a' <- [l, n, p, r, s]
     return a'
-    
-    
-    
-    

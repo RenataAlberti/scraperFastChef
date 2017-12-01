@@ -51,3 +51,6 @@ postBuscaR = do
                             ^{footer}
                         |]
         _ -> redirect  HomeR
+        
+        
+        

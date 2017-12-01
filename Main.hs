@@ -24,5 +24,4 @@ main = do
 do
 static@(Static settings) <- static "static"
 warp 8080 (App static)
-       
 -}

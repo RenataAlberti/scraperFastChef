@@ -9,3 +9,6 @@
 /favoritos                                  ListarFavR          GET
 /favoritos/salvar                           SalvarFavR              POST
 /favoritos/excluir/#FavoritosId             ExcluirFavR         GET
+
+
+
