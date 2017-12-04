@@ -43,7 +43,6 @@ data Recipe = Recipe{
 } deriving (Generic, Show, Read)
 
 
-
 {- Funções de Url -}
 
 renderUrl :: Site -> [(Text, Text)] -> Text
@@ -107,6 +106,13 @@ recipeMap :: [String] -> [String] -> [String] -> [String] -> [Recipes]
 recipeMap [] [] [] [] = []
 recipeMap (a:as) (b:bs) (c:cs) (d:ds) = Recipes a b c (Fonte CyberCook d) :(recipeMap as bs cs ds)
 recipeMap _ _ _ _ = []
+
+
+recipeMap' :: [String] -> [String] -> [String] -> [String] -> [Recipes]
+recipeMap' [] [] [] [] = []
+recipeMap' (a:as) (b:bs) (c:cs) (d:ds) = Recipes a b c (Fonte AllRecipes d) :(recipeMap' as bs cs ds)
+recipeMap' _ _ _ _ = []
+
 
 
 

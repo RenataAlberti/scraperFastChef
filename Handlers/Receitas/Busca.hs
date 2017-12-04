@@ -10,6 +10,7 @@ import Widgets.SettingsForm
 import Widgets.PageGenericContent
 import Scraper.General
 import Scraper.Services.CyberCook
+import Scraper.Services.AllRecipes
 
 
 postBuscaR :: Handler Html
@@ -29,6 +30,7 @@ postBuscaR = do
                         |]
                 Just x -> do
                     cyberCook <- liftIO (searchCyberCook $ unpack x)
+                    allRecipes <- liftIO (searchAllRecipes $ unpack x)
                     newLayout title
                         [whamlet|
                             ^{menu BuscaR enctype widget}
@@ -48,9 +50,20 @@ postBuscaR = do
                                                 <dd> <a href="#{fonteurl (lincopy cc)}" title="#{show $ nm (lincopy cc)}"> #{show $ nm (lincopy cc)} </a> </dd>
                                             <div class="btnlink">
                                                 <a href="@{ViewDetailsR (lin cc)}" title="#{titulo cc}" class="linkbtn"> Ver receita </a>
+                                $forall ar <- allRecipes
+                                    <div class="row recipe">
+                                        <a href="@{ViewDetailsR (lin ar)}" title="#{titulo ar}">
+                                            <h2> #{titulo ar} </h2>
+                                            <img src="#{img ar}" alt="#{titulo ar}" class="img-thumb">
+                                            <dl>
+                                                <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>
+                                                <dd> 6 porções </dd><br/>
+                                                <dt><span class="margin-right"><i class="fa fa-clock-o" aria-hidden="true"></i></span>  Tempo de preparo: </dt>
+                                                <dd>25 min </dd><br/>
+                                                <dt><span class="margin-right"><i class="fa fa-external-link" aria-hidden="true"></i></span>  Fonte: </dt>
+                                                <dd> <a href="#{fonteurl (lincopy ar)}" title="#{show $ nm (lincopy ar)}"> #{show $ nm (lincopy ar)} </a> </dd>
+                                            <div class="btnlink">
+                                                <a href="@{ViewDetailsR (lin ar)}" title="#{titulo ar}" class="linkbtn"> Ver receita </a>
                             ^{footer}
                         |]
         _ -> redirect  HomeR
-        
-        
-        
