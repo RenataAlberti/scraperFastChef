@@ -34,7 +34,7 @@ getViewArR x = do
                                 <dt>
                                 $maybe _ <- maid
                                     <form action=@{SalvarFavArR} method=post>
-                                        <input type=text value=#{pack $ (h1 receita)} name="nome" hidden>
+                                        <input type=text value=#{pack $ Prelude.drop 22 (removeElements 18 (h1 receita))} name="nome" hidden>
                                         <input type=text value=#{pack $ x} name="url" hidden>
                                         <input type=text value=#{pack $ imagem receita} name="urlimg" hidden>
                                         <input type=text value=#{pack $ (fonteurl (copyright receita))} name="urlfonte" hidden>

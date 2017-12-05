@@ -13,65 +13,7 @@ import Data.Default (def)
 import Network.HTTP.Client.Conduit (Manager, newManager)
 import Yesod.Auth.BrowserId
 import Yesod.Auth.GoogleEmail2
-
-
-{-
-funcWidget :: Widget
-funcWidget x = do
-        toWidget [hamlet|
-           <p>    
-   |]
-   
--- "http://www.tudogostoso.com.br/receita/62547-a-melhor-receita-de-bolo-de-chocolate.html"
-
-{-
-getDetalheR :: Text -> Text -> Handler Html
-getDetalheR x y= defaultLayout $ do 
-        detalhe <- liftIO $ comLet
-        setTitle "FastChef"
-        
-        [whamlet|
-           #{Prelude.map (toMarkup False) detalhe}
-        |]
-        --detalhe <- liftIO $ directLink 
-         -- #{Prelude.map (toMarkup False) detalhe}
-         
-getDetalheR :: Handler Html
-getDetalheR = do
-        (widget, enctype) <- generateFormPost form
-        defaultLayout $ do 
-                setTitle "FastChef"
-                toWidgetHead[hamlet|
-                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-                    <meta name="viewport" content="width=device-width, initial-scale=1">
-                |]
-                
-                -- Adicionando o FontAwesome
-                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-                
-                -- Adicionando a folha de estilos
-                addStylesheet $ StaticR css_estilo_css
-                
-                -- Adicionando o jquery via CDN
-                addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"
-                
-                [whamlet|
-                    <header> 
-                        <nav id="menu">
-                            <ul>
-                                <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
-                                <li>
-                                    <form method=post action=@{BuscaR} enctype=#{enctype}>
-                                        ^{widget}
-                                        <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
-                        
-                    <div  id="container">
-                        <h1> Detalhe da Receita </h1>
-          
-                
-                |]
--}
- -}      
+import Widgets.PageGenericContent
 
 getHomeR :: Handler Html
 getHomeR = do 
@@ -80,20 +22,7 @@ getHomeR = do
     -- ver  <- liftIO $ scrapDirect (unpack "/receita/417-gelatina-da-barbie.html")
     newLayout ("FastChef")
         [whamlet|
-            <header> 
-                <nav id="menu">
-                    <ul>
-                        <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
-                        <li>
-                            <form method=post action=@{BuscaR} enctype=#{enctype}>
-                                ^{widget}
-                                <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 
-            $maybe _ <- maid
-                <p>
-                    oi faça logout!
-            $nothing
-                <p>
-                    Go to the login page
+            ^{menu BuscaR enctype widget}
             <div  id="container">
                 <h1> Início </h1>
                 <div class="row recipe">
@@ -107,7 +36,5 @@ getHomeR = do
                             <dd>25 min </dd><br>
                             <dt><span class="margin-right"><i class="fa fa-copyright" aria-hidden="true"></i></span>  Fonte: </dt>
                             <dd> TudoGostoso </dd>
-            <footer>
-                        <p> Colossenses 3.17 </p>
-                        <p> Desenvolvido por: Renata Alberti </p>
+            ^{footer}
         |]

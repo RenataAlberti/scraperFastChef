@@ -333,3 +333,12 @@ position: absolute;
 #container, #containerView{
   padding-bottom: 5%;
 }
+
+
+#menu div.optional #hident3{
+  display: inline;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}

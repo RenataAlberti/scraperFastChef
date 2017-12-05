@@ -90,7 +90,7 @@ getListarFavArR =  do
             Just (Entity fid prophet) <- runDB $ selectFirst [UsuarioLoginId ==. (read . unpack $ str)] []
             favs <- runDB $ selectList [FavoritosUsuarioId ==. fid] [Asc FavoritosNomefavoritos]
             newLayout "Favoritos" $ do
-                [whamlet| 
+                [whamlet|
                     ^{menu BuscaR enctype widget}
                     <div id="container">
                         <h1> Favoritos </h1>
@@ -109,7 +109,10 @@ getListarFavArR =  do
                                             <dt><span class="margin-right"><i class="fa fa-external-link" aria-hidden="true"></i></span>  Fonte: </dt>
                                                 <dd> <a href="#{favoritosUrlfonte fav}" title="#{favoritosNomefonte fav}"> #{favoritosNomefonte fav} </a> </dd>
                                         <div class="btnlink">
-                                            <a href="@{ViewArR (unpack (favoritosUrl fav))}" title="#{favoritosNomefavoritos fav}" class="linkbtn"> Ver receita </a>
+                                            $if (favoritosNomefonte fav) == "AllRecipes"
+                                                <a href="@{ViewArR (unpack (favoritosUrl fav))}" title="#{favoritosNomefavoritos fav}" class="linkbtn"> Ver receita </a>
+                                            $else
+                                                <a href="@{ViewDetailsR (unpack (favoritosUrl fav))}" title="#{favoritosNomefavoritos fav}" class="linkbtn"> Ver receita </a>
                         $nothing
                             <p class="alert"> Hey! Você precisa fazer login.
                             <p>Já tem cadastro? <a href=@{LooginR} title="login" class="link"> Clique aqui </a> para entrar na sua conta.
