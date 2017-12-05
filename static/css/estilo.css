@@ -23,13 +23,26 @@ div.btnlink{
 }
 a.linkbtn{
   padding: 1em;
+  margin-top: 1em;
+}
+
+button.linkbtn{
+  border: none;
+  padding: 1em;
+}
+
+button.linkbtn:hover{
+  background: #ff6738;
+}
+
+button.linkbtn, a.linkbtn{
   border-radius: 3px;
   text-align: center;
   width: auto;
-  margin-top: 1em;
   background-color: #ff5722;
   color: #ecf0f1;
 }
+
 header nav {
   background-color: #ff5722;
   color: #ecf0f1;
@@ -87,7 +100,7 @@ header nav #logo {
   padding-top: 4px;
 }
 
-.required, .select, .input, .form-busca, .optional, .button{
+.required, .select, .input, .form-busca, #menu .optional, .button{
   display: inline;
 }
 
@@ -255,4 +268,68 @@ div.required:after{
 
 section{
   display: inline;
+}
+
+.allrecipes{
+  width: 25em;
+  height : 15em;
+}
+
+div#naveg *{
+	color: #fff;
+	text-align: right;
+}
+
+div#naveg ul{
+	display: block;
+	text-align: right;
+}
+
+div#naveg ul li{
+		display: inline;
+}
+div#naveg ul li a{
+	display: inline-block;
+	padding: 5px;
+	border: 1px solid #fff;
+	border-radius: 2px;
+	margin-right: 10px;
+}
+
+
+div#naveg ul li a:hover{
+color: #ff5722;
+background: #fff;
+	color: #ff5722;
+	border: 1 px solid #ff5722;
+	border-radius: 2px;
+}
+html, body {
+height: 100%;
+}
+
+#container, #containerView{
+min-height: 100%;
+position: relative;
+}
+
+#footer {
+width: 100%;
+bottom: 0;
+position: absolute;
+}
+
+#container input, #containerView input{
+	border-radius: 3px;
+	border: 1px solid #bdc3c7;
+	padding: 5px;
+	margin: 5px;
+}
+
+.link{
+  color: #2980b9;
+}
+
+#container, #containerView{
+  padding-bottom: 5%;
 }

@@ -28,14 +28,14 @@ getRegisterR = do
                 <h1> #{title} </h1>
                 $maybe _ <- maid
                     <p class="alert"> Hey! Você já fez login.
-                    <p> <a href=@{LoogoutR} title="logout"> Clique aqui </a> para sair da sua conta.
+                    <p> <a href=@{LoogoutR} title="logout" class="link"> Clique aqui </a> para sair da sua conta.
                 $nothing
-                    <p> Já se cadastrou? <a href=@{LooginR} title="cadastro"> Clique aqui</a> para ser redirecionado para a página de login.</p>
+                    <p> Já se cadastrou? <a href=@{LooginR} title="cadastro" class="link"> Clique aqui</a> e faça seu login.</p>
                     <p> Ainda não tem cadastro? Então preencha o formulário abaixo para se cadastrar no sistema. </p>
                     <div>
                         <form method=post action=@{RegisterR} enctype=#{enctype}>
                             ^{register}
-                            <button type="submit" class="form-busca button">Cadastrar</button> 
+                            <button type="submit" class="linkbtn">Cadastrar</button> 
             ^{footer}
         |]
 
@@ -55,14 +55,14 @@ postRegisterR = do
                         case senha == repitaSenha of
                             True -> do
                                 userid <- runDB $ insert (Login email senha)
-                                usid <- runDB $ insert (Usuario userid (Just nome) senha email)
+                                usid <- runDB $ insert (Usuario userid (Just nome) email senha)
                                 newLayout sucesso
                                     [whamlet|
                                         ^{menu BuscaR enctype widget}    
                                         <div id="container">
                                             <h1> Cadastro </h1>
                                             <p> #{sucesso} </p>
-                                            <p> Seja bem vindo!! <a href=@{LooginR} title="login"> Clique aqui </a> para fazer login.</p>
+                                            <p> Seja bem vindo!! <a href=@{LooginR} title="login" class="link"> Clique aqui </a> e faça seu login.</p>
                                         ^{footer}
                                     |]
                             False -> do
@@ -71,10 +71,11 @@ postRegisterR = do
                                         ^{menu BuscaR enctype widget}    
                                         <div id="container">
                                             <h1> Cadastro </h1>
-                                            <p> #{erro} As senhas devem ser semelhantes!!
+                                            <p class="alert"> #{erro} As senhas devem ser semelhantes!!
+                                            <p> Já se cadastrou? <a href=@{LooginR} title="cadastro" class="link"> Clique aqui</a> e faça seu login.</p>
                                             <form method=post action=@{RegisterR} enctype=#{enctype}>
                                                 ^{register}
-                                                <button type="submit" class="form-busca button">Cadastrar</button> 
+                                                <button type="submit" class="linkbtn">Cadastrar</button> 
                                         ^{footer}
                                     |]
             _ -> do
@@ -83,9 +84,10 @@ postRegisterR = do
                         ^{menu BuscaR enctype widget}    
                         <div id="container">
                             <h1> Cadastro </h1>
-                            <p> #{erro} Preencha os campos corretamente!!
+                            <p class="alert"> #{erro} Preencha os campos corretamente!!
+                            <p> Já se cadastrou? <a href=@{LooginR} title="cadastro" class="link"> Clique aqui</a> e faça seu login.</p>
                             <form method=post action=@{RegisterR} enctype=#{enctype}>
                                 ^{register}
-                                <button type="submit" class="form-busca button">Cadastrar</button> 
+                                <button type="submit" class="linkbtn">Cadastrar</button> 
                         ^{footer}
                     |]

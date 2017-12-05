@@ -2,6 +2,7 @@
 /                                           HomeR               GET
 /busca                                      BuscaR                  POST
 /cybercook/#String                          ViewDetailsR        GET
+/allrecipes/#String                         ViewArR             GET
 /cadastro                                   RegisterR           GET POST
 /login                                      LooginR             GET POST
 /login/esqueciminhasenha                    RecuperaSenhaR      GET POST
@@ -9,6 +10,6 @@
 /favoritos                                  ListarFavR          GET
 /favoritos/salvar                           SalvarFavR              POST
 /favoritos/excluir/#FavoritosId             ExcluirFavR         GET
-
-
-
+/favoritos/allrecipes                       ListarFavArR        GET
+/favoritos/salvarar                         SalvarFavArR            POST
+/favoritos/excluirar/#FavoritosId           ExcluirFavArR       GET

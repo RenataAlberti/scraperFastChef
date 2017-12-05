@@ -78,7 +78,7 @@ formRegister = renderDivs $ (,,,)
     <$> aopt textField (withAutofocus (settings "digite seu nome ou apelido" "\nNome: " "form-busca input qb-linha")) Nothing
     <*> areq emailField (settings "digite seu e-mail" "\nE-mail:" "input qb-linha") Nothing
     <*> areq passwordField  (settings "digite uma senha" "\nSenha: " "") Nothing
-    <*> areq passwordField  (settings "repita a senha que você criou" "\nRepita a senha: " "") Nothing
+    <*> areq passwordField  (settings "repita a senha" "\nRepita a senha: " "") Nothing
 
 -- Handler Usuarios/Login   
 formLogin :: Form Login

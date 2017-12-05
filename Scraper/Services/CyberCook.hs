@@ -16,7 +16,7 @@ import qualified Data.ByteString.Char8 as DBC
 searchCyberCook :: String -> IO [Recipes]
 searchCyberCook x = do
     let search = constructUrl CyberCook Search x
-    let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 ..."]
+    let header' = defaults & header "User-Agent" .~ ["Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36"]
                    & header "Accept" .~ ["text/html, */*"]
                    & header "X-Requested-With" .~ ["XMLHttpRequest"]
                    & header "Accept-Language" .~ ["pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4"]

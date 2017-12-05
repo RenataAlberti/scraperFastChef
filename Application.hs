@@ -11,6 +11,7 @@ import Yesod.Core
 import Home
 import Handlers.Receitas.Busca
 import Handlers.Receitas.ViewDetails
+import Handlers.Receitas.ViewAr
 import Handlers.Usuarios.Favoritos
 import Handlers.Usuarios.Login
 import Handlers.Usuarios.Register

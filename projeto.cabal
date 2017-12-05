@@ -12,6 +12,7 @@ executable          projeto
                     Home
                     Handlers.Receitas.Busca
                     Handlers.Receitas.ViewDetails
+                    Handlers.Receitas.ViewAr
                     Handlers.Usuarios.Favoritos
                     Handlers.Usuarios.Login
                     Handlers.Usuarios.Register

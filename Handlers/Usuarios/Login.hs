@@ -26,14 +26,14 @@ getLooginR = do
                 <h1> #{title} </h1>
                 $maybe _ <- maid
                     <p class="alert">Hey! Você já fez login.
-                    <p> <a href=@{LoogoutR} title="logout"> Clique aqui </a> para sair da sua conta.
+                    <p> <a href=@{LoogoutR} title="logout" class="link"> Clique aqui </a> para sair da sua conta.
                 $nothing
-                    <p> Ainda não tem cadastro? <a href="@{RegisterR}" title="cadastro"> Clique aqui</a> e faça seu cadastro.</p>
+                    <p> Ainda não tem cadastro? <a href="@{RegisterR}" title="cadastro" class="link"> Clique aqui</a> e faça seu cadastro.</p>
                     <p> Já se cadastrou? Então preencha o formulário abaixo para entrar no sistema. </p>
                     <div>
                         <form method=post action=@{LooginR} enctype=#{enctype}>
                             ^{login}
-                            <button type="submit" class="form-busca button">Entrar</button> 
+                            <button type="submit" class="linkbtn">Entrar</button> 
             ^{footer}
         |]
 
@@ -52,30 +52,26 @@ postLooginR = do
                             ^{menu BuscaR enctype widget}
                             <div  id="container">
                                 <h1> Login </h1>
-                                <p>#{erro} Usuário ou senha incorreta.
-                                <p> Você ainda não se cadastrou? <a href=@{RegisterR} title="cadastro"> Clique aqui </a> e faça seu cadastro.
+                                <p class="alert">#{erro} Usuário ou senha incorreta.
+                                <p> Ainda não tem cadastro? <a href=@{RegisterR} title="cadastro" class="link"> Clique aqui</a> e faça seu cadastro.</p>
                                 <form method=post action=@{LooginR} enctype=#{enctype}>
                                     ^{login}
-                                    <button type="submit" class="form-busca button">Entrar</button> 
+                                    <button type="submit" class="linkbtn">Entrar</button> 
                         |]
                 Just (Entity uid uEmail) -> do
                     setSession "_USER" (pack $ show uid)
-                    newLayout "Sessão iniciada"
-                        [whamlet|
-                            ^{menu BuscaR enctype widget}
-                            <div id="container">
-                                <a href=@{LoogoutR} title="encerrar sessao"> Sair </a>
-                        |]
+                    redirect ListarFavR
         _ -> do
             newLayout erro
                 [whamlet|
                     ^{menu BuscaR enctype widget}
                     <div  id="container">
                         <h1> Login </h1>
-                        <p>#{erro} Preencha os campos corretamente.
+                        <p class="alert">#{erro} Preencha os campos corretamente.
+                        <p> Ainda não tem cadastro? <a href=@{RegisterR} title="cadastro" class="link"> Clique aqui</a> e faça seu cadastro.</p>
                         <form method=post action=@{LooginR} enctype=#{enctype}>
                             ^{login}
-                            <button type="submit" class="form-busca button">Entrar</button>
+                            <button type="submit" class="linkbtn">Entrar</button>
                 |]
 
 getLoogoutR :: Handler Html
@@ -94,11 +90,11 @@ getRecuperaSenhaR = do
             ^{menu BuscaR enctype widget}    
             <div  id="container">
                 <h1> #{title} </h1>
-                <p> Lembrou sua senha? <a href=@{LooginR} title=""> Clique aqui </a> para fazer login. </p>
+                <p> Lembrou sua senha? <a href=@{LooginR} title="login" class="link"> Clique aqui </a> para fazer login. </p>
                 <div>
                     <form method=post action=@{RecuperaSenhaR} enctype=#{enctype}>
                         ^{email}
-                        <button type="submit" class="form-busca button">Entrar</button> 
+                        <button type="submit" class="linkbtn">Entrar</button> 
             ^{footer}
         |]
 

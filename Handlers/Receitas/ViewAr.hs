@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings, QuasiQuotes, TemplateHaskell #-}
 
-module Handlers.Receitas.ViewDetails where
+module Handlers.Receitas.ViewAr where
 
 import Foundation
 import Yesod.Core
@@ -8,7 +8,7 @@ import Scraper.General
 import Widgets.SettingsForm
 import Widgets.PageGenericContent
 import Yesod.Form
-import Scraper.Services.CyberCook
+import Scraper.Services.AllRecipes
 import Data.Text
 import Yesod.Auth
 import Yesod
@@ -17,24 +17,23 @@ import Network.HTTP.Client.Conduit (Manager, newManager)
 import Yesod.Auth.BrowserId
 import Yesod.Auth.GoogleEmail2
 
-
-getViewDetailsR :: String -> Handler Html
-getViewDetailsR x = do
+getViewArR :: String -> Handler Html
+getViewArR x = do
         ((res', widget), enctype) <- runFormPost form
         maid <- maybeAuthId
         newLayout ("Detalhe da Receita") $ do
-            receita <- liftIO $ viewCyberCook x
+            receita <- liftIO $ viewAllRecipes x
             [whamlet|
                 ^{menu BuscaR enctype widget}
                 <div id="containerview">
-                    <h1>  #{h1 receita} </h1>
+                    <h1>  #{Prelude.drop 22 (removeElements 18 (h1 receita))} </h1>
                     <aside>
                         <div>
-                            <img src=#{imagem receita} alt="#{h1 receita}" class="img-receita">            
+                            <img src=#{imagem receita} alt="#{h1 receita}" class="img-receita allrecipes">            
                             <dl>
                                 <dt>
                                 $maybe _ <- maid
-                                    <form action=@{SalvarFavR} method=post>
+                                    <form action=@{SalvarFavArR} method=post>
                                         <input type=text value=#{pack $ (h1 receita)} name="nome" hidden>
                                         <input type=text value=#{pack $ x} name="url" hidden>
                                         <input type=text value=#{pack $ imagem receita} name="urlimg" hidden>
@@ -67,5 +66,3 @@ getViewDetailsR x = do
                                     <li> #{pack ingred}
                 ^{footer}
             |]
-            
-            

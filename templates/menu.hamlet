@@ -1,5 +1,11 @@
 <header> 
     <nav id="menu">
+        <div id="naveg">
+            <ul>
+                <li> 
+                    <a href=@{RegisterR} title="cadastro"> Cadastro
+                <li> 
+                    <a href=@{LooginR} title="login"> Login
         <ul>
             <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
             <li>
