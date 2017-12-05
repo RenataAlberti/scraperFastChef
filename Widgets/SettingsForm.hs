@@ -14,7 +14,6 @@ import Yesod.Form
 -- campo 3: Busca por nome da receita, ingredientes ou categorias
 data Busca = Busca
     { buscaCampo1   :: Sabor
-    , buscaCampo2   :: Maybe Sabor
     , buscaCampo3   :: Maybe Text
     }
     deriving Show
@@ -59,17 +58,13 @@ settings x y z = withPlaceholder (pack x) $ (bfs (y :: Text) z)
 settingsHidden :: String -> Text -> Text -> FieldSettings site
 settingsHidden x y z = withHidden (pack x) $ (bfs (y :: Text) z)
 
-sabor :: [(Text, Sabor)]
-sabor = Prelude.map (\x -> (pack $ show x, x)) [minBound..maxBound]
-
 {- Formulario de busca, cadastro e login -}
 -- areq: required | aopt: optional
 -- Handler (todas, formulario de busca)
 form :: Form Busca
 form = renderDivs $ Busca
     <$> areq (selectFieldList sabores) (campoSelect "\nSabor: " "select qb-linha") Nothing
-    <*> aopt (radioFieldList sabor) "Sabor: " Nothing
-    <*> aopt textField (withAutofocus (settings "Receita ou ingrediente" "" "form-busca input qb-linha")) Nothing
+    <*> aopt textField (withAutofocus (settings "Digite a receita, categoria ou ingrediente aqui" "" "form-busca input qb-linha")) Nothing
   where
     campoSelect x y = bfs (pack x) (pack y)
     sabores :: [(Text, Sabor)]

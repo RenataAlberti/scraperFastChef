@@ -22,7 +22,21 @@ getHomeR = do
     -- ver  <- liftIO $ scrapDirect (unpack "/receita/417-gelatina-da-barbie.html")
     newLayout ("FastChef")
         [whamlet|
-            ^{menu BuscaR enctype widget}
+            <header> 
+                <nav id="menu">
+                    <div id="naveg">
+                        <ul>
+                            $maybe _ <- maid
+                                <li> 
+                                    <a href=@{ListarFavR} title="favoritos"> Favoritos
+                                <li> 
+                                    <a href=@{LoogoutR} title="logout"> Logout
+                            $nothing
+                                <li> 
+                                    <a href=@{RegisterR} title="cadastro"> Cadastro
+                                <li> 
+                                    <a href=@{LooginR} title="login"> Login
+                    ^{menu BuscaR enctype widget}
             <div  id="container">
                 <h1> Início </h1>
                 <div class="row recipe">

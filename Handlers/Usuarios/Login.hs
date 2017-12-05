@@ -21,7 +21,21 @@ getLooginR = do
     let title = "Login"
     newLayout title
         [whamlet|
-            ^{menu BuscaR enctype widget}
+            <header> 
+                <nav id="menu">
+                    <div id="naveg">
+                        <ul>
+                            $maybe _ <- maid
+                                <li> 
+                                    <a href=@{ListarFavR} title="favoritos"> Favoritos
+                                <li> 
+                                    <a href=@{LoogoutR} title="logout"> Logout
+                            $nothing
+                                <li> 
+                                    <a href=@{RegisterR} title="cadastro"> Cadastro
+                                <li> 
+                                    <a href=@{LooginR} title="login"> Login
+                    ^{menu BuscaR enctype widget}
             <div  id="container">
                 <h1> #{title} </h1>
                 $maybe _ <- maid
@@ -41,6 +55,7 @@ postLooginR :: Handler Html
 postLooginR = do
     (widget, enctype) <- generateFormPost form
     ((res', login), enctype) <- runFormPost formLogin
+    maid <- maybeAuthId
     let erro = "Erro! "
     case res' of 
         FormSuccess res -> do
@@ -49,7 +64,21 @@ postLooginR = do
                 Nothing -> do
                     newLayout erro
                         [whamlet|
-                            ^{menu BuscaR enctype widget}
+                            <header> 
+                                <nav id="menu">
+                                    <div id="naveg">
+                                        <ul>
+                                            $maybe _ <- maid
+                                                <li> 
+                                                    <a href=@{ListarFavR} title="favoritos"> Favoritos
+                                                <li> 
+                                                    <a href=@{LoogoutR} title="logout"> Logout
+                                            $nothing
+                                                <li> 
+                                                    <a href=@{RegisterR} title="cadastro"> Cadastro
+                                                <li> 
+                                                    <a href=@{LooginR} title="login"> Login
+                                    ^{menu BuscaR enctype widget}
                             <div  id="container">
                                 <h1> Login </h1>
                                 <p class="alert">#{erro} Usuário ou senha incorreta.
@@ -64,7 +93,21 @@ postLooginR = do
         _ -> do
             newLayout erro
                 [whamlet|
-                    ^{menu BuscaR enctype widget}
+                    <header> 
+                        <nav id="menu">
+                            <div id="naveg">
+                                <ul>
+                                    $maybe _ <- maid
+                                        <li> 
+                                            <a href=@{ListarFavR} title="favoritos"> Favoritos
+                                        <li> 
+                                            <a href=@{LoogoutR} title="logout"> Logout
+                                    $nothing
+                                        <li> 
+                                            <a href=@{RegisterR} title="cadastro"> Cadastro
+                                        <li> 
+                                            <a href=@{LooginR} title="login"> Login
+                            ^{menu BuscaR enctype widget}
                     <div  id="container">
                         <h1> Login </h1>
                         <p class="alert">#{erro} Preencha os campos corretamente.
@@ -84,10 +127,25 @@ getRecuperaSenhaR :: Handler Html
 getRecuperaSenhaR = do 
     (widget, enctype) <- generateFormPost form
     (email, enctype) <- generateFormPost formEmail
+    maid <- maybeAuthId
     let title = "Recuperação de senha"
     newLayout title
         [whamlet|
-            ^{menu BuscaR enctype widget}    
+            <header> 
+                <nav id="menu">
+                    <div id="naveg">
+                        <ul>
+                            $maybe _ <- maid
+                                <li> 
+                                    <a href=@{ListarFavR} title="favoritos"> Favoritos
+                                <li> 
+                                    <a href=@{LoogoutR} title="logout"> Logout
+                            $nothing
+                                <li> 
+                                    <a href=@{RegisterR} title="cadastro"> Cadastro
+                                <li> 
+                                    <a href=@{LooginR} title="login"> Login
+                    ^{menu BuscaR enctype widget}
             <div  id="container">
                 <h1> #{title} </h1>
                 <p> Lembrou sua senha? <a href=@{LooginR} title="login" class="link"> Clique aqui </a> para fazer login. </p>

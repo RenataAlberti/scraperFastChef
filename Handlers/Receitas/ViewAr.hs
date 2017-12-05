@@ -21,10 +21,25 @@ getViewArR :: String -> Handler Html
 getViewArR x = do
         ((res', widget), enctype) <- runFormPost form
         maid <- maybeAuthId
+        msg <- getMessage
         newLayout ("Detalhe da Receita") $ do
             receita <- liftIO $ viewAllRecipes x
             [whamlet|
-                ^{menu BuscaR enctype widget}
+                <header> 
+                    <nav id="menu">
+                        <div id="naveg">
+                            <ul>
+                                $maybe _ <- maid
+                                    <li> 
+                                        <a href=@{ListarFavR} title="favoritos"> Favoritos
+                                    <li> 
+                                        <a href=@{LoogoutR} title="logout"> Logout
+                                $nothing
+                                    <li> 
+                                        <a href=@{RegisterR} title="cadastro"> Cadastro
+                                    <li> 
+                                        <a href=@{LooginR} title="login"> Login
+                        ^{menu BuscaR enctype widget}
                 <div id="containerview">
                     <h1>  #{Prelude.drop 22 (removeElements 18 (h1 receita))} </h1>
                     <aside>
@@ -33,14 +48,17 @@ getViewArR x = do
                             <dl>
                                 <dt>
                                 $maybe _ <- maid
-                                    <form action=@{SalvarFavArR} method=post>
-                                        <input type=text value=#{pack $ Prelude.drop 22 (removeElements 18 (h1 receita))} name="nome" hidden>
-                                        <input type=text value=#{pack $ x} name="url" hidden>
-                                        <input type=text value=#{pack $ imagem receita} name="urlimg" hidden>
-                                        <input type=text value=#{pack $ (fonteurl (copyright receita))} name="urlfonte" hidden>
-                                        <input type=text value=#{pack $ show $ nm (copyright receita)} name="nomefonte" hidden>
-                                        <button type=submit class="favoritos">
-                                            <span class="margin-right"><i class="fa fa-heart" aria-hidden="true"></i></span> Salvar nos favoritos
+                                    $maybe mensagem <- msg
+                                            #{mensagem}
+                                    $nothing
+                                        <form action=@{SalvarFavArR} method=post>
+                                            <input type=text value=#{pack $ Prelude.drop 22 (removeElements 18 (h1 receita))} name="nome" hidden>
+                                            <input type=text value=#{pack $ x} name="url" hidden>
+                                            <input type=text value=#{pack $ imagem receita} name="urlimg" hidden>
+                                            <input type=text value=#{pack $ (fonteurl (copyright receita))} name="urlfonte" hidden>
+                                            <input type=text value=#{pack $ show $ nm (copyright receita)} name="nomefonte" hidden>
+                                            <button type=submit class="favoritos">
+                                                <span class="margin-right"><i class="fa fa-heart" aria-hidden="true"></i></span> Salvar nos favoritos
                                 $nothing
                                     <dd></dd>
                                 <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>

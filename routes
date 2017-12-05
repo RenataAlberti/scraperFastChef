@@ -10,6 +10,5 @@
 /favoritos                                  ListarFavR          GET
 /favoritos/salvar                           SalvarFavR              POST
 /favoritos/excluir/#FavoritosId             ExcluirFavR         GET
-/favoritos/allrecipes                       ListarFavArR        GET
 /favoritos/salvarar                         SalvarFavArR            POST
 /favoritos/excluirar/#FavoritosId           ExcluirFavArR       GET

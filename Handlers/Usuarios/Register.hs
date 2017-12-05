@@ -23,7 +23,21 @@ getRegisterR = do
     let title = "Cadastro"
     newLayout title
         [whamlet|
-            ^{menu BuscaR enctype widget}    
+            <header> 
+                <nav id="menu">
+                    <div id="naveg">
+                        <ul>
+                            $maybe _ <- maid
+                                <li> 
+                                    <a href=@{ListarFavR} title="favoritos"> Favoritos
+                                <li> 
+                                    <a href=@{LoogoutR} title="logout"> Logout
+                            $nothing
+                                <li> 
+                                    <a href=@{RegisterR} title="cadastro"> Cadastro
+                                <li> 
+                                    <a href=@{LooginR} title="login"> Login
+                    ^{menu BuscaR enctype widget}
             <div  id="container">
                 <h1> #{title} </h1>
                 $maybe _ <- maid
@@ -43,6 +57,7 @@ postRegisterR :: Handler Html
 postRegisterR = do
         (widget, enctype) <- generateFormPost form
         ((res', register), enctype) <- runFormPost formRegister
+        maid <- maybeAuthId
         let sucesso = "Cadastrado com sucesso!"
         let erro = "Erro! "
         case res' of 
@@ -58,7 +73,21 @@ postRegisterR = do
                                 usid <- runDB $ insert (Usuario userid (Just nome) email senha)
                                 newLayout sucesso
                                     [whamlet|
-                                        ^{menu BuscaR enctype widget}    
+                                        <header> 
+                                            <nav id="menu">
+                                                <div id="naveg">
+                                                    <ul>
+                                                        $maybe _ <- maid
+                                                            <li> 
+                                                                <a href=@{ListarFavR} title="favoritos"> Favoritos
+                                                            <li> 
+                                                                <a href=@{LoogoutR} title="logout"> Logout
+                                                        $nothing
+                                                            <li> 
+                                                                <a href=@{RegisterR} title="cadastro"> Cadastro
+                                                            <li> 
+                                                                <a href=@{LooginR} title="login"> Login
+                                                ^{menu BuscaR enctype widget}
                                         <div id="container">
                                             <h1> Cadastro </h1>
                                             <p> #{sucesso} </p>
@@ -68,7 +97,21 @@ postRegisterR = do
                             False -> do
                                 newLayout erro
                                     [whamlet|
-                                        ^{menu BuscaR enctype widget}    
+                                        <header> 
+                                            <nav id="menu">
+                                                <div id="naveg">
+                                                    <ul>
+                                                        $maybe _ <- maid
+                                                            <li> 
+                                                                <a href=@{ListarFavR} title="favoritos"> Favoritos
+                                                            <li> 
+                                                                <a href=@{LoogoutR} title="logout"> Logout
+                                                        $nothing
+                                                            <li> 
+                                                                <a href=@{RegisterR} title="cadastro"> Cadastro
+                                                            <li> 
+                                                                <a href=@{LooginR} title="login"> Login
+                                                ^{menu BuscaR enctype widget} 
                                         <div id="container">
                                             <h1> Cadastro </h1>
                                             <p class="alert"> #{erro} As senhas devem ser semelhantes!!
@@ -81,7 +124,21 @@ postRegisterR = do
             _ -> do
                 newLayout erro
                     [whamlet|
-                        ^{menu BuscaR enctype widget}    
+                        <header> 
+                            <nav id="menu">
+                                <div id="naveg">
+                                    <ul>
+                                        $maybe _ <- maid
+                                            <li> 
+                                                <a href=@{ListarFavR} title="favoritos"> Favoritos
+                                            <li> 
+                                                <a href=@{LoogoutR} title="logout"> Logout
+                                        $nothing
+                                            <li> 
+                                                <a href=@{RegisterR} title="cadastro"> Cadastro
+                                            <li> 
+                                                <a href=@{LooginR} title="login"> Login
+                                ^{menu BuscaR enctype widget}   
                         <div id="container">
                             <h1> Cadastro </h1>
                             <p class="alert"> #{erro} Preencha os campos corretamente!!

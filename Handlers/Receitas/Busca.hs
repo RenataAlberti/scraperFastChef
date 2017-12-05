@@ -11,18 +11,39 @@ import Widgets.PageGenericContent
 import Scraper.General
 import Scraper.Services.CyberCook
 import Scraper.Services.AllRecipes
-
+import Yesod.Auth
+import Yesod
+import Data.Default (def)
+import Network.HTTP.Client.Conduit (Manager, newManager)
+import Yesod.Auth.BrowserId
+import Yesod.Auth.GoogleEmail2
+import Widgets.PageGenericContent
 
 postBuscaR :: Handler Html
 postBuscaR = do
     ((res', widget), enctype) <- runFormPost form
+    maid <- maybeAuthId
     let title = "Resultado da Busca"
     case res' of
         FormSuccess res -> do
             case (buscaCampo3 res) of
                 Nothing -> liftIO (searchCyberCook $ unpack " +") >>= \y -> newLayout title
                         [whamlet|
-                            ^{menu BuscaR enctype widget}
+                            <header> 
+                                <nav id="menu">
+                                    <div id="naveg">
+                                        <ul>
+                                            $maybe _ <- maid
+                                                <li> 
+                                                    <a href=@{ListarFavR} title="favoritos"> Favoritos
+                                                <li> 
+                                                    <a href=@{LoogoutR} title="logout"> Logout
+                                            $nothing
+                                                <li> 
+                                                    <a href=@{RegisterR} title="cadastro"> Cadastro
+                                                <li> 
+                                                    <a href=@{LooginR} title="login"> Login
+                                    ^{menu BuscaR enctype widget}
                             <div id="container">    
                                 <h1> Nenhum Resultado! :( </h1>
                                 <a href="@{HomeR}" title="voltar"> Voltar para o início </a>
@@ -31,9 +52,24 @@ postBuscaR = do
                 Just x -> do
                     allRecipes <- liftIO (searchAllRecipes $ unpack x)
                     cyberCook <- liftIO (searchCyberCook $ unpack x)
+                    maid <- maybeAuthId
                     newLayout title
                         [whamlet|
-                            ^{menu BuscaR enctype widget}
+                            <header> 
+                                <nav id="menu">
+                                    <div id="naveg">
+                                        <ul>
+                                            $maybe _ <- maid
+                                                <li> 
+                                                    <a href=@{ListarFavR} title="favoritos"> Favoritos
+                                                <li> 
+                                                    <a href=@{LoogoutR} title="logout"> Logout
+                                            $nothing
+                                                <li> 
+                                                    <a href=@{RegisterR} title="cadastro"> Cadastro
+                                                <li> 
+                                                    <a href=@{LooginR} title="login"> Login
+                                    ^{menu BuscaR enctype widget}
                             <div  id="container">
                                 <h1> #{title} - #{x} </h1>
                                 $forall ar <- allRecipes
