@@ -48,7 +48,7 @@ getExcluirFavR favid = do
 
 getListarFavR :: Handler Html
 getListarFavR =  do
-    (widget, enctype) <- generateFormPost form
+    ((a, widget), enctype) <- generateFormGet form
     maid <- maybeAuthId
     fId <- lookupSession "_USER"
     case fId of

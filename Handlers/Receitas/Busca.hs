@@ -19,14 +19,14 @@ import Yesod.Auth.BrowserId
 import Yesod.Auth.GoogleEmail2
 import Widgets.PageGenericContent
 
-postBuscaR :: Handler Html
-postBuscaR = do
-    ((res', widget), enctype) <- runFormPost form
+getBuscaR :: Handler Html
+getBuscaR = do
+    ((res', widget), enctype) <- runFormGet form
     maid <- maybeAuthId
     let title = "Resultado da Busca"
     case res' of
         FormSuccess res -> do
-            case (buscaCampo3 res) of
+            case (q res) of
                 Nothing -> liftIO (searchCyberCook $ unpack " +") >>= \y -> newLayout title
                         [whamlet|
                             <header> 

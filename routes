@@ -1,6 +1,6 @@
 /static                                     StaticR     Static  getStatic
 /                                           HomeR               GET
-/busca                                      BuscaR                  POST
+/busca                                      BuscaR              GET
 /cybercook/#String                          ViewDetailsR        GET
 /allrecipes/#String                         ViewArR             GET
 /cadastro                                   RegisterR           GET POST

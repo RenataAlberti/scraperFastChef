@@ -1,6 +1,6 @@
 <ul>
-    <li><img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef">
+    <li><a href=@{HomeR} title="inicio"> <img src=@{StaticR img_logovertical_png} id="logo" alt="logo-fastchef"> </a>
     <li>
-        <form method=post action=@{rota} enctype=#{enctype}>
+        <form method=get action=@{rota} enctype=#{enctype}>
             ^{widget}
             <button type="submit" class="form-busca button"><i class="fa fa-search" aria-hidden="true"></i></button> 

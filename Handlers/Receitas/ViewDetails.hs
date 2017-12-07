@@ -20,7 +20,7 @@ import Yesod.Auth.GoogleEmail2
 
 getViewDetailsR :: String -> Handler Html
 getViewDetailsR x = do
-        ((res', widget), enctype) <- runFormPost form
+        ((res', widget), enctype) <- runFormGet form
         maid <- maybeAuthId
         msg <- getMessage
         newLayout ("Detalhe da Receita") $ do

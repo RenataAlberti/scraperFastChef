@@ -17,7 +17,7 @@ import Widgets.PageGenericContent
 
 getHomeR :: Handler Html
 getHomeR = do 
-    (widget, enctype) <- generateFormPost form
+    ((a, widget), enctype) <- generateFormGet form
     maid <- maybeAuthId
     -- ver  <- liftIO $ scrapDirect (unpack "/receita/417-gelatina-da-barbie.html")
     newLayout ("FastChef")

@@ -17,7 +17,7 @@ import Yesod.Auth.GoogleEmail2
 
 getRegisterR :: Handler Html
 getRegisterR = do 
-    (widget, enctype) <- generateFormPost form
+    ((a, widget), enctype) <- generateFormGet form
     (register, enctype) <- generateFormPost formRegister
     maid <- maybeAuthId
     let title = "Cadastro"
@@ -55,7 +55,7 @@ getRegisterR = do
 
 postRegisterR :: Handler Html
 postRegisterR = do
-        (widget, enctype) <- generateFormPost form
+        ((a, widget), enctype) <- generateFormGet form
         ((res', register), enctype) <- runFormPost formRegister
         maid <- maybeAuthId
         let sucesso = "Cadastrado com sucesso!"

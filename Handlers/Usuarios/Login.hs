@@ -15,7 +15,7 @@ import Yesod.Auth.GoogleEmail2
 
 getLooginR :: Handler Html
 getLooginR = do 
-    (widget, enctype) <- generateFormPost form
+    ((a, widget), enctype) <- generateFormGet form
     (login, enctype) <- generateFormPost formLogin
     maid <- maybeAuthId
     let title = "Login"
@@ -53,7 +53,7 @@ getLooginR = do
 
 postLooginR :: Handler Html
 postLooginR = do
-    (widget, enctype) <- generateFormPost form
+    ((a, widget), enctype) <- generateFormGet form
     ((res', login), enctype) <- runFormPost formLogin
     maid <- maybeAuthId
     let erro = "Erro! "
@@ -119,13 +119,13 @@ postLooginR = do
 
 getLoogoutR :: Handler Html
 getLoogoutR = do
-    (widget, enctype) <- generateFormPost form
+    ((a, widget), enctype) <- generateFormGet form
     deleteSession "_USER"
     redirect LooginR
 
 getRecuperaSenhaR :: Handler Html
 getRecuperaSenhaR = do 
-    (widget, enctype) <- generateFormPost form
+    ((a, widget), enctype) <- generateFormGet form
     (email, enctype) <- generateFormPost formEmail
     maid <- maybeAuthId
     let title = "Recuperação de senha"

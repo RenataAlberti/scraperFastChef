@@ -14,7 +14,7 @@ import Yesod.Form
 -- campo 3: Busca por nome da receita, ingredientes ou categorias
 data Busca = Busca
     { buscaCampo1   :: Sabor
-    , buscaCampo3   :: Maybe Text
+    , q   :: Maybe Text
     }
     deriving Show
 
@@ -64,7 +64,7 @@ settingsHidden x y z = withHidden (pack x) $ (bfs (y :: Text) z)
 form :: Form Busca
 form = renderDivs $ Busca
     <$> areq (selectFieldList sabores) (campoSelect "\nSabor: " "select qb-linha") Nothing
-    <*> aopt textField (withAutofocus (settings "Digite a receita, categoria ou ingrediente aqui" "" "form-busca input qb-linha")) Nothing
+    <*> aopt (searchField True) (settings "Digite a receita, categoria ou ingrediente aqui" "" "form-busca input qb-linha") Nothing
   where
     campoSelect x y = bfs (pack x) (pack y)
     sabores :: [(Text, Sabor)]
