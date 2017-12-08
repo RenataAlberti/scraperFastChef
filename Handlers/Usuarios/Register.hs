@@ -71,29 +71,11 @@ postRegisterR = do
                             True -> do
                                 userid <- runDB $ insert (Login email senha)
                                 usid <- runDB $ insert (Usuario userid (Just nome) email senha)
-                                newLayout sucesso
-                                    [whamlet|
-                                        <header> 
-                                            <nav id="menu">
-                                                <div id="naveg">
-                                                    <ul>
-                                                        $maybe _ <- maid
-                                                            <li> 
-                                                                <a href=@{ListarFavR} title="favoritos"> Favoritos
-                                                            <li> 
-                                                                <a href=@{LoogoutR} title="logout"> Logout
-                                                        $nothing
-                                                            <li> 
-                                                                <a href=@{RegisterR} title="cadastro"> Cadastro
-                                                            <li> 
-                                                                <a href=@{LooginR} title="login"> Login
-                                                ^{menu BuscaR enctype widget}
-                                        <div id="container">
-                                            <h1> Cadastro </h1>
-                                            <p> #{sucesso} </p>
-                                            <p> Seja bem vindo!! <a href=@{LooginR} title="login" class="link"> Clique aqui </a> e faça seu login.</p>
-                                        ^{footer}
-                                    |]
+                                setMessage[shamlet|
+                                    <p class="success"> Cadastrado com sucesso!! </p>
+                                    <p> Preencha o formulário abaixo para entrar no sistema.</p>
+                                |]
+                                redirect LooginR
                             False -> do
                                 newLayout erro
                                     [whamlet|

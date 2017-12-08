@@ -39,7 +39,7 @@ postSalvarFavR = do
                                     (prefavUrlfonte favoritos) 
                                     (prefavNomefonte favoritos))
             setMessage[shamlet|
-                <p> Salvo com sucesso! </p>
+                <p class="success"> Salvo com sucesso! </p>
             |]
             redirect (ViewDetailsR (unpack $ prefavUrl favoritos))
 
@@ -83,7 +83,7 @@ getListarFavR =  do
                                 <div class="row recipe">
                                     <a href=@{ViewArR (unpack (favoritosUrl fav))} title="#{favoritosNomefavoritos fav}">
                                         <h2> #{favoritosNomefavoritos fav} </h2>
-                                        <a href=@{ExcluirFavArR (favid)} title="Excluir"> <i class="fa fa-trash" aria-hidden="true"></i> Excluir </a>
+                                        <a href=@{ExcluirFavArR (favid)} title="Excluir" class="excluir"> <i class="fa fa-trash" aria-hidden="true"></i> Excluir </a><br>
                                         <img src="#{favoritosUrlimg fav}" alt="#{favoritosNomefavoritos fav}" class="img-thumb">
                                         <dl>
                                             <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>
@@ -128,7 +128,7 @@ postSalvarFavArR = do
                                     (prefavUrlfonte favoritos) 
                                     (prefavNomefonte favoritos))
             setMessage[shamlet|
-                <p> Salvo com sucesso! </p>
+                <p class="success"> Salvo com sucesso! </p>
             |]
             redirect (ViewArR (unpack $ prefavUrl favoritos))
 

@@ -44,7 +44,7 @@ getViewArR x = do
                     <h1>  #{Prelude.drop 22 (removeElements 18 (h1 receita))} </h1>
                     <aside>
                         <div>
-                            <img src=#{imagem receita} alt="#{h1 receita}" class="img-receita allrecipes">            
+                            <img src=#{imagem receita} alt="#{h1 receita}" class="img-receita">            
                             <dl>
                                 <dt>
                                 $maybe _ <- maid

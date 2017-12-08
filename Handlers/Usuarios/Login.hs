@@ -18,6 +18,7 @@ getLooginR = do
     ((a, widget), enctype) <- generateFormGet form
     (login, enctype) <- generateFormPost formLogin
     maid <- maybeAuthId
+    msg <- getMessage
     let title = "Login"
     newLayout title
         [whamlet|
@@ -42,8 +43,11 @@ getLooginR = do
                     <p class="alert">Hey! Você já fez login.
                     <p> <a href=@{LoogoutR} title="logout" class="link"> Clique aqui </a> para sair da sua conta.
                 $nothing
-                    <p> Ainda não tem cadastro? <a href="@{RegisterR}" title="cadastro" class="link"> Clique aqui</a> e faça seu cadastro.</p>
-                    <p> Já se cadastrou? Então preencha o formulário abaixo para entrar no sistema. </p>
+                    $maybe mensagem <- msg
+                        #{mensagem}
+                    $nothing
+                        <p> Ainda não tem cadastro? <a href="@{RegisterR}" title="cadastro" class="link"> Clique aqui</a> e faça seu cadastro.</p>
+                        <p> Já se cadastrou? Então preencha o formulário abaixo para entrar no sistema. </p>
                     <div>
                         <form method=post action=@{LooginR} enctype=#{enctype}>
                             ^{login}

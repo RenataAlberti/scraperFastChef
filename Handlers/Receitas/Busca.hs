@@ -79,9 +79,9 @@ getBuscaR = do
                                             <img src="#{img ar}" alt="#{titulo ar}" class="img-thumb">
                                             <dl>
                                                 <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>
-                                                <dd> 6 porções </dd><br/>
+                                                <dd> - porções </dd><br/>
                                                 <dt><span class="margin-right"><i class="fa fa-clock-o" aria-hidden="true"></i></span>  Tempo de preparo: </dt>
-                                                <dd>25 min </dd><br/>
+                                                <dd> - </dd><br/>
                                                 <dt><span class="margin-right"><i class="fa fa-external-link" aria-hidden="true"></i></span>  Fonte: </dt>
                                                 <dd> <a href="#{fonteurl (lincopy ar)}" title="#{show $ nm (lincopy ar)}"> #{show $ nm (lincopy ar)} </a> </dd>
                                             <div class="btnlink">
@@ -90,12 +90,12 @@ getBuscaR = do
                                     <div class="row recipe">
                                         <a href="@{ViewDetailsR (lin cc)}" title="#{titulo cc}">
                                             <h2> #{titulo cc} </h2>
-                                            <img src="#{img cc}" alt="#{titulo cc}" class="img-thumb">
+                                            <img src="#{img cc}" alt="#{titulo cc}" class="img-thumbb">
                                             <dl>
                                                 <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>
-                                                <dd> 6 porções </dd><br/>
+                                                <dd> - porções </dd><br/>
                                                 <dt><span class="margin-right"><i class="fa fa-clock-o" aria-hidden="true"></i></span>  Tempo de preparo: </dt>
-                                                <dd>25 min </dd><br/>
+                                                <dd> - </dd><br/>
                                                 <dt><span class="margin-right"><i class="fa fa-external-link" aria-hidden="true"></i></span>  Fonte: </dt>
                                                 <dd> <a href="#{fonteurl (lincopy cc)}" title="#{show $ nm (lincopy cc)}"> #{show $ nm (lincopy cc)} </a> </dd>
                                             <div class="btnlink">

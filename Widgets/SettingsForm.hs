@@ -61,16 +61,16 @@ form = renderDivs $ Busca
 -- Handler Usuarios/Register    
 formRegister :: Form (Maybe Text, Text, Text, Text)
 formRegister = renderDivs $ (,,,)
-    <$> aopt textField (withAutofocus (settings "digite seu nome ou apelido" "\nNome: " "form-busca input qb-linha")) Nothing
-    <*> areq emailField (settings "digite seu e-mail" "\nE-mail:" "input qb-linha") Nothing
-    <*> areq passwordField  (settings "digite uma senha" "\nSenha: " "") Nothing
-    <*> areq passwordField  (settings "repita a senha" "\nRepita a senha: " "") Nothing
+    <$> aopt textField (withAutofocus (settings "digite seu nome ou apelido" "\n*Nome: " "form-register")) Nothing
+    <*> areq emailField (settings "digite seu e-mail" "\n*E-mail:" "form-register") Nothing
+    <*> areq passwordField  (settings "digite uma senha" "\n*Senha: " "form-register") Nothing
+    <*> areq passwordField  (settings "repita a senha" "\n*Repita a senha: " "form-register") Nothing
 
 -- Handler Usuarios/Login   
 formLogin :: Form Login
 formLogin = renderDivs $ Login
-    <$> areq emailField (withAutofocus (settings "digite seu e-mail aqui" "\nE-mail: " "form-control")) Nothing
-    <*> areq passwordField (settings "digite sua senha aqui" "\nSenha: " "form-control") Nothing
+    <$> areq emailField (withAutofocus (settings "digite seu e-mail aqui" "\n*E-mail: " "form-register")) Nothing
+    <*> areq passwordField (settings "digite sua senha aqui" "\n*Senha: " "form-register") Nothing
     
 formEmail :: Form Email
 formEmail = renderDivs $ Email
