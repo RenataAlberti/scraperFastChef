@@ -5,7 +5,7 @@ import Application () -- for YesodDispatch instance
 import Foundation
 import Yesod.Core
 import Yesod.Static
-import Network.HTTP.Client.Conduit (Manager, newManager)
+import Network.HTTP.Client.Conduit
 import Control.Monad.Logger (runStdoutLoggingT)
 import Database.Persist.Postgresql
 

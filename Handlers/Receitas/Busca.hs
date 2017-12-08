@@ -23,7 +23,7 @@ getBuscaR :: Handler Html
 getBuscaR = do
     ((res', widget), enctype) <- runFormGet form
     maid <- maybeAuthId
-    let title = "Resultado da Busca"
+    let title = "Resultado da busca"
     case res' of
         FormSuccess res -> do
             case (q res) of

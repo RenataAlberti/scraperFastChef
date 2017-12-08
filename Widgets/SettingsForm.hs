@@ -9,17 +9,8 @@ import Yesod.Static()
 import Data.Text
 import Yesod.Form
 
--- campo 1: Busca por ingredientes excluidos da receita
--- campo 2: Busca por sabor
--- campo 3: Busca por nome da receita, ingredientes ou categorias
-data Busca = Busca
-    { buscaCampo1   :: Sabor
-    , q   :: Maybe Text
-    }
-    deriving Show
 
-data Sabor = Todos | Agridoce | Doce | Salgado
-    deriving (Show, Eq, Enum, Bounded)
+data Busca = Busca { q   :: Maybe Text } deriving Show
 
 data Email = Email { emailcadastro :: Text } deriving Show
 
@@ -31,6 +22,8 @@ data RedefinirSenha = RedefinirSenha
 
 data Prefav = Prefav
     { prefavNome        :: Text
+    , prefavTempo       :: Text
+    , prefavRendimento  :: Text
     , prefavUrl         :: Text
     , prefavUrlimg      :: Text
     , prefavUrlfonte    :: Text
@@ -63,13 +56,8 @@ settingsHidden x y z = withHidden (pack x) $ (bfs (y :: Text) z)
 -- Handler (todas, formulario de busca)
 form :: Form Busca
 form = renderDivs $ Busca
-    <$> areq (selectFieldList sabores) (campoSelect "\nSabor: " "select qb-linha") Nothing
-    <*> aopt (searchField True) (settings "Digite a receita, categoria ou ingrediente aqui" "" "form-busca input qb-linha") Nothing
-  where
-    campoSelect x y = bfs (pack x) (pack y)
-    sabores :: [(Text, Sabor)]
-    sabores = [("Todos", Todos), ("Agridoce", Agridoce), ("Doce", Doce), ("Salgado", Salgado)]
-
+    <$> aopt (searchField True) (settings "Digite a receita, categoria ou ingrediente aqui" "" "form-busca input qb-linha") Nothing
+ 
 -- Handler Usuarios/Register    
 formRegister :: Form (Maybe Text, Text, Text, Text)
 formRegister = renderDivs $ (,,,)

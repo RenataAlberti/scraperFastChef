@@ -8,11 +8,6 @@ import Yesod.Static()
 import Yesod.Form
 import Widgets.SettingsForm
 import Yesod.Auth
-import Yesod
-import Data.Default (def)
-import Network.HTTP.Client.Conduit (Manager, newManager)
-import Yesod.Auth.BrowserId
-import Yesod.Auth.GoogleEmail2
 import Widgets.PageGenericContent
 
 getHomeR :: Handler Html

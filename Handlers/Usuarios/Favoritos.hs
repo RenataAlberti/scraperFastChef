@@ -20,6 +20,8 @@ postSalvarFavR :: Handler Html
 postSalvarFavR = do
     favoritos <- runInputPost $ Prefav
                 <$> ireq textField "nome"
+                <*> ireq textField "tempo"
+                <*> ireq textField "rendimento"                
                 <*> ireq textField "url"
                 <*> ireq textField "urlimg"
                 <*> ireq textField "urlfonte"
@@ -30,6 +32,8 @@ postSalvarFavR = do
             Just (Entity fid favs) <- runDB $ selectFirst [UsuarioLoginId ==. (read . unpack $ str)] []            
             favinsert <- runDB $ 
                             insert  (Favoritos fid (prefavNome favoritos)
+                                    (prefavTempo favoritos)
+                                    (prefavRendimento favoritos)
                                     (prefavUrl favoritos) 
                                     (prefavUrlimg favoritos) 
                                     (prefavUrlfonte favoritos) 
@@ -83,9 +87,9 @@ getListarFavR =  do
                                         <img src="#{favoritosUrlimg fav}" alt="#{favoritosNomefavoritos fav}" class="img-thumb">
                                         <dl>
                                             <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>
-                                                <dd> 6 porções </dd><br/>
+                                                <dd> #{favoritosRendimento fav} </dd><br/>
                                             <dt><span class="margin-right"><i class="fa fa-clock-o" aria-hidden="true"></i></span>  Tempo de preparo: </dt>
-                                                <dd>25 min </dd><br/>
+                                                <dd> #{favoritosTempo fav} </dd><br/>
                                             <dt><span class="margin-right"><i class="fa fa-external-link" aria-hidden="true"></i></span>  Fonte: </dt>
                                                 <dd> <a href="#{favoritosUrlfonte fav}" title="#{favoritosNomefonte fav}"> #{favoritosNomefonte fav} </a> </dd>
                                         <div class="btnlink">
@@ -105,6 +109,8 @@ postSalvarFavArR :: Handler Html
 postSalvarFavArR = do
     favoritos <- runInputPost $ Prefav
                 <$> ireq textField "nome"
+                <*> ireq textField "tempo"
+                <*> ireq textField "rendimento"
                 <*> ireq textField "url"
                 <*> ireq textField "urlimg"
                 <*> ireq textField "urlfonte"
@@ -115,6 +121,8 @@ postSalvarFavArR = do
             Just (Entity fid favs) <- runDB $ selectFirst [UsuarioLoginId ==. (read . unpack $ str)] []            
             favinsert <- runDB $ 
                             insert  (Favoritos fid (prefavNome favoritos)
+                                    (prefavTempo favoritos)
+                                    (prefavRendimento favoritos)
                                     (prefavUrl favoritos) 
                                     (prefavUrlimg favoritos) 
                                     (prefavUrlfonte favoritos) 

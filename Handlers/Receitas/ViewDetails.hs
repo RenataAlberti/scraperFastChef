@@ -54,6 +54,8 @@ getViewDetailsR x = do
                                     $nothing
                                         <form action=@{SalvarFavR} method=post>
                                             <input type=text value=#{pack $ (h1 receita)} name="nome" hidden>
+                                            <input type=text value=#{pack $ (tempo receita)} name="tempo" hidden>
+                                            <input type=text value=#{pack $ (rendimento receita)} name="rendimento" hidden>
                                             <input type=text value=#{pack $ x} name="url" hidden>
                                             <input type=text value=#{pack $ imagem receita} name="urlimg" hidden>
                                             <input type=text value=#{pack $ (fonteurl (copyright receita))} name="urlfonte" hidden>
@@ -63,9 +65,9 @@ getViewDetailsR x = do
                                 $nothing
                                     <dd></dd>
                                 <dt><span class="margin-right"><i class="fa fa-cutlery" aria-hidden="true"></i></span>  Rendimento: </dt>
-                                    <dd> - porções <br>
+                                    <dd> #{rendimento receita} <br>
                                 <dt><span class="margin-right"><i class="fa fa-clock-o" aria-hidden="true"></i></span>  Tempo de preparo: </dt>
-                                    <dd> - <br>
+                                    <dd> #{tempo receita} <br>
                                 <dt><span class="margin-right"><i class="fa fa-external-link" aria-hidden="true"></i></span>  Fonte: </dt>
                                     <dd> <a href="#{fonteurl (copyright receita)}" title="#{fonteurl (copyright receita)}"> #{show $ nm (copyright receita)} </a> <br>
                     <div>

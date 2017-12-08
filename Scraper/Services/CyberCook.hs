@@ -9,7 +9,7 @@ import Text.Taggy.Lens
 import Control.Lens hiding (children, element)
 import Scraper.General
 import qualified Data.List as DT
-import Data.Text (pack, unpack)
+import Data.Text
 import qualified Data.ByteString.Char8 as DBC
 
 
@@ -30,7 +30,7 @@ searchCyberCook x = do
     let nm      = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "list") . allNamed(only "div") . allNamed(only "h3") . children . traverse . contents
     let im      = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "img") . attr "data-pagespeed-lazy-src" . _Just
     let lin     = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "content grid-lg-8") . allNamed(only "section") . attributed (ix "class" . only "grid-lg-12") . allNamed(only "div") . attributed (ix "class" . only "pr20 pl20") . allNamed(only "a") . attributed (ix "class" . only "clickable") .attr "href" . _Just
-    let font   = (replicate (DT.length nm) ("https://cybercook.uol.com.br"))
+    let font   = (DT.replicate (DT.length nm) ("https://cybercook.uol.com.br"))
     let a' = (removeElements 8 (removeRepetition nm))
     return $ recipeMap (fmap unpack (removeElements 8 (removeRepetition nm))) (fmap unpack lin) (fmap unpack im) (fmap unpack font) :: IO [Recipes]
 
@@ -56,5 +56,9 @@ viewCyberCook x = do
             let preMdp = fullBody ^.. html . allNamed(only "ol") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . children . ix 0 . allNamed(only "div") . attributed(ix "class" . only "grid-lg-11 grid-sm-11 omega") . contents
             let mdp = fullBody ^.. html . allNamed(only "ol") . attributed(ix "class" . only "ingredient-list grid-lg-12 grid-sm-12") . allNamed(only "li") . element . children . ix 1 . contents
             let h3 = fullBody ^.. html . allNamed(only "h3") . attributed(ix "class" . only "font-serif txt-bold mb10 grid-lg-12 grid-sm-12 mt10") . contents
-            let receita = (Recipe (unpack (DT.head titulo)) (unpack (DT.head im)) (Fonte CyberCook view) (comparePreList (DT.map unpack h3) (DT.map unpack preList) (DT.map unpack list)) (comparePreList (DT.map unpack h3) (DT.map unpack preMdp) (DT.map unpack mdp)))
+            let rend = fullBody ^.. html . allNamed(only "p") . attributed(ix "class" . only "font-serif pb20") . contents
+            let a = compareInfs (DT.map unpack rend)
+            let tempo = (Data.Text.replace "\n                                    Tempo de preparo: " " " (pack (DT.head a)))
+            let rendimento = (Data.Text.replace "\n                \n                                    Rendimento: " " " (pack (DT.last a)))
+            let receita = (Recipe (unpack (DT.head titulo)) (unpack tempo) (unpack rendimento) (unpack (DT.head im)) (Fonte CyberCook view) (comparePreList (DT.map unpack h3) (DT.map unpack preList) (DT.map unpack list)) (comparePreList (DT.map unpack h3) (DT.map unpack preMdp) (DT.map unpack mdp)))
             return $ receita :: IO Recipe

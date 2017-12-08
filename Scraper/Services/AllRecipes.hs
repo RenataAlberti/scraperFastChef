@@ -53,6 +53,15 @@ viewAllRecipes x = do
             let mdp = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "recipeDirections gridResponsive__module") . allNamed(only "ol") . allNamed(only "li") . children . ix 0 . contents
             let ing = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "recipeIngredients gridResponsive__module") . allNamed(only "ul") . allNamed(only "li") . allNamed(only "span") . contents
             let h3 = fullBody ^.. html . allNamed(only "section") . attributed(ix "class" . only "recipeIngredients gridResponsive__module") . allNamed(only "ul") . allNamed(only "li") . allNamed(only "b") . contents
-            let receita = (Recipe (unpack (DT.head titulo)) (unpack (Data.Text.replace "large" "port500" (DT.head im))) (Fonte AllRecipes view) (comparePreList (DT.map unpack [""]) (DT.map unpack [""]) (DT.map unpack ing)) (comparePreList (DT.map unpack [""]) (DT.map unpack [""]) (DT.map unpack mdp)))
+            let temp = fullBody ^.. html . allNamed(only "div") . attributed(ix "class" . only "stat1") . allNamed(only "span") . contents
+            let rend    =  fullBody ^.. html . allNamed(only "h2") . allNamed(only "small") . attributed(ix "itemprop" . only "recipeYield") . allNamed(only "span") . attributed(ix "class" . only "accent") . contents
+            let rend' = fullBody ^.. html . allNamed(only "h2") . allNamed(only "small") . attributed(ix "itemprop" . only "recipeYield") . children . ix 2 . to universe . traverse . content
+            let rendi = rend ++ rend'
+            let rendimento = DT.unwords (DT.map unpack rendi)
+            let tempo = DT.unwords (DT.map unpack temp)
+            let receita = (Recipe (unpack (DT.head titulo)) tempo rendimento (unpack (Data.Text.replace "large" "port500" (DT.head im))) (Fonte AllRecipes view) (comparePreList (DT.map unpack [""]) (DT.map unpack [""]) (DT.map unpack ing)) (comparePreList (DT.map unpack [""]) (DT.map unpack [""]) (DT.map unpack mdp)))
             return $ receita :: IO Recipe
+ 
+ --tras :: [String] -> String
+ --tras [] = []
  

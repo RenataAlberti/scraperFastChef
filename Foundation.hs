@@ -43,6 +43,8 @@ Login
 Favoritos
     usuarioId       UsuarioId
     nomefavoritos   Text
+    tempo           Text
+    rendimento      Text
     url             Text
     urlimg          Text
     urlfonte        Text

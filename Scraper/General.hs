@@ -36,6 +36,8 @@ data Recipes = Recipes{
 
 data Recipe = Recipe{
     h1 :: String,
+    tempo :: String,
+    rendimento :: String,
     imagem :: String,
     copyright :: Fonte,
     ingredientes :: [Lista],
@@ -112,6 +114,10 @@ recipeMap' [] [] [] [] = []
 recipeMap' (a:as) (b:bs) (c:cs) (d:ds) = Recipes a b c (Fonte AllRecipes d) :(recipeMap' as bs cs ds)
 recipeMap' _ _ _ _ = []
 
+compareInfs :: [String] -> [String]
+compareInfs infs
+    | (DT.length infs) < 2 = ["-"] ++ infs
+    | otherwise = infs
 
 
 {- Funções para o tipo Lista -}
