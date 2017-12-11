@@ -4,7 +4,7 @@ Estudo de caso apresentado à Faculdade de Tecnologia da Baixada Santista Rubens
 
 ## Scraper
 **GeneralFile:**
-Scraper/General.hs
+<p> Scraper/General.hs</p>
 **ScraperFiles:**
 Services/AllRecipes.hs
 Services/CyberCook.hs
