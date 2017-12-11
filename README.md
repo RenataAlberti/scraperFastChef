@@ -6,28 +6,28 @@ Estudo de caso apresentado à Faculdade de Tecnologia da Baixada Santista Rubens
 **GeneralFile:** <br>
 Scraper/General.hs <br>
 **ScraperFiles:** <br>
-Services/AllRecipes.hs
-Services/CyberCook.hs
-**TestFiles:**
-Services/Receita.hs
-Services/ReceitasDeHoje.hs
-Services/ReceitasIg.hs
+Services/AllRecipes.hs <br>
+Services/CyberCook.hs <br>
+**TestFiles:** <br>
+Services/Receita.hs <br>
+Services/ReceitasDeHoje.hs <br>
+Services/ReceitasIg.hs <br> <br>
 
-## Widget
-**GenericFile:**
-Widgets/PageGenericContent.hs
-**FormsFile:**
-Widgets/SettingsForm.hs
-**TestFile:**
-Widgets/WidgetResultadoBusca.hs
+## Widget <br>
+**GenericFile:** <br>
+Widgets/PageGenericContent.hs <br>
+**FormsFile:** <br>
+Widgets/SettingsForm.hs <br>
+**TestFile:** <br>
+Widgets/WidgetResultadoBusca.hs <br> <br>
 
-## View
-**SearchFile:**
-Handlers/Receitas/Busca.hs
-**DetailsFiles:**
-Handlers/Receitas/ViewAr.hs
-Handlers/Receitas/ViewDetails.hs
-**UserFiles:**
-Handlers/Usuarios/Register.hs
-Handlers/Receitas/Login.hs
+## View <br>
+**SearchFile:** <br>
+Handlers/Receitas/Busca.hs <br>
+**DetailsFiles:** <br>
+Handlers/Receitas/ViewAr.hs <br>
+Handlers/Receitas/ViewDetails.hs <br>
+**UserFiles:** <br>
+Handlers/Usuarios/Register.hs <br>
+Handlers/Receitas/Login.hs <br>
 Handlers/Receitas/Favoritos.hs
