@@ -1,7 +1,6 @@
 # SCRAPER FASTCHEF
 > FastChef: estudo de caso aplicando web scraping em sites de receitas culinárias. 
 Estudo de caso apresentado à Faculdade de Tecnologia da Baixada Santista Rubens Lara.
-
 >  FastChef: Case study applying web scraping in recipe web sites.
 
 ## Scraper
