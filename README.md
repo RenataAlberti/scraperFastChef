@@ -33,5 +33,5 @@ Handlers/Usuarios/Register.hs <br>
 Handlers/Receitas/Login.hs <br>
 Handlers/Receitas/Favoritos.hs
 
-Veja mais detalhes na documentação: https://cms.fatecrl.edu.br/uploads/tcc/tcc-resumo-2018-02-28-02-02-3751933.pdf
-See more in the doc file: https://cms.fatecrl.edu.br/uploads/tcc/tcc-resumo-2018-02-28-02-02-3751933.pdf
+**Veja mais detalhes na documentação:** https://cms.fatecrl.edu.br/uploads/tcc/tcc-resumo-2018-02-28-02-02-3751933.pdf <br>
+**See more in the doc file:** https://cms.fatecrl.edu.br/uploads/tcc/tcc-resumo-2018-02-28-02-02-3751933.pdf
